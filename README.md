@@ -9,7 +9,8 @@
 This small application serves as a demo for setting up and using the Data Exchange SDK as a Nuget package. The sample demonstrates how one can Create or Update Data Exchanges using Data Exchange SDK.
 
 # Thumbnail
-![image](https://media.git.autodesk.com/user/20075/files/6feeee06-82e4-4a8e-9ab8-744cf8e5dd78)
+![ConnectorUI](https://github.com/autodesk-platform-services/aps-dataexchange-connector/assets/143083177/7d9541d9-4493-4803-aeb7-e64fc3a0353f)
+
 
 # Setup
 **Data Exchange SDK** is installed into this project as a package reference. All required packages are a part of packages.config and will be restored automatically on first build.
