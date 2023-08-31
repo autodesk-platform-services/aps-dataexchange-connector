@@ -50,6 +50,7 @@ namespace SampleConnector
 
             _sdkOptions = new SDKOptionsDefaultSetup()
             {
+                ApplicationName = applicationName,
                 ClientId = authClientID,
                 ClientSecret = authClientSecret,
                 CallBack = authCallBack,
