@@ -35,7 +35,7 @@ You can enter your credentials in the authentication page and on successful auth
 
 ## Further Reading
 ### Documentation:
-* [Data Exchange SDK](https://aps.autodesk.com/en/docs/dx-sdk/v1/developers_guide/overview/) 
+* [Data Exchange SDK](https://aps.autodesk.com/en/docs/dx-sdk-beta/v1/developers_guide/overview/) 
 
 # License
 This sample code is part of the Autodesk Data Exchange SDK beta. It is subject to the license in Center Code covering the Autodesk Data Exchange SDK beta.
