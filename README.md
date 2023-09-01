@@ -40,7 +40,7 @@ You can enter your credentials in the authentication page and on successful auth
 * [Data Exchange SDK](https://aps.autodesk.com/en/docs/dx-sdk-beta/v1/developers_guide/overview/) 
 
 # License
-This sample code is part of the Autodesk Data Exchange SDK beta. It is subject to the license in Center Code covering the Autodesk Data Exchange SDK beta.
+This sample code is part of the Autodesk Data Exchange.NET SDK (Software Development Kit) beta. It is subject to the license in Center Code covering the Autodesk Data Exchange.NET SDK (Software Development Kit) beta.
 
 # Written by
 Rinku Thakur, PSET , Autodesk
