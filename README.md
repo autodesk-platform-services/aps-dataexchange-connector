@@ -27,7 +27,7 @@ This small application serves as a demo for setting up and using the Data Exchan
     * Building the solution using Visual Studio IDE, or 
     * Building the solution using *BuildSolution.bat* [Note:Prior to executing "BuildSolution.bat," follow these steps
       
-      Step-1 download and uninstall nuget packages with appropriate versions to parent direcotry of repo.
+      Step-1 download and unzip nuget packages with appropriate versions to parent direcotry of repo.
       
       Step-2  either add the path of msbuild.exe **(VS 2022)** to the environment variables or utilize the developer command prompt **( for VS 2022 only)**.]
 4. Add values for Client Id, Client Secret and Auth callback in the App.Debug.config file in the sample connector.
