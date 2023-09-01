@@ -27,20 +27,20 @@ This small application serves as a demo for setting up and using the Data Exchan
     * Building the solution using Visual Studio IDE, or 
     * Building the solution using *BuildSolution.bat* [Note:Prior to executing "BuildSolution.bat," follow these steps
       
-      Step-1 download and uninstall nuget packages with appropriate versions to parent direcotry of repo.
+      Step-1 download and unzip nuget packages with appropriate versions to parent directory of repo.
       
       Step-2  either add the path of msbuild.exe **(VS 2022)** to the environment variables or utilize the developer command prompt **( for VS 2022 only)**.]
 4. Add values for Client Id, Client Secret and Auth callback in the App.Debug.config file in the sample connector.
 
 Once you build and run the sample connector, it will open the URL for authentication in a web browser. 
-You can enter your credentials in the authentication page and on successful authententication, you will see the Connector UI screen as seen in the Thumbnail above. 
+You can enter your credentials in the authentication page and on successful authentication, you will see the Connector UI screen as seen in the Thumbnail above. 
 
 ## Further Reading
 ### Documentation:
 * [Data Exchange SDK](https://aps.autodesk.com/en/docs/dx-sdk-beta/v1/developers_guide/overview/) 
 
 # License
-This sample code is part of the Autodesk Data Exchange SDK beta. It is subject to the license in Center Code covering the Autodesk Data Exchange SDK beta.
+This sample code is part of the Autodesk Data Exchange.NET SDK (Software Development Kit) beta. It is subject to the license in Center Code covering the Autodesk Data Exchange.NET SDK (Software Development Kit) beta.
 
 # Written by
 Rinku Thakur, PSET , Autodesk
