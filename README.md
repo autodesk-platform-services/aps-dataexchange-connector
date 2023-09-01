@@ -6,13 +6,17 @@
 ![Intermediary](https://img.shields.io/badge/Level-Intermediary-lightblue.svg)
 
 # Description
-This small application serves as a demo for setting up and using the Data Exchange SDK as a Nuget package. The sample demonstrates how one can Create or Update Data Exchanges using Data Exchange SDK.
+This application is an example that serves as a reference implemention for a UI-based, Autodesk Data Exchange Connector. The sample code supports creating and updating as well as retrieving an exchange via a desktop-based UI and provides integration points for client-applications. 
+
+This is recommended for solutions that require integrating the Autodesk Data Exchange service with a Windows desktop based application.
+
+For samples that do not use the UI component see https://github.com/autodesk-platform-services/aps-dataexchange-console
 
 # Thumbnail
 ![ThumbnailUI](images/Thumbnail.png)
 
 # Setup
-**Data Exchange SDK** is installed into this project as a package reference. All required packages are a part of packages.config and will be restored automatically on first build.
+The **Autodesk Data Exchange SDK** is installed into this project as a package reference. All required packages are a part of packages.config and will be restored automatically on first build.
 
 ## Prerequisites
 1. [Register an app](https://aps.autodesk.com/myapps/), and select the Data Management and the Data Exchange APIs. Note down the values of **Client ID, Client Secret and Auth callback**. For more information on different types of apps, refer [Application Types](https://aps.autodesk.com/en/docs/oauth/v2/developers_guide/App-types/) page.
@@ -37,10 +41,10 @@ You can enter your credentials in the authentication page and on successful auth
 
 ## Further Reading
 ### Documentation:
-* [Data Exchange SDK](https://aps.autodesk.com/en/docs/dx-sdk-beta/v1/developers_guide/overview/) 
+* [Autodesk Data Exchange SDK](https://aps.autodesk.com/en/docs/dx-sdk-beta/v1/developers_guide/overview/) 
 
 # License
-This sample code is part of the Autodesk Data Exchange.NET SDK (Software Development Kit) beta. It is subject to the license in Center Code covering the Autodesk Data Exchange.NET SDK (Software Development Kit) beta.
+This sample code is part of the Autodesk Data Exchange .NET SDK (Software Development Kit) beta. It is subject to the license in Center Code covering the Autodesk Data Exchange .NET SDK (Software Development Kit) beta.
 
 # Written by
-Rinku Thakur, PSET , Autodesk
+Rinku Thakur, Autodesk
