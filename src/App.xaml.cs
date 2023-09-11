@@ -4,18 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
-using System.IO;
 using System.Threading;
 using System.Windows;
 using System.Windows.Markup;
-using Autodesk.DataExchange.Authentication;
-using Autodesk.DataExchange.UI.ViewModels.Models;
-using System.Windows.Interop;
 using Autodesk.DataExchange.Core.Models;
-using ILogger = Autodesk.DataExchange.Core.Interface.ILogger;
-using Autodesk.DataExchange.Extensions.HostingProvider;
 using Autodesk.DataExchange.Core.Enums;
-using Autodesk.DataExchange.Models;
 
 namespace SampleConnector
 {
@@ -37,16 +30,10 @@ namespace SampleConnector
             var authClientSecret = ConfigurationManager.AppSettings["AuthClientSecret"];
             var authCallBack = ConfigurationManager.AppSettings["AuthCallBack"];
             
-            string logLevel = ConfigurationManager.AppSettings?["LogLevel"];
-            var appBasePath = ConfigurationManager.AppSettings["ApplicationDataPath"];
+            var logLevel = ConfigurationManager.AppSettings?["LogLevel"];
             var applicationName = ConfigurationManager.AppSettings["ApplicationName"];
             if (string.IsNullOrEmpty(applicationName))
                 applicationName = "SampleConnector";
-
-            if (string.IsNullOrEmpty(appBasePath))
-                appBasePath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            
-            appBasePath = Path.Combine(appBasePath, applicationName + "-Connector");
 
             _sdkOptions = new SDKOptionsDefaultSetup()
             {
@@ -66,9 +53,12 @@ namespace SampleConnector
             uiConfiguration.HostingProductID = "Dummy";
             uiConfiguration.HostingProductVersion = "1.0";
 
-            uiConfiguration.LogLevel = Autodesk.DataExchange.Core.Enums.LogLevel.Debug;
+            uiConfiguration.LogLevel = GetLogLevel(logLevel);
             if (uiConfiguration.LogLevel == Autodesk.DataExchange.Core.Enums.LogLevel.Debug)
+            {
                 SetDebugLogLevel(_sdkOptions?.Logger);
+                EnableHttpLogsForDebugging(client);
+            }
             
             var application = new Autodesk.DataExchange.UI.Application(customReadWriteModel, uiConfiguration);
             customReadWriteModel.Application = application;
@@ -77,9 +67,24 @@ namespace SampleConnector
             application.Show();
         }
 
+        private LogLevel GetLogLevel(string logLevel)
+        {
+            LogLevel parsedlogLevel;
+            bool canConvertToEnum =  Enum.TryParse<LogLevel>(logLevel, true, out parsedlogLevel);
+
+            if(canConvertToEnum)
+                return parsedlogLevel;
+            else return LogLevel.Error;
+        }
+
         private void SetDebugLogLevel(Autodesk.DataExchange.Core.Interface.ILogger logger)
         {
             logger?.SetDebugLogLevel();
+        }
+
+        private void EnableHttpLogsForDebugging(Client client)
+        {
+            (client as Client)?.EnableHttpDebugLogging();
         }
 
         private void AppManager_AdvanceLoadExchangeEvent(object obj)
