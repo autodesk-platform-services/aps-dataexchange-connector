@@ -13,6 +13,8 @@ using Autodesk.DataExchange.Core.Models;
 using Autodesk.DataExchange.DataModels;
 using Autodesk.DataExchange.Interface;
 using Autodesk.DataExchange.Models;
+using Autodesk.DataExchange.SchemaObjects.Assets;
+using Autodesk.DataExchange.SchemaObjects.Units;
 using Autodesk.DataExchange.Schemas.Models;
 using Autodesk.GeometryPrimitives.Design;
 using Autodesk.GeometryPrimitives.Geometry;
@@ -217,6 +219,10 @@ namespace SampleConnector
                     //Create a new ElementDataModel wrapper
                     currentElementDataModel = ElementDataModel.Create(Client);
 
+                    //Set Unit info on Root Asset
+                    (currentElementDataModel.ExchangeData.RootAsset as DesignAsset).LengthUnit = UnitFactory.Feet;
+                    (currentElementDataModel.ExchangeData.RootAsset as DesignAsset).DisplayLengthUnit = UnitFactory.Feet;
+
                     //Add a basic wall geometry
                     createExchangeHelper.AddWallGeometry(currentElementDataModel);
 
@@ -233,7 +239,7 @@ namespace SampleConnector
                     createExchangeHelper.AddIFCGeometry(currentElementDataModel);  
                   
                     //Add NIST object
-                    var newBRep = currentElementDataModel.AddElement("NISTSTEP", "Generics", "Generic", "Generic Object");
+                    var newBRep = currentElementDataModel.AddElement(new ElementProperties("NISTSTEP", "Generics", "Generic", "Generic Object"));
                     createExchangeHelper.AddNISTObject(currentElementDataModel, newBRep);
 
                     //Create built in parameters

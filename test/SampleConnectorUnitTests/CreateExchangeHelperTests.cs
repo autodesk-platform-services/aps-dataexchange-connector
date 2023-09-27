@@ -41,7 +41,7 @@ namespace SampleConnectorUnitTests
         [TestMethod]
         public void TestAddInstanceParametersToElement()
         {
-            var genericElement = _dataModel.AddElement("NISTSTEP", "Generics", "Generic", "Generic Object");
+            var genericElement = _dataModel.AddElement(new ElementProperties("NISTSTEP", "Generics", "Generic", "Generic Object"));
             _createExchangeHelper.AddInstanceParametersToElement(genericElement);
 
             Assert.IsTrue(genericElement.InstanceParameters.Any());

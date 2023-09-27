@@ -28,9 +28,9 @@ namespace SampleConnector
 
         public void AddWallGeometry(ElementDataModel data)
         {
-            ElementGeometry wallGeometry = ElementDataModel.CreateGeometry($"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\\InputStepFile\\11DB159F6864D8FC02B33D7E9280498F08DFC4FB.stp", commonRenderStyle);
+            ElementGeometry wallGeometry = ElementDataModel.CreateGeometry(new GeometryProperties($"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\\InputStepFile\\11DB159F6864D8FC02B33D7E9280498F08DFC4FB.stp", commonRenderStyle));
 
-            var wallElement = data.AddElement("Wall-1", "Walls", "Wall", "Generic Wall");
+            var wallElement = data.AddElement(new ElementProperties("Wall-1", "Walls", "Wall", "Generic Wall"));
             var wallGeometries = new List<ElementGeometry> { wallGeometry };
 
             data.SetElementGeometryByElement(wallElement, wallGeometries);
@@ -40,13 +40,10 @@ namespace SampleConnector
         {
             var millimeterRodStepFile = $"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\\InputStepFile\\1000mm_rod.stp";
             
-            var millimeterRodGeometry = ElementDataModel.CreateGeometry(millimeterRodStepFile, commonRenderStyle);
-            
             //Specify default LengthUnit of the step file; for this file it is millimeters
-            millimeterRodGeometry.LengthUnit = UnitFactory.MilliMeter;
-            millimeterRodGeometry.DisplayLengthUnit = UnitFactory.MilliMeter;
-
-            var rodElement = data.AddElement("RodElement", "GenericRods", "GenericRod", "Generic Rod");
+            var millimeterRodGeometry = ElementDataModel.CreateGeometry(new GeometryProperties(millimeterRodStepFile, commonRenderStyle) { LengthUnit = UnitFactory.MilliMeter, DisplayLengthUnit = UnitFactory.MilliMeter, DisplayAngleUnit = UnitFactory.Radian });
+            
+            var rodElement = data.AddElement(new ElementProperties("RodElement", "GenericRods", "GenericRod", "Generic Rod") { LengthUnit = UnitFactory.MilliMeter, DisplayLengthUnit = UnitFactory.MilliMeter });
 
             var rodElementGeometry = new List<ElementGeometry>() { millimeterRodGeometry };
 
@@ -62,7 +59,7 @@ namespace SampleConnector
 
         private void AddPrimitiveLineGeometries(ElementDataModel data)
         {
-            var newElement = data.AddElement("Line1", "Generics", "Generic", "Generic Object");
+            var newElement = data.AddElement(new ElementProperties("Line1", "Generics", "Generic", "Generic Object"));
 
             var newBRepElementGeometry = new List<ElementGeometry>();
 
@@ -78,10 +75,10 @@ namespace SampleConnector
             lineone.Range = range;
             setOfLines.Add(lineone);
 
-            newBRepElementGeometry.Add(ElementDataModel.CreatePrimitiveGeometry(setOfLines, commonRenderStyle));
+            newBRepElementGeometry.Add(ElementDataModel.CreatePrimitiveGeometry(new GeometryProperties(setOfLines, commonRenderStyle)));
             data.SetElementGeometryByElement(newElement, newBRepElementGeometry);
 
-            var newLineElement2 = data.AddElement("Line2", "Generics", "Generic", "Generic Object");
+            var newLineElement2 = data.AddElement(new ElementProperties("Line2", "Generics", "Generic", "Generic Object"));
 
             var newlineElementGeometry = new List<ElementGeometry>();
 
@@ -97,8 +94,8 @@ namespace SampleConnector
             linethree.Range = range;
             setthreeOfLines.Add(linethree);
 
-            newlineElementGeometry.Add(ElementDataModel.CreatePrimitiveGeometry(settwoOfLines, commonRenderStyle));
-            newlineElementGeometry.Add(ElementDataModel.CreatePrimitiveGeometry(setthreeOfLines, commonRenderStyle));
+            newlineElementGeometry.Add(ElementDataModel.CreatePrimitiveGeometry(new GeometryProperties(settwoOfLines, commonRenderStyle)));
+            newlineElementGeometry.Add(ElementDataModel.CreatePrimitiveGeometry(new GeometryProperties(setthreeOfLines, commonRenderStyle)));
             data.SetElementGeometryByElement(newLineElement2, newlineElementGeometry);
 
         }
@@ -107,30 +104,30 @@ namespace SampleConnector
         {
             var newBRepGeometry = new List<ElementGeometry>();
             var filePath = $"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\\InputStepFile\\cone.stp";
-            newBRepGeometry.Add(ElementDataModel.CreateGeometry(filePath, commonRenderStyle));
+            newBRepGeometry.Add(ElementDataModel.CreateGeometry(new GeometryProperties(filePath, commonRenderStyle)));
             data.SetElementGeometryByElement(newBRep, newBRepGeometry);
         }
 
         public void AddPrimitivePointGeometry(ElementDataModel data)
         {
             //....Primitive geometry - One Point...
-            var newPointElement = data.AddElement("Point1", "Generics", "Generic", "Point");
+            var newPointElement = data.AddElement(new ElementProperties("Point1", "Generics", "Generic", "Point"));
             var newPointElementGeometry = new List<ElementGeometry>();
             DesignPoint point = new DesignPoint(10.0, 10.0, 10.0);
-            newPointElementGeometry.Add(ElementDataModel.CreatePrimitiveGeometry(point, commonRenderStyle));
+            newPointElementGeometry.Add(ElementDataModel.CreatePrimitiveGeometry(new GeometryProperties(point, commonRenderStyle)));
             data.SetElementGeometryByElement(newPointElement, newPointElementGeometry);
 
         }
         public void AddPrimitiveCurveAndSurfaceGeometries(ElementDataModel data)
         {
-            var circleElement = data.AddElement("Circle", "CircleGenerics", "CircleGeneric", "CircleElement");
+            var circleElement = data.AddElement(new ElementProperties("Circle", "CircleGenerics", "CircleGeneric", "CircleElement"));
             var circleElementGeometry = new List<ElementGeometry>();
             var geomContainer = new GeometryContainer();
 
             AddCurveGeometries(geomContainer);
             AddSurfaceGeometries(geomContainer);
 
-            circleElementGeometry.Add(ElementDataModel.CreatePrimitiveGeometry(geomContainer, commonRenderStyle));
+            circleElementGeometry.Add(ElementDataModel.CreatePrimitiveGeometry(new GeometryProperties(geomContainer, commonRenderStyle)));
             data.SetElementGeometryByElement(circleElement, circleElementGeometry);
         }
 
@@ -248,20 +245,20 @@ namespace SampleConnector
 
         public void AddMeshGeometry(ElementDataModel data)
         {
-            var newMeshElement = data.AddElement("MeshEElement", "GenericsMesh", "GenericMesh", "Mesh Object");
+            var newMeshElement = data.AddElement(new ElementProperties("MeshEElement", "GenericsMesh", "GenericMesh", "Mesh Object"));
             var newMeshGeometry = new List<ElementGeometry>();
             var filePathMesh = $"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\\InputStepFile\\mesh1.obj";
-            newMeshGeometry.Add(ElementDataModel.CreateGeometry(filePathMesh, commonRenderStyle));
+            newMeshGeometry.Add(ElementDataModel.CreateGeometry(new GeometryProperties(filePathMesh, commonRenderStyle)));
             data.SetElementGeometryByElement(newMeshElement, newMeshGeometry);
         }
 
         public void AddIFCGeometry(ElementDataModel data)
         {
-            var newIfcBrep = data.AddElement("NISTIFC", "IFCs", "IFC", "IFC Object");
+            var newIfcBrep = data.AddElement(new ElementProperties("NISTIFC", "IFCs", "IFC", "IFC Object"));
 
             var newIfcBRepGeometry = new List<ElementGeometry>();
             var ifcfilePath = $"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\\InputStepFile\\Beam.ifc";
-            newIfcBRepGeometry.Add(ElementDataModel.CreateGeometry(ifcfilePath, commonRenderStyle));
+            newIfcBRepGeometry.Add(ElementDataModel.CreateGeometry(new GeometryProperties(ifcfilePath, commonRenderStyle)));
             data.SetElementGeometryByElement(newIfcBrep, newIfcBRepGeometry);
         }
 
@@ -438,15 +435,15 @@ namespace SampleConnector
             //Add Element with BRep Geometry
             var newBRepGeometry = new List<ElementGeometry>();
             var filePath = $"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\\InputStepFile\\nist_ftc_09_asme1_rd.stp";
-            newBRepGeometry.Add(ElementDataModel.CreateGeometry(filePath, commonRenderStyle));
-            var newBRep = data.AddElement("0-new", "Generics", "Generic", "Non-Generic Object");
+            newBRepGeometry.Add(ElementDataModel.CreateGeometry(new GeometryProperties(filePath, commonRenderStyle)));
+            var newBRep = data.AddElement(new ElementProperties("0-new", "Generics", "Generic", "Non-Generic Object"));
             data.SetElementGeometryByElement(newBRep, newBRepGeometry);
 
             //Add Element with Mesh Geometry
-            var newMeshElement = data.AddElement("MeshElementUpdate", "GenericsMeshUpdate", "GenericMeshUpdate", "Mesh Object Update");
+            var newMeshElement = data.AddElement(new ElementProperties("MeshElementUpdate", "GenericsMeshUpdate", "GenericMeshUpdate", "Mesh Object Update"));
             var newMeshGeometry = new List<ElementGeometry>();
             var filePathToMesh = $"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\\InputStepFile\\mesh2.obj";
-            newMeshGeometry.Add(ElementDataModel.CreateGeometry(filePathToMesh, commonRenderStyle));
+            newMeshGeometry.Add(ElementDataModel.CreateGeometry(new GeometryProperties(filePathToMesh, commonRenderStyle)));
             data.SetElementGeometryByElement(newMeshElement, newMeshGeometry);
         }
     }
