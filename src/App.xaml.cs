@@ -9,6 +9,8 @@ using System.Windows;
 using System.Windows.Markup;
 using Autodesk.DataExchange.Core.Models;
 using Autodesk.DataExchange.Core.Enums;
+using System.Reflection;
+using System.IO;
 
 namespace SampleConnector
 {
@@ -19,6 +21,11 @@ namespace SampleConnector
     {
         private IExchange baseExchange;
         private SDKOptions _sdkOptions;
+
+        internal static string applicationOutputPath;
+        private AppDomain appDomain;
+
+
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             RegisterSystemLanguage();
@@ -34,6 +41,11 @@ namespace SampleConnector
             var applicationName = ConfigurationManager.AppSettings["ApplicationName"];
             if (string.IsNullOrEmpty(applicationName))
                 applicationName = "SampleConnector";
+
+            var assemblyLocalPath = new System.Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath;
+            applicationOutputPath = Path.GetDirectoryName(assemblyLocalPath);           
+            appDomain = AppDomain.CurrentDomain;
+            appDomain.AssemblyResolve += CurrentDomainAssemblyResolve;
 
             _sdkOptions = new SDKOptionsDefaultSetup()
             {
@@ -65,6 +77,53 @@ namespace SampleConnector
             application.AdvanceLoadExchangeEvent += AppManager_AdvanceLoadExchangeEvent;
             LoadLocalExchanges(customReadWriteModel);
             application.Show();
+        }
+
+        /// <summary>
+        /// Assembly resolve event.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        private Assembly CurrentDomainAssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            Assembly assembly = null;
+            try
+            {
+                var name = GetAssemblyName(args);
+                var dllPath = Path.Combine(applicationOutputPath, name + ".dll");
+                if (File.Exists(dllPath))
+                {
+                    _sdkOptions.Logger?.Debug("Loading assembly " + args.Name);
+                    assembly = Assembly.LoadFile(dllPath);
+                }
+
+            }
+            catch (Exception e)
+            {
+                _sdkOptions.Logger?.Debug("Failed to load assembly " + args.Name);
+                _sdkOptions.Logger?.Error(e);
+            }
+            return assembly;
+        }
+
+        /// <summary>
+        /// Get assembly name
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        private string GetAssemblyName(ResolveEventArgs args)
+        {
+            string name;
+            if (args.Name.IndexOf(",") > -1)
+            {
+                name = args.Name.Substring(0, args.Name.IndexOf(","));
+            }
+            else
+            {
+                name = args.Name;
+            }
+            return name;
         }
 
         private LogLevel GetLogLevel(string logLevel)
