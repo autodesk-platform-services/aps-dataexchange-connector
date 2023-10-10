@@ -54,7 +54,8 @@ namespace SampleConnector
         {
             AddPrimitiveLineGeometries(data);
             AddPrimitivePointGeometry(data);
-            AddPrimitiveCurveAndSurfaceGeometries(data);   
+            AddPrimitiveCurveAndSurfaceGeometries(data);
+            AddPrimitivePolylineGeometry(data);
         }
 
         private void AddPrimitiveLineGeometries(ElementDataModel data)
@@ -445,6 +446,32 @@ namespace SampleConnector
             var filePathToMesh = $"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\\InputStepFile\\mesh2.obj";
             newMeshGeometry.Add(ElementDataModel.CreateGeometry(new GeometryProperties(filePathToMesh, commonRenderStyle)));
             data.SetElementGeometryByElement(newMeshElement, newMeshGeometry);
+        }
+
+        private void AddPrimitivePolylineGeometry(ElementDataModel dataModel)
+        {
+            var polyLineElement = dataModel.AddElement(new ElementProperties("Polyline", "PolylineGenerics", "PolylineGeneric", "PolylineElement"));
+            var polyLineElementGeometry = new List<ElementGeometry>();
+            var geomContainer = new GeometryContainer()
+            {
+                Curves = new CurveArray()
+                {
+                    new Polyline()
+                    {
+                        Range = new ParamRange(ParamRange.RangeType.Finite, 0.0, 2.0),
+                        Closed = false,
+                        Points = new List<Point3d>()
+                        {
+                            new Point3d(12.5, 4, 0),
+                            new Point3d(4.5, 4, 0),
+                            new Point3d(11.25, 0, 0)
+                        }
+                    }
+                }
+            };
+
+            polyLineElementGeometry.Add(ElementDataModel.CreatePrimitiveGeometry(new GeometryProperties(geomContainer, commonRenderStyle)));
+            dataModel.SetElementGeometryByElement(polyLineElement, polyLineElementGeometry);
         }
     }
 }
