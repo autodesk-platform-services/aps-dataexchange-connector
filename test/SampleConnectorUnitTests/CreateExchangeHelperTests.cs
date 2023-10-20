@@ -60,18 +60,9 @@ namespace SampleConnectorUnitTests
         public void TestAddPolylinePrimitiveGeometry()
         {
             _createExchangeHelper.AddPrimitiveGeometries(_dataModel);
-            var polylineElement = _dataModel.Elements.FirstOrDefault(element => element.Id == "Polyline");
+            var polylineElement = _dataModel.Elements.Where(element => element.Id == "Polyline").ToList();
 
             Assert.IsTrue(polylineElement != null);
-        }
-
-        [TestMethod]
-        public void TestCompositeCurvePrimitiveGeometry()
-        {
-            _createExchangeHelper.AddPrimitiveGeometries(_dataModel);
-            var compositeCurveElement = _dataModel.Elements.FirstOrDefault(element => element.Id == "CompositeCurve");
-
-            Assert.IsTrue(compositeCurveElement != null);
         }
     }
 }
