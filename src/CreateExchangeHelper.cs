@@ -56,6 +56,7 @@ namespace SampleConnector
             AddPrimitivePointGeometry(data);
             AddPrimitiveCurveAndSurfaceGeometries(data);
             AddPrimitivePolylineGeometry(data);
+            AddCompositeCurvePrimitiveGeometry(data);
         }
 
         private void AddPrimitiveLineGeometries(ElementDataModel data)
@@ -472,6 +473,50 @@ namespace SampleConnector
 
             polyLineElementGeometry.Add(ElementDataModel.CreatePrimitiveGeometry(new GeometryProperties(geomContainer, commonRenderStyle)));
             dataModel.SetElementGeometryByElement(polyLineElement, polyLineElementGeometry);
+        }
+
+        private void AddCompositeCurvePrimitiveGeometry(ElementDataModel dataModel)
+        {
+            var compositeCurveElement = dataModel.AddElement(new ElementProperties("CompositeCurve", "CompositeCurveGenerics", "CompositeCurveGeneric", "CompositeCurveElement"));
+            var compositeCurveElementGeometry = new List<ElementGeometry>();
+            var geomContainer = new GeometryContainer()
+            {
+                Curves = new CurveArray()
+                {
+                    new CompositeCurve()
+                    {
+                        Curves = new CurveArray()
+                        {
+                            new Line()
+                            {
+                                Position = Point3d.Origin,
+                                Direction = Vector3d.XAxis,
+                                Range = new ParamRange(ParamRange.RangeType.Finite, 0, 12.5)
+                            },
+                            new Line()
+                            {
+                                Position = new Point3d(12.5, 0, 0),
+                                Direction = Vector3d.YAxis,
+                                Range = new ParamRange(ParamRange.RangeType.Finite, 0, 4)
+                            },
+                            new Polyline()
+                            {
+                                Range = new ParamRange(ParamRange.RangeType.Finite, 0.0, 2.0),
+                                Closed = false,
+                                Points = new List<Point3d>()
+                                {
+                                    new Point3d(12.5, 4, 0),
+                                    new Point3d(4.5, 4, 0),
+                                    new Point3d(11.25, 0, 0)
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+
+            compositeCurveElementGeometry.Add(ElementDataModel.CreatePrimitiveGeometry(new GeometryProperties(geomContainer, commonRenderStyle)));
+            dataModel.SetElementGeometryByElement(compositeCurveElement, compositeCurveElementGeometry);
         }
     }
 }
