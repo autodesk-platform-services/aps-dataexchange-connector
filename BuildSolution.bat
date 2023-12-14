@@ -39,7 +39,7 @@ ECHO restore nuget pacakges
 msbuild -t:restore -p:RestorePackagesConfig=true SampleConnector.sln /p:NugetConfig=./NuGet.config 
 
 ECHO msbuild 
-msbuild SampleConnector.sln /p:Configuration=Debug /p:Platform="Any CPU" -flp1:logfile=./buildlogs/errors.log;errorsonly -flp2:logfile=./buildlogs/warnings.log;warningsonly
+msbuild SampleConnector.sln /p:Configuration=Debug /p:Platform="x64" -flp1:logfile=./buildlogs/errors.log;errorsonly -flp2:logfile=./buildlogs/warnings.log;warningsonly
 
 if exist NuGet.config del Nuget.config
 
