@@ -152,6 +152,9 @@ namespace SampleConnector
                 //Get Geometry of whole data exchange file as STEP
                 var wholeGeometryPath = Client.DownloadCompleteExchangeAsSTEP(data.ExchangeData.ExchangeID);
 
+                //Get Geometry of whole data exchange file as OBJ
+                var wholeGeometryPathOBJ = Client.DownloadCompleteExchangeAsOBJ(data.ExchangeData.ExchangeID, data.ExchangeData.ExchangeIdentifier.CollectionId);
+
                 // Get Type Parameters of an element
                 var typeParams = wallElements.FirstOrDefault()?.TypeParameters;
 
