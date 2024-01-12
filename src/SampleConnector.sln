@@ -1,11 +1,10 @@
-﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.32126.315
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34309.116
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleConnector", "SampleConnector.csproj", "{5743A62A-1198-474D-BB6B-1832A5238200}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleConnector", "SampleConnector.csproj", "{5743A62A-1198-474D-BB6B-1832A5238200}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleConnectorUnitTests", "..\test\SampleConnectorUnitTests\SampleConnectorUnitTests.csproj", "{E3F22FAA-89E6-4339-A583-7DF76D42BDA0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleConnectorUnitTests", "..\test\SampleConnectorUnitTests\SampleConnectorUnitTests.csproj", "{E3F22FAA-89E6-4339-A583-7DF76D42BDA0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
