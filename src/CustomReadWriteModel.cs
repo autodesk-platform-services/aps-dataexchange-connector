@@ -75,7 +75,6 @@ namespace SampleConnector
                 CollectionId = exchangeItem.ContainerID,
                 ExchangeId = exchangeItem.ExchangeID,
                 HubId = exchangeItem.HubId,
-                Region = exchangeItem.HubRegion
             };
             try
             {
@@ -207,7 +206,6 @@ namespace SampleConnector
                         ExchangeId = ExchangeItem.ExchangeID, 
                         CollectionId = ExchangeItem.ContainerID,
                         HubId = ExchangeItem.HubId,
-                        Region = ExchangeItem.HubRegion
                     });
 
                 CreateExchangeHelper createExchangeHelper = new CreateExchangeHelper();
@@ -267,7 +265,6 @@ namespace SampleConnector
                     CollectionId = ExchangeItem.ContainerID,
                     ExchangeId = ExchangeItem.ExchangeID,
                     HubId = ExchangeItem.HubId,
-                    Region = ExchangeItem.HubRegion
                 };
                
                 await Client.SyncExchangeDataAsync(exchangeIdentifier, currentElementDataModel.ExchangeData);
@@ -303,7 +300,6 @@ namespace SampleConnector
                         CollectionId = ExchangeItem.ContainerID,
                         ExchangeId = ExchangeItem.ExchangeID,
                         HubId = ExchangeItem.HubId,
-                        Region = ExchangeItem.HubRegion
                     };
 
                     ExchangeDetails exchangeDetails = await Client.GetExchangeDetailsAsync(dataExchangeIdentifier);
@@ -324,7 +320,6 @@ namespace SampleConnector
             {
                 CollectionId = exchangeItem.ContainerID,
                 ExchangeId = exchangeItem.ExchangeID,
-                Region = exchangeItem.HubRegion
             };
             DataExchange exchange = await base.GetExchangeAsync(dataExchangeIdentifier);
             if (exchange != null)
