@@ -244,7 +244,7 @@ namespace SampleConnector
                     createExchangeHelper.AddInstanceParametersToElement(newBRep);
 
                     //create bool Custom parameter for instance
-                    createExchangeHelper.AddCustomParametersToElement(newBRep, ExchangeItem.SchemaNamespace);
+                    //createExchangeHelper.AddCustomParametersToElement(newBRep, ExchangeItem.SchemaNamespace);
                 }
                 else
                 {
