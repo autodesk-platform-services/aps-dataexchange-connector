@@ -111,11 +111,13 @@
     <Reference Include="Autodesk.Forge, Version=1.9.8.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\src\packages\Autodesk.Forge.1.9.8\lib\net48\Autodesk.Forge.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.GeometryPrimitives">
-      <HintPath>..\..\src\packages\Autodesk.DataExchange.4.0.3-beta\build\native\libs\Autodesk.GeometryPrimitives.dll</HintPath>
+    <Reference Include="Autodesk.GeometryPrimitives, Version=0.5.7.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\src\packages\Autodesk.DataExchange.4.0.4-beta\build\native\libs\Autodesk.GeometryPrimitives.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.GeometryUtilities">
-      <HintPath>..\..\src\packages\Autodesk.DataExchange.4.0.3-beta\build\native\libs\Autodesk.GeometryUtilities.dll</HintPath>
+    <Reference Include="Autodesk.GeometryUtilities, Version=0.5.7.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\src\packages\Autodesk.DataExchange.4.0.4-beta\build\native\libs\Autodesk.GeometryUtilities.dll</HintPath>
     </Reference>
     <Reference Include="ForgeParametersCLR, Version=1.0.1.0, Culture=neutral, processorArchitecture=AMD64">
       <HintPath>..\..\src\packages\ForgeParameters-csharp_win_release_intel64_v142.1.0.1\lib\net48\ForgeParametersCLR.dll</HintPath>

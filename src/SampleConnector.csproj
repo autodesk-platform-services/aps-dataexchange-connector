@@ -113,7 +113,8 @@
       <HintPath>packages\Autodesk.Forge.1.9.8\lib\net48\Autodesk.Forge.dll</HintPath>
     </Reference>
     <Reference Include="Autodesk.GeometryPrimitives, Version=0.5.7.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>packages\geometry-primitives-sdk-win-release-x64.0.5.7\lib\netstandard2.0\Autodesk.GeometryPrimitives.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>packages\Autodesk.DataExchange.4.0.4-beta\build\native\libs\Autodesk.GeometryPrimitives.dll</HintPath>
     </Reference>
     <Reference Include="ForgeParametersCLR, Version=1.0.1.0, Culture=neutral, processorArchitecture=AMD64">
       <HintPath>packages\ForgeParameters-csharp_win_release_intel64_v142.1.0.1\lib\net48\ForgeParametersCLR.dll</HintPath>
