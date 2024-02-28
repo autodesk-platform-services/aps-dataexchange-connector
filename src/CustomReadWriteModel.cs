@@ -75,7 +75,6 @@ namespace SampleConnector
                 CollectionId = exchangeItem.ContainerID,
                 ExchangeId = exchangeItem.ExchangeID,
                 HubId = exchangeItem.HubId,
-                Region = exchangeItem.HubRegion
             };
             try
             {
@@ -210,7 +209,6 @@ namespace SampleConnector
                         ExchangeId = ExchangeItem.ExchangeID, 
                         CollectionId = ExchangeItem.ContainerID,
                         HubId = ExchangeItem.HubId,
-                        Region = ExchangeItem.HubRegion
                     });
 
                 CreateExchangeHelper createExchangeHelper = new CreateExchangeHelper();
@@ -246,10 +244,11 @@ namespace SampleConnector
                     createExchangeHelper.AddNISTObject(currentElementDataModel, newBRep);
 
                     //Create built in parameters
-                    createExchangeHelper.AddInstanceParametersToElement(newBRep);
+                    await createExchangeHelper.AddInstanceParametersToElement(newBRep);
 
-                    //create bool Custom parameter for instance
-                    createExchangeHelper.AddCustomParametersToElement(newBRep, ExchangeItem.SchemaNamespace);
+                    //create bool Custom parameter for type design
+                    await createExchangeHelper.AddCustomParametersToElement(newBRep, ExchangeItem.SchemaNamespace);
+                    
                 }
                 else
                 {
@@ -270,7 +269,6 @@ namespace SampleConnector
                     CollectionId = ExchangeItem.ContainerID,
                     ExchangeId = ExchangeItem.ExchangeID,
                     HubId = ExchangeItem.HubId,
-                    Region = ExchangeItem.HubRegion
                 };
                
                 await Client.SyncExchangeDataAsync(exchangeIdentifier, currentElementDataModel.ExchangeData);
@@ -282,7 +280,7 @@ namespace SampleConnector
                     try
                     {
                         Thread.Sleep(5000);
-                        Client.GenerateViewableAsync(ExchangeItem.Name, ExchangeItem.ExchangeID, ExchangeItem.ContainerID, ExchangeItem.FileURN).Wait();
+                        Client.GenerateViewableAsync(ExchangeItem.ExchangeID, ExchangeItem.ContainerID).Wait();
                     }
                     catch (Exception ex)
                     {
@@ -306,7 +304,6 @@ namespace SampleConnector
                         CollectionId = ExchangeItem.ContainerID,
                         ExchangeId = ExchangeItem.ExchangeID,
                         HubId = ExchangeItem.HubId,
-                        Region = ExchangeItem.HubRegion
                     };
 
                     ExchangeDetails exchangeDetails = await Client.GetExchangeDetailsAsync(dataExchangeIdentifier);
@@ -327,7 +324,6 @@ namespace SampleConnector
             {
                 CollectionId = exchangeItem.ContainerID,
                 ExchangeId = exchangeItem.ExchangeID,
-                Region = exchangeItem.HubRegion
             };
             DataExchange exchange = await base.GetExchangeAsync(dataExchangeIdentifier);
             if (exchange != null)

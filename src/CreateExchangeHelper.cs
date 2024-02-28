@@ -8,6 +8,7 @@ using Autodesk.Parameters;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace SampleConnector
 {
@@ -263,36 +264,37 @@ namespace SampleConnector
             data.SetElementGeometryByElement(newIfcBrep, newIfcBRepGeometry);
         }
 
-        public void AddCustomParametersToElement(Element element, string schemaNamespace)
+
+        public async Task AddCustomParametersToElement(Element element, string schemaNamespace)
         {
             /* Custom Instance Parameters */
             //create bool Custom parameter for instance
-            CreateCustomInstanceParameter_Bool(element, schemaNamespace);
+            await CreateCustomInstanceParameter_Bool(element, schemaNamespace);
 
             //create float Custom parameter for instance
-            CreateCustomInstanceParameter_Float(element, schemaNamespace);
+            await CreateCustomInstanceParameter_Float(element, schemaNamespace);
 
             //create int Custom parameter for instance
-            CreateCustomInstanceParameter_Int(element, schemaNamespace);
+            await CreateCustomInstanceParameter_Int(element, schemaNamespace);
 
             //Create string Custom parameter for instance
-            CreateCustomInstanceParameter_String(element, schemaNamespace);
+            await CreateCustomInstanceParameter_String(element, schemaNamespace);
 
             /* Custom Design Parameters */
             //Create bool Custom parameter for design
-            CreateCustomDesignParameter_Bool(element, schemaNamespace);
+            await CreateCustomDesignParameter_Bool(element, schemaNamespace);
 
             //Create float Custom parameter for design
-            CreateCustomDesignParameter_Float(element, schemaNamespace);
+            await CreateCustomDesignParameter_Float(element, schemaNamespace);
 
             //Create int Custom parameter for design
-            CreateCustomDesignParameter_Int(element, schemaNamespace);
+            await CreateCustomDesignParameter_Int(element, schemaNamespace);
 
             //Create string Custom parameter for design
-            CreateCustomDesignParameter_String(element, schemaNamespace);
+            await CreateCustomDesignParameter_String(element, schemaNamespace);
         }
 
-        private void CreateCustomInstanceParameter_Bool(Element element, string schemaNamespace)
+        private async Task CreateCustomInstanceParameter_Bool(Element element, string schemaNamespace)
         {
             string schemaId = "exchange.parameter." + schemaNamespace + ":BoolTestCustomParameter-1.0.0";
             ParameterDefinition customParameter = ParameterDefinition.Create(schemaId, ParameterDataType.Bool);
@@ -302,10 +304,10 @@ namespace SampleConnector
             customParameter.ReadOnly = false;
             customParameter.GroupID = Group.General.DisplayName();
             (customParameter as BoolParameterDefinition).Value = true;
-            element.CreateParameter(customParameter);
+            await element.CreateParameterAsync(customParameter);
         }
 
-        private void CreateCustomInstanceParameter_Float(Element element, string schemaNamespace)
+        private async Task CreateCustomInstanceParameter_Float(Element element, string schemaNamespace)
         {
             string schemaId = "exchange.parameter." + schemaNamespace + ":Float64TestCustomParameter-1.0.0";
             ParameterDefinition customParameterFloat = ParameterDefinition.Create(schemaId, ParameterDataType.Float64);
@@ -316,10 +318,10 @@ namespace SampleConnector
             customParameterFloat.GroupID = Group.Dimensions.DisplayName();
             customParameterFloat.SpecID = Spec.Volume.DisplayName();
             (customParameterFloat as MeasurableParameterDefinition).Value = 4.52;
-            element.CreateParameter(customParameterFloat);
+            await element.CreateParameterAsync(customParameterFloat);
         }
 
-        private void CreateCustomInstanceParameter_Int(Element element, string schemaNamespace)
+        private async Task CreateCustomInstanceParameter_Int(Element element, string schemaNamespace)
         {
             string schemaId = "exchange.parameter." + schemaNamespace + ":Int64TestCustomParameter-1.0.0";
             ParameterDefinition customParameterInt = ParameterDefinition.Create(schemaId, ParameterDataType.Int64);
@@ -329,10 +331,10 @@ namespace SampleConnector
             customParameterInt.ReadOnly = false;
             customParameterInt.GroupID = Group.General.DisplayName();
             (customParameterInt as Int64ParameterDefinition).Value = 5;
-            element.CreateParameter(customParameterInt);
+            await element.CreateParameterAsync(customParameterInt);
         }
 
-        private void CreateCustomInstanceParameter_String(Element element, string schemaNamespace)
+        private async Task CreateCustomInstanceParameter_String(Element element, string schemaNamespace)
         {
             string schemaId = "exchange.parameter." + schemaNamespace + ":StringTestCustomParameter-1.0.0";
             ParameterDefinition customParameterString = ParameterDefinition.Create(schemaId, ParameterDataType.String);
@@ -342,10 +344,10 @@ namespace SampleConnector
             customParameterString.ReadOnly = false;
             customParameterString.GroupID = Group.Graphics.DisplayName();
             (customParameterString as StringParameterDefinition).Value = "TestStringValue";
-            element.CreateParameter(customParameterString);
+            await element.CreateParameterAsync(customParameterString);
         }
 
-        private void CreateCustomDesignParameter_Bool(Element element, string schemaNamespace)
+        private async Task CreateCustomDesignParameter_Bool(Element element, string schemaNamespace)
         {
             string schemaId = "exchange.parameter." + schemaNamespace + ":BoolTestCustomParameter-1.0.0";
             ParameterDefinition customParameterTestDesign = ParameterDefinition.Create(schemaId, ParameterDataType.Bool);
@@ -356,10 +358,10 @@ namespace SampleConnector
             customParameterTestDesign.GroupID = Group.Graphics.DisplayName();
             customParameterTestDesign.IsTypeParameter = true;
             (customParameterTestDesign as BoolParameterDefinition).Value = true;
-            element.CreateParameter(customParameterTestDesign);
+            await element.CreateParameterAsync(customParameterTestDesign);
         }
 
-        private void CreateCustomDesignParameter_Float(Element element, string schemaNamespace)
+        private async Task CreateCustomDesignParameter_Float(Element element, string schemaNamespace)
         {
             string schemaId = "exchange.parameter." + schemaNamespace + ":Float64TestCustomParameter-1.0.0";
             ParameterDefinition customParameterFloatDesign = ParameterDefinition.Create(schemaId, ParameterDataType.Float64);
@@ -371,10 +373,10 @@ namespace SampleConnector
             customParameterFloatDesign.SpecID = Spec.Volume.DisplayName();
             customParameterFloatDesign.IsTypeParameter = true;
             (customParameterFloatDesign as MeasurableParameterDefinition).Value = 4.52;
-            element.CreateParameter(customParameterFloatDesign);
+            await element.CreateParameterAsync(customParameterFloatDesign);
         }
 
-        private void CreateCustomDesignParameter_Int(Element element, string schemaNamespace)
+        private async Task CreateCustomDesignParameter_Int(Element element, string schemaNamespace)
         {
             string schemaId = "exchange.parameter." + schemaNamespace + ":Int64TestCustomParameter-1.0.0";
             ParameterDefinition customParameterIntDesign = ParameterDefinition.Create(schemaId, ParameterDataType.Int64);
@@ -385,10 +387,10 @@ namespace SampleConnector
             customParameterIntDesign.GroupID = Group.Graphics.DisplayName();
             customParameterIntDesign.IsTypeParameter = true;
             (customParameterIntDesign as Int64ParameterDefinition).Value = 5;
-            element.CreateParameter(customParameterIntDesign);
+            await element.CreateParameterAsync(customParameterIntDesign);
         }
 
-        private void CreateCustomDesignParameter_String(Element element, string schemaNamespace)
+        private async Task CreateCustomDesignParameter_String(Element element, string schemaNamespace)
         {
             string schemaId = "exchange.parameter." + schemaNamespace + ":StringTestCustomParameter-1.0.0";
             ParameterDefinition customParameterStringDesign = ParameterDefinition.Create(schemaId, ParameterDataType.String);
@@ -399,36 +401,36 @@ namespace SampleConnector
             customParameterStringDesign.GroupID = Group.Graphics.DisplayName();
             customParameterStringDesign.IsTypeParameter = true;
             (customParameterStringDesign as StringParameterDefinition).Value = "TestStringValue";
-            element.CreateParameter(customParameterStringDesign);
+            await element.CreateParameterAsync(customParameterStringDesign);
         }
 
-        public void AddInstanceParametersToElement(Element element)
+        public async Task AddInstanceParametersToElement(Element element)
         {
             //add element instance parameter
             ParameterDefinition hostAreaComputed = ParameterDefinition.Create(Autodesk.Parameters.Parameter.HostAreaComputed, ParameterDataType.Float64);
             (hostAreaComputed as MeasurableParameterDefinition).Value = 4.684312000000002;
-            element.CreateParameter(hostAreaComputed);
+            await element.CreateParameterAsync(hostAreaComputed);
 
             ParameterDefinition relatedToMass = ParameterDefinition.Create(Autodesk.Parameters.Parameter.RelatedToMass, ParameterDataType.Bool);
             (relatedToMass as BoolParameterDefinition).Value = true;
-            element.CreateParameter(relatedToMass);
+            await element.CreateParameterAsync(relatedToMass);
 
             ParameterDefinition wallStructuralUsageParam = ParameterDefinition.Create(Autodesk.Parameters.Parameter.WallStructuralUsageParam, ParameterDataType.Int64);
             (wallStructuralUsageParam as Int64ParameterDefinition).Value = 42;
-            element.CreateParameter(wallStructuralUsageParam);
+            await element.CreateParameterAsync(wallStructuralUsageParam);
 
             ParameterDefinition ifcGuid = ParameterDefinition.Create(Autodesk.Parameters.Parameter.IfcGuid, ParameterDataType.String);
             (ifcGuid as StringParameterDefinition).Value = "0q69lF83X65vuO5PXJfXpH";
-            element.CreateParameter(ifcGuid);
+            await element.CreateParameterAsync(ifcGuid);
 
             ParameterDefinition wallCrossSection = ParameterDefinition.Create(Autodesk.Parameters.Parameter.WallCrossSection, ParameterDataType.Int32);
             (wallCrossSection as Int32ParameterDefinition).Value = 1;
-            element.CreateParameter(wallCrossSection);
+            await element.CreateParameterAsync(wallCrossSection);
 
             //add element instance reference parameter
-            element.CreateReferenceParameter(Autodesk.Parameters.Parameter.WallBaseConstraint, "1C4F1B4A52597F316FE15C0533238314EEA43E75");
+            await element.CreateReferenceParameterAsync(Autodesk.Parameters.Parameter.WallBaseConstraint, "1C4F1B4A52597F316FE15C0533238314EEA43E75");
             //add element instance reference Name Only parameter
-            element.CreateReferenceNameOnlyParameters(Autodesk.Parameters.Parameter.PhaseCreated, "New Construction");
+            await element.CreateReferenceNameOnlyParametersAsync(Autodesk.Parameters.Parameter.PhaseCreated, "New Construction");
         }
 
         public void AddElementsForExchangeUpdate(ElementDataModel data)
