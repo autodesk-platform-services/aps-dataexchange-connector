@@ -63,8 +63,8 @@ namespace SampleConnector
         public async Task GetLatestExchangeDataAsync(Object sender,  ExchangeItem exchangeItem)
         {
             //start loader
-            Application.ClearBusyState();
-            Application.SetBusyState("Downloading..");
+            Application.ClearBusyMessage();
+            Application.ShowBusyMessage("Downloading..");
 
             //clear existing notifications
             Application.ClearAllNotification();
@@ -172,7 +172,7 @@ namespace SampleConnector
             finally
             {
                 //clear loader after loading data exchange
-                Application.ClearBusyState();
+                Application.ClearBusyMessage();
                 Application.ClearAllNotification();
             }
 
@@ -244,7 +244,7 @@ namespace SampleConnector
                     createExchangeHelper.AddInstanceParametersToElement(newBRep);
 
                     //create bool Custom parameter for instance
-                    //createExchangeHelper.AddCustomParametersToElement(newBRep, ExchangeItem.SchemaNamespace);
+                    //await createExchangeHelper.AddCustomParametersToElement(newBRep, ExchangeItem.SchemaNamespace);
                 }
                 else
                 {
@@ -269,14 +269,14 @@ namespace SampleConnector
                
                 await Client.SyncExchangeDataAsync(exchangeIdentifier, currentElementDataModel.ExchangeData);
 
-                Application.ClearBusyState();
-                Application.SetBusyState("Generate ACC Viewable");
+                Application.ClearBusyMessage();
+                Application.ShowBusyMessage("Generate ACC Viewable");
                 await Task.Run(() =>
                 {
                     try
                     {
                         Thread.Sleep(5000);
-                        Client.GenerateViewableAsync(ExchangeItem.Name, ExchangeItem.ExchangeID, ExchangeItem.ContainerID, ExchangeItem.FileURN).Wait();
+                        Client.GenerateViewableAsync(ExchangeItem.ExchangeID, ExchangeItem.ContainerID).Wait();
                     }
                     catch (Exception ex)
                     {
@@ -310,7 +310,7 @@ namespace SampleConnector
                     }
                     AfterUpdateExchange(exchangeDetails);
                 });
-                Application.ClearBusyState();
+                Application.ClearBusyMessage();
             }
         }
 
