@@ -264,6 +264,32 @@ namespace SampleConnector
             data.SetElementGeometryByElement(newIfcBrep, newIfcBRepGeometry);
         }
 
+        public async Task AddSubAssemblyElements(ElementDataModel currentElementDataModel)
+        {
+            var wall1 = currentElementDataModel.AddElement(new ElementProperties("AssemblyStructure", "ASWalls", "ASWall", "ASGeneric Wall"));
+            var subAssemblyElement1 = currentElementDataModel.AddElement(new ElementProperties { ElementId = "SubAssembly_Structure1" }, wall1);
+            var subAssemblyElement2 = currentElementDataModel.AddElement(new ElementProperties { ElementId = "SubAssembly_Structure2" }, wall1);
+            var subAssemblyNested = currentElementDataModel.AddElement(new ElementProperties { ElementId = "subAssembly_Nested" }, wall1);
+            var subAssemblyNested1 = currentElementDataModel.AddElement(new ElementProperties { ElementId = "subAssembly_Nested1" }, subAssemblyNested);
+
+            var currentDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+
+            var subAssemblyElement1Geometry = new List<ElementGeometry>();
+            var filePath = Path.Combine(currentDir, "InputStepFile", "sphere.stp");
+            subAssemblyElement1Geometry.Add(ElementDataModel.CreateGeometry(new GeometryProperties(filePath, commonRenderStyle)));
+            currentElementDataModel.SetElementGeometryByElement(subAssemblyElement1, subAssemblyElement1Geometry);
+
+            var subAssemblyElement2Geometry = new List<ElementGeometry>();
+            var filePath2 = Path.Combine(currentDir, "InputStepFile", "box.stp");
+            subAssemblyElement2Geometry.Add(ElementDataModel.CreateGeometry(new GeometryProperties(filePath2, commonRenderStyle)));
+            currentElementDataModel.SetElementGeometryByElement(subAssemblyElement2, subAssemblyElement2Geometry);
+
+            var subAssemblyNestedElementGeometry = new List<ElementGeometry>();
+            var filePathSubAssemblyNested = Path.Combine(currentDir, "InputStepFile", "cone.stp");
+            subAssemblyNestedElementGeometry.Add(ElementDataModel.CreateGeometry(new GeometryProperties(filePathSubAssemblyNested, commonRenderStyle)));
+            currentElementDataModel.SetElementGeometryByElement(subAssemblyNested1, subAssemblyNestedElementGeometry);
+        }
+
 
         public async Task AddCustomParametersToElement(Element element, string schemaNamespace)
         {

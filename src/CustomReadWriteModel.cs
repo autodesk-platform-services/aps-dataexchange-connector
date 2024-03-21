@@ -248,7 +248,7 @@ namespace SampleConnector
 
                     //create bool Custom parameter for type design
                     await createExchangeHelper.AddCustomParametersToElement(newBRep, ExchangeItem.SchemaNamespace);
-                    
+                    await createExchangeHelper.AddSubAssemblyElements(currentElementDataModel);
                 }
                 else
                 {
