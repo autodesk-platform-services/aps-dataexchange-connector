@@ -237,14 +237,14 @@ namespace SampleConnector
                     createExchangeHelper.AddIFCGeometry(currentElementDataModel);  
                   
                     //Add NIST object
-                    var newBRep = currentElementDataModel.AddElement(new ElementProperties("NISTSTEP", "Generics", "Generic", "Generic Object"));
+                    var newBRep = currentElementDataModel.AddElement(new ElementProperties("NISTSTEP", "Sample Step", "Generics", "Generic", "Generic Object"));
                     createExchangeHelper.AddNISTObject(currentElementDataModel, newBRep);
 
                     //Create built in parameters
                     createExchangeHelper.AddInstanceParametersToElement(newBRep);
 
                     //create bool Custom parameter for instance
-                    //await createExchangeHelper.AddCustomParametersToElement(newBRep, ExchangeItem.SchemaNamespace);
+                    await createExchangeHelper.AddCustomParametersToElement(currentElementDataModel, newBRep, ExchangeItem.SchemaNamespace);
                 }
                 else
                 {
