@@ -31,8 +31,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Autodesk.DataExchange" Version="5.0.1625-dev" />
-    <PackageReference Include="Autodesk.DataExchange.UI" Version="5.0.1625-dev" />
+    <PackageReference Include="Autodesk.DataExchange" Version="5.0.0-beta" />
+    <PackageReference Include="Autodesk.DataExchange.UI" Version="5.0.0-beta" />
     <PackageReference Include="Autodesk.Extensions.Http.ForgeRetry" Version="8.0.0" />
     <PackageReference Include="Autodesk.Forge" Version="1.9.8" />
     <PackageReference Include="ForgeParameters-csharp_win_release_intel64_v140" Version="3.0.6" />
