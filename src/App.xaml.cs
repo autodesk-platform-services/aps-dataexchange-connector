@@ -51,6 +51,10 @@ namespace SampleConnector
                 ClientId = authClientID,
                 ClientSecret = authClientSecret,
                 CallBack = authCallBack,
+                ConnectorName = applicationName,
+                ConnectorVersion = "1.0.0",
+                ApplicationProductId = "Dummy",
+                ApplicationVersion = "1.0",
             };
 
             Client client = new Autodesk.DataExchange.Client(_sdkOptions);
@@ -59,9 +63,6 @@ namespace SampleConnector
             baseExchange = customReadWriteModel;
 
             Autodesk.DataExchange.UI.Configuration uiConfiguration = new Autodesk.DataExchange.UI.Configuration();
-            uiConfiguration.ConnectorVersion = "1.0.0";
-            uiConfiguration.HostingProductID = "Dummy";
-            uiConfiguration.HostingProductVersion = "1.0";
 
             uiConfiguration.LogLevel = GetLogLevel(logLevel);
             if (uiConfiguration.LogLevel == Autodesk.DataExchange.Core.Enums.LogLevel.Debug)

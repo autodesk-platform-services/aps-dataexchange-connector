@@ -57,53 +57,56 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Autodesk.DataExchange, Version=4.0.4.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\src\packages\Autodesk.DataExchange.4.0.4-beta\lib\net48\Autodesk.DataExchange.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange, Version=5.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\src\packages\Autodesk.DataExchange.5.0.0-beta\lib\net48\Autodesk.DataExchange.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.Authentication, Version=4.0.4.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\src\packages\Autodesk.DataExchange.4.0.4-beta\lib\net48\Autodesk.DataExchange.Authentication.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange.Authentication, Version=5.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\src\packages\Autodesk.DataExchange.5.0.0-beta\lib\net48\Autodesk.DataExchange.Authentication.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.BaseModels, Version=4.0.4.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\src\packages\Autodesk.DataExchange.UI.4.0.4-beta\lib\net48\Autodesk.DataExchange.BaseModels.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange.BaseModels, Version=5.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\src\packages\Autodesk.DataExchange.UI.5.0.0-beta\lib\net48\Autodesk.DataExchange.BaseModels.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.ContractProvider, Version=4.0.4.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\src\packages\Autodesk.DataExchange.4.0.4-beta\lib\net48\Autodesk.DataExchange.ContractProvider.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange.ContractProvider, Version=5.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\src\packages\Autodesk.DataExchange.5.0.0-beta\lib\net48\Autodesk.DataExchange.ContractProvider.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.Core, Version=4.0.4.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\src\packages\Autodesk.DataExchange.UI.4.0.4-beta\lib\net48\Autodesk.DataExchange.Core.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange.Core, Version=5.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\src\packages\Autodesk.DataExchange.5.0.0-beta\lib\net48\Autodesk.DataExchange.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.Exceptions, Version=4.0.4.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\src\packages\Autodesk.DataExchange.UI.4.0.4-beta\lib\net48\Autodesk.DataExchange.Exceptions.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange.Exceptions, Version=5.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\src\packages\Autodesk.DataExchange.5.0.0-beta\lib\net48\Autodesk.DataExchange.Exceptions.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.Extensions.HostingProvider, Version=4.0.4.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\src\packages\Autodesk.DataExchange.4.0.4-beta\lib\net48\Autodesk.DataExchange.Extensions.HostingProvider.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange.Extensions.HostingProvider, Version=5.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\src\packages\Autodesk.DataExchange.5.0.0-beta\lib\net48\Autodesk.DataExchange.Extensions.HostingProvider.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.Extensions.Logging.File, Version=4.0.4.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\src\packages\Autodesk.DataExchange.4.0.4-beta\lib\net48\Autodesk.DataExchange.Extensions.Logging.File.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange.Extensions.Logging.File, Version=5.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\src\packages\Autodesk.DataExchange.5.0.0-beta\lib\net48\Autodesk.DataExchange.Extensions.Logging.File.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.Extensions.Storage.File, Version=4.0.4.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\src\packages\Autodesk.DataExchange.4.0.4-beta\lib\net48\Autodesk.DataExchange.Extensions.Storage.File.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange.Extensions.Storage.File, Version=5.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\src\packages\Autodesk.DataExchange.5.0.0-beta\lib\net48\Autodesk.DataExchange.Extensions.Storage.File.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.Metrics, Version=4.0.4.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\src\packages\Autodesk.DataExchange.UI.4.0.4-beta\lib\net48\Autodesk.DataExchange.Metrics.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange.Metrics, Version=5.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\src\packages\Autodesk.DataExchange.5.0.0-beta\lib\net48\Autodesk.DataExchange.Metrics.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.OpenAPI, Version=4.0.4.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\src\packages\Autodesk.DataExchange.4.0.4-beta\lib\net48\Autodesk.DataExchange.OpenAPI.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange.OpenAPI, Version=5.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\src\packages\Autodesk.DataExchange.5.0.0-beta\lib\net48\Autodesk.DataExchange.OpenAPI.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.Resiliency, Version=4.0.4.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\src\packages\Autodesk.DataExchange.UI.4.0.4-beta\lib\net48\Autodesk.DataExchange.Resiliency.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange.Resiliency, Version=5.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\src\packages\Autodesk.DataExchange.5.0.0-beta\lib\net48\Autodesk.DataExchange.Resiliency.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.Schemas, Version=4.0.4.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\src\packages\Autodesk.DataExchange.4.0.4-beta\lib\net48\Autodesk.DataExchange.Schemas.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange.Schemas, Version=5.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\src\packages\Autodesk.DataExchange.5.0.0-beta\lib\net48\Autodesk.DataExchange.Schemas.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.SourceProvider, Version=4.0.4.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\src\packages\Autodesk.DataExchange.4.0.4-beta\lib\net48\Autodesk.DataExchange.SourceProvider.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange.SourceProvider, Version=5.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\src\packages\Autodesk.DataExchange.5.0.0-beta\lib\net48\Autodesk.DataExchange.SourceProvider.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.UI, Version=4.0.4.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\src\packages\Autodesk.DataExchange.UI.4.0.4-beta\lib\net48\Autodesk.DataExchange.UI.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange.UI, Version=5.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\src\packages\Autodesk.DataExchange.UI.5.0.0-beta\lib\net48\Autodesk.DataExchange.UI.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.UI.ViewModels, Version=4.0.4.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\src\packages\Autodesk.DataExchange.UI.4.0.4-beta\lib\net48\Autodesk.DataExchange.UI.ViewModels.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange.UI.Bridge, Version=5.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\src\packages\Autodesk.DataExchange.UI.5.0.0-beta\lib\net48\Autodesk.DataExchange.UI.Bridge.dll</HintPath>
+    </Reference>
+    <Reference Include="Autodesk.DataExchange.UI.ViewModels, Version=5.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\src\packages\Autodesk.DataExchange.UI.5.0.0-beta\lib\net48\Autodesk.DataExchange.UI.ViewModels.dll</HintPath>
     </Reference>
     <Reference Include="Autodesk.Extensions.Http.ForgeRetry, Version=8.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\src\packages\Autodesk.Extensions.Http.ForgeRetry.8.0.0\lib\netstandard2.0\Autodesk.Extensions.Http.ForgeRetry.dll</HintPath>
@@ -111,19 +114,20 @@
     <Reference Include="Autodesk.Forge, Version=1.9.8.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\src\packages\Autodesk.Forge.1.9.8\lib\net48\Autodesk.Forge.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.GeometryPrimitives, Version=0.5.7.0, Culture=neutral, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\src\packages\Autodesk.DataExchange.4.0.4-beta\build\native\libs\Autodesk.GeometryPrimitives.dll</HintPath>
+    <Reference Include="Autodesk.GeometryPrimitives">
+      <HintPath>..\..\src\packages\Autodesk.DataExchange.5.0.0-beta\build\native\libs\Autodesk.GeometryPrimitives.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.GeometryUtilities, Version=0.5.7.0, Culture=neutral, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\src\packages\Autodesk.DataExchange.4.0.4-beta\build\native\libs\Autodesk.GeometryUtilities.dll</HintPath>
+    <Reference Include="Autodesk.GeometryUtilities">
+      <HintPath>..\..\src\packages\Autodesk.DataExchange.5.0.0-beta\build\native\libs\Autodesk.GeometryUtilities.dll</HintPath>
     </Reference>
-    <Reference Include="ForgeParametersCLR, Version=1.0.1.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\src\packages\ForgeParameters-csharp_win_release_intel64_v142.1.0.1\lib\net48\ForgeParametersCLR.dll</HintPath>
+    <Reference Include="CBOR, Version=4.5.2.0, Culture=neutral, PublicKeyToken=9cd62db60ea5554c, processorArchitecture=MSIL">
+      <HintPath>..\..\src\packages\PeterO.Cbor.4.5.2\lib\net40\CBOR.dll</HintPath>
     </Reference>
-    <Reference Include="ForgeUnitsCLR, Version=4.0.3.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\src\packages\ForgeUnits-csharp_win_release_intel64_v142.4.0.3\lib\net48\ForgeUnitsCLR.dll</HintPath>
+    <Reference Include="ForgeParametersCLR, Version=3.0.6.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\src\packages\ForgeParameters-csharp_win_release_intel64_v140.3.0.6\lib\net48\ForgeParametersCLR.dll</HintPath>
+    </Reference>
+    <Reference Include="ForgeUnitsCLR, Version=5.1.4.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\src\packages\ForgeUnits-csharp_win_release_intel64_v140.5.1.4\lib\net48\ForgeUnitsCLR.dll</HintPath>
     </Reference>
     <Reference Include="Google.Protobuf, Version=3.19.4.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
       <HintPath>..\..\src\packages\Google.Protobuf.3.19.4\lib\net45\Google.Protobuf.dll</HintPath>
@@ -136,6 +140,9 @@
     </Reference>
     <Reference Include="JWT, Version=9.0.0.0, Culture=neutral, PublicKeyToken=6f98bca0f40f2ecf, processorArchitecture=MSIL">
       <HintPath>..\..\src\packages\JWT.9.0.3\lib\net46\JWT.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.SystemWebAdapters, Version=1.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\..\src\packages\Microsoft.AspNetCore.SystemWebAdapters.1.1.0\lib\net472\Microsoft.AspNetCore.SystemWebAdapters.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\..\src\packages\Microsoft.Bcl.AsyncInterfaces.7.0.0\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
@@ -192,14 +199,22 @@
     <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\src\packages\MSTest.TestFramework.2.2.10\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Win32.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\src\packages\Microsoft.Win32.Primitives.4.3.0\lib\net46\Microsoft.Win32.Primitives.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.Xaml.Behaviors, Version=1.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\src\packages\Microsoft.Xaml.Behaviors.Wpf.1.1.39\lib\net45\Microsoft.Xaml.Behaviors.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\src\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\src\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Numbers, Version=1.8.2.0, Culture=neutral, PublicKeyToken=9cd62db60ea5554c, processorArchitecture=MSIL">
+      <HintPath>..\..\src\packages\PeterO.Numbers.1.8.2\lib\net40\Numbers.dll</HintPath>
     </Reference>
     <Reference Include="Polly, Version=7.0.0.0, Culture=neutral, PublicKeyToken=c8a3ffc3f8f825cc, processorArchitecture=MSIL">
-      <HintPath>..\..\src\packages\Polly.7.2.2\lib\net472\Polly.dll</HintPath>
+      <HintPath>..\..\src\packages\Polly.7.2.4\lib\net472\Polly.dll</HintPath>
     </Reference>
     <Reference Include="Polly.Contrib.WaitAndRetry, Version=1.0.0.0, Culture=neutral, PublicKeyToken=17ed651729209acc, processorArchitecture=MSIL">
       <HintPath>..\..\src\packages\Polly.Contrib.WaitAndRetry.1.1.1\lib\net472\Polly.Contrib.WaitAndRetry.dll</HintPath>
@@ -214,6 +229,9 @@
     </Reference>
     <Reference Include="protobuf-net.Core, Version=3.0.0.0, Culture=neutral, PublicKeyToken=257b51d87d2e4d67, processorArchitecture=MSIL">
       <HintPath>..\..\src\packages\protobuf-net.Core.3.0.101\lib\net461\protobuf-net.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="PubnubPCL, Version=6.17.0.0, Culture=neutral, PublicKeyToken=dc66f52ce6619f44, processorArchitecture=MSIL">
+      <HintPath>..\..\src\packages\PubnubPCL.6.17.0\lib\netstandard2.0\PubnubPCL.dll</HintPath>
     </Reference>
     <Reference Include="RestSharp, Version=108.0.1.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
       <HintPath>..\..\src\packages\RestSharp.108.0.1\lib\netstandard2.0\RestSharp.dll</HintPath>
@@ -231,6 +249,11 @@
       <HintPath>..\..\src\packages\Serilog.Sinks.Trace.3.0.0\lib\net45\Serilog.Sinks.Trace.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.AppContext, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\src\packages\System.AppContext.4.3.0\lib\net463\System.AppContext.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\..\src\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
     </Reference>
@@ -240,25 +263,134 @@
     <Reference Include="System.ComponentModel.Annotations, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\src\packages\System.ComponentModel.Annotations.5.0.0\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
     </Reference>
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
+    <Reference Include="System.Console, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\src\packages\System.Console.4.3.0\lib\net46\System.Console.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Diagnostics.DiagnosticSource, Version=7.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\..\src\packages\System.Diagnostics.DiagnosticSource.7.0.2\lib\net462\System.Diagnostics.DiagnosticSource.dll</HintPath>
     </Reference>
+    <Reference Include="System.Diagnostics.Tracing, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\src\packages\System.Diagnostics.Tracing.4.3.0\lib\net462\System.Diagnostics.Tracing.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Globalization.Calendars, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\src\packages\System.Globalization.Calendars.4.3.0\lib\net46\System.Globalization.Calendars.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.IdentityModel.Tokens.Jwt, Version=6.23.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\src\packages\System.IdentityModel.Tokens.Jwt.6.23.1\lib\net472\System.IdentityModel.Tokens.Jwt.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\src\packages\System.IO.4.3.0\lib\net462\System.IO.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO.Compression, Version=4.1.2.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\src\packages\System.IO.Compression.4.3.0\lib\net46\System.IO.Compression.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.IO.Compression.ZipFile, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\src\packages\System.IO.Compression.ZipFile.4.3.0\lib\net46\System.IO.Compression.ZipFile.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO.FileSystem, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\src\packages\System.IO.FileSystem.4.3.0\lib\net46\System.IO.FileSystem.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO.FileSystem.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\src\packages\System.IO.FileSystem.Primitives.4.3.0\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Linq, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\src\packages\System.Linq.4.3.0\lib\net463\System.Linq.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Linq.Expressions, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\src\packages\System.Linq.Expressions.4.3.0\lib\net463\System.Linq.Expressions.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\..\src\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
     </Reference>
-    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http, Version=4.1.1.3, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\src\packages\System.Net.Http.4.3.4\lib\net46\System.Net.Http.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Sockets, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\src\packages\System.Net.Sockets.4.3.0\lib\net46\System.Net.Sockets.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Numerics" />
     <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\src\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
     </Reference>
+    <Reference Include="System.Reflection, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\src\packages\System.Reflection.4.3.0\lib\net462\System.Reflection.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Reflection.TypeExtensions, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\src\packages\System.Reflection.TypeExtensions.4.3.0\lib\net462\System.Reflection.TypeExtensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\src\packages\System.Runtime.4.3.0\lib\net462\System.Runtime.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\src\packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Extensions, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\src\packages\System.Runtime.Extensions.4.3.0\lib\net462\System.Runtime.Extensions.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.InteropServices, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\src\packages\System.Runtime.InteropServices.4.3.0\lib\net463\System.Runtime.InteropServices.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\src\packages\System.Runtime.InteropServices.RuntimeInformation.4.3.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Algorithms, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\src\packages\System.Security.Cryptography.Algorithms.4.3.0\lib\net463\System.Security.Cryptography.Algorithms.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Encoding, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\src\packages\System.Security.Cryptography.Encoding.4.3.0\lib\net46\System.Security.Cryptography.Encoding.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Primitives, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\src\packages\System.Security.Cryptography.Primitives.4.3.0\lib\net46\System.Security.Cryptography.Primitives.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.X509Certificates, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\src\packages\System.Security.Cryptography.X509Certificates.4.3.0\lib\net461\System.Security.Cryptography.X509Certificates.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Text.Encodings.Web, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\..\src\packages\System.Text.Encodings.Web.7.0.0\lib\net462\System.Text.Encodings.Web.dll</HintPath>
@@ -266,17 +398,42 @@
     <Reference Include="System.Text.Json, Version=7.0.0.3, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\..\src\packages\System.Text.Json.7.0.3\lib\net462\System.Text.Json.dll</HintPath>
     </Reference>
+    <Reference Include="System.Text.RegularExpressions, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\src\packages\System.Text.RegularExpressions.4.3.0\lib\net463\System.Text.RegularExpressions.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Threading.Tasks.Dataflow, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\src\packages\System.Threading.Tasks.Dataflow.6.0.0\lib\net461\System.Threading.Tasks.Dataflow.dll</HintPath>
     </Reference>
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\..\src\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
+    <Reference Include="System.Threading.Thread, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\src\packages\System.Threading.Thread.4.0.0\lib\net46\System.Threading.Thread.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Threading.ThreadPool, Version=4.0.10.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\src\packages\System.Threading.ThreadPool.4.0.10\lib\net46\System.Threading.ThreadPool.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\..\src\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.XML" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml.ReaderWriter, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\src\packages\System.Xml.ReaderWriter.4.3.0\lib\net46\System.Xml.ReaderWriter.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="URIUtility, Version=1.0.0.0, Culture=neutral, PublicKeyToken=9cd62db60ea5554c, processorArchitecture=MSIL">
+      <HintPath>..\..\src\packages\PeterO.URIUtility.1.0.0\lib\net40\URIUtility.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
@@ -293,6 +450,10 @@
       <Name>SampleConnector</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\..\src\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
+    <Analyzer Include="..\..\src\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
+  </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
@@ -304,8 +465,10 @@
     <Error Condition="!Exists('..\..\src\packages\ForgeUnits-csharp_win_release_intel64_v142.4.0.3\build\ForgeUnits-csharp_win_release_intel64_v142.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\src\packages\ForgeUnits-csharp_win_release_intel64_v142.4.0.3\build\ForgeUnits-csharp_win_release_intel64_v142.targets'))" />
     <Error Condition="!Exists('..\..\src\packages\ForgeParameters-csharp_win_release_intel64_v142.1.0.1\build\ForgeParameters-csharp_win_release_intel64_v142.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\src\packages\ForgeParameters-csharp_win_release_intel64_v142.1.0.1\build\ForgeParameters-csharp_win_release_intel64_v142.targets'))" />
     <Error Condition="!Exists('..\..\src\packages\Microsoft.Extensions.Logging.Abstractions.6.0.0\build\Microsoft.Extensions.Logging.Abstractions.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\src\packages\Microsoft.Extensions.Logging.Abstractions.6.0.0\build\Microsoft.Extensions.Logging.Abstractions.targets'))" />
-    <Error Condition="!Exists('..\..\src\packages\Autodesk.DataExchange.4.0.4-beta\build\Autodesk.DataExchange.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\src\packages\Autodesk.DataExchange.4.0.4-beta\build\Autodesk.DataExchange.targets'))" />
-    <Error Condition="!Exists('..\..\src\packages\Autodesk.DataExchange.UI.4.0.4-beta\build\Autodesk.DataExchange.UI.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\src\packages\Autodesk.DataExchange.UI.4.0.4-beta\build\Autodesk.DataExchange.UI.targets'))" />
+    <Error Condition="!Exists('..\..\src\packages\ForgeUnits-csharp_win_release_intel64_v140.5.1.4\build\ForgeUnits-csharp_win_release_intel64_v140.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\src\packages\ForgeUnits-csharp_win_release_intel64_v140.5.1.4\build\ForgeUnits-csharp_win_release_intel64_v140.targets'))" />
+    <Error Condition="!Exists('..\..\src\packages\ForgeParameters-csharp_win_release_intel64_v140.3.0.6\build\ForgeParameters-csharp_win_release_intel64_v140.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\src\packages\ForgeParameters-csharp_win_release_intel64_v140.3.0.6\build\ForgeParameters-csharp_win_release_intel64_v140.targets'))" />
+    <Error Condition="!Exists('..\..\src\packages\Autodesk.DataExchange.UI.5.0.0-beta\build\Autodesk.DataExchange.UI.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\src\packages\Autodesk.DataExchange.UI.5.0.0-beta\build\Autodesk.DataExchange.UI.targets'))" />
+    <Error Condition="!Exists('..\..\src\packages\Autodesk.DataExchange.5.0.0-beta\build\Autodesk.DataExchange.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\src\packages\Autodesk.DataExchange.5.0.0-beta\build\Autodesk.DataExchange.targets'))" />
   </Target>
   <Import Project="..\..\src\packages\MSTest.TestAdapter.2.2.10\build\net46\MSTest.TestAdapter.targets" Condition="Exists('..\..\src\packages\MSTest.TestAdapter.2.2.10\build\net46\MSTest.TestAdapter.targets')" />
   <Import Project="..\..\src\packages\ForgeUnits-csharp_win_release_intel64_v142.4.0.3\build\ForgeUnits-csharp_win_release_intel64_v142.targets" Condition="Exists('..\..\src\packages\ForgeUnits-csharp_win_release_intel64_v142.4.0.3\build\ForgeUnits-csharp_win_release_intel64_v142.targets')" />
@@ -314,6 +477,8 @@
   <PropertyGroup>
     <PostBuildEvent>xcopy /Y /I /E "$(SolutionDir)\InputStepFile\*.*" "$(TargetDir)InputStepFile"</PostBuildEvent>
   </PropertyGroup>
-  <Import Project="..\..\src\packages\Autodesk.DataExchange.4.0.4-beta\build\Autodesk.DataExchange.targets" Condition="Exists('..\..\src\packages\Autodesk.DataExchange.4.0.4-beta\build\Autodesk.DataExchange.targets')" />
-  <Import Project="..\..\src\packages\Autodesk.DataExchange.UI.4.0.4-beta\build\Autodesk.DataExchange.UI.targets" Condition="Exists('..\..\src\packages\Autodesk.DataExchange.UI.4.0.4-beta\build\Autodesk.DataExchange.UI.targets')" />
+  <Import Project="..\..\src\packages\ForgeUnits-csharp_win_release_intel64_v140.5.1.4\build\ForgeUnits-csharp_win_release_intel64_v140.targets" Condition="Exists('..\..\src\packages\ForgeUnits-csharp_win_release_intel64_v140.5.1.4\build\ForgeUnits-csharp_win_release_intel64_v140.targets')" />
+  <Import Project="..\..\src\packages\ForgeParameters-csharp_win_release_intel64_v140.3.0.6\build\ForgeParameters-csharp_win_release_intel64_v140.targets" Condition="Exists('..\..\src\packages\ForgeParameters-csharp_win_release_intel64_v140.3.0.6\build\ForgeParameters-csharp_win_release_intel64_v140.targets')" />
+  <Import Project="..\..\src\packages\Autodesk.DataExchange.UI.5.0.0-beta\build\Autodesk.DataExchange.UI.targets" Condition="Exists('..\..\src\packages\Autodesk.DataExchange.UI.5.0.0-beta\build\Autodesk.DataExchange.UI.targets')" />
+  <Import Project="..\..\src\packages\Autodesk.DataExchange.5.0.0-beta\build\Autodesk.DataExchange.targets" Condition="Exists('..\..\src\packages\Autodesk.DataExchange.5.0.0-beta\build\Autodesk.DataExchange.targets')" />
 </Project>
