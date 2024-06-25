@@ -382,7 +382,7 @@ namespace SampleConnector
             customParameterIntDesign.Description = "Desc-Int64CustomParam";
             customParameterIntDesign.ReadOnly = false;
             customParameterIntDesign.GroupID = Group.Graphics.DisplayName();
-            customParameterIntDesign.IsTypeParameter = true;
+            //customParameterIntDesign.IsTypeParameter = true;
             (customParameterIntDesign as Int64ParameterDefinition).Value = 5;
             await element.CreateTypeParameterAsync("Generic Object", customParameterIntDesign);
         }
@@ -396,7 +396,7 @@ namespace SampleConnector
             customParameterStringDesign.Description = "Description-String-Design";
             customParameterStringDesign.ReadOnly = false;
             customParameterStringDesign.GroupID = Group.Graphics.DisplayName();
-            customParameterStringDesign.IsTypeParameter = true;
+            //customParameterStringDesign.IsTypeParameter = true;
             (customParameterStringDesign as StringParameterDefinition).Value = "TestStringValue";
             await element.CreateTypeParameterAsync("Generic Object", customParameterStringDesign);
         }

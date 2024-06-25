@@ -47,14 +47,14 @@ namespace SampleConnector
 
             _sdkOptions = new SDKOptionsDefaultSetup()
             {
-                ApplicationName = applicationName,
-                ClientId = authClientID,
+                HostApplicationName = applicationName,
+                ClientId = "vqzxALitdPHMRr507AgLrcAZg1Y8GQfF",
                 ClientSecret = authClientSecret,
-                CallBack = authCallBack,
+                CallBack = "http://127.0.0.1:63212/",
                 ConnectorName = applicationName,
                 ConnectorVersion = "1.0.0",
-                ApplicationProductId = "Dummy",
-                ApplicationVersion = "1.0",
+                //HostApplicationVersion = "Dummy",
+                HostApplicationVersion = "1.0",
             };
 
             Client client = new Autodesk.DataExchange.Client(_sdkOptions);
