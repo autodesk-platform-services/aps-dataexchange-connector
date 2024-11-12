@@ -30,7 +30,7 @@ namespace SampleConnector
             StartConnector();
         }
         private void StartConnector()
-        {
+        { 
             string authClientID = ConfigurationManager.AppSettings["AuthClientID"];
             var authClientSecret = ConfigurationManager.AppSettings["AuthClientSecret"];
             var authCallBack = ConfigurationManager.AppSettings["AuthCallBack"];
@@ -43,14 +43,16 @@ namespace SampleConnector
             var connectorInstallationDir = new System.Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath;
             _installationPath = Path.GetDirectoryName(connectorInstallationDir);
             _appDomain = AppDomain.CurrentDomain;
-            _appDomain.AssemblyResolve += CurrentDomainAssemblyResolve;
 
             _sdkOptions = new SDKOptionsDefaultSetup()
             {
-                ApplicationName = applicationName,
+                HostApplicationName = applicationName,
                 ClientId = authClientID,
                 ClientSecret = authClientSecret,
                 CallBack = authCallBack,
+                ConnectorName = applicationName,
+                ConnectorVersion = "1.0.0",
+                HostApplicationVersion = "1.0",
             };
 
             Client client = new Autodesk.DataExchange.Client(_sdkOptions);
@@ -59,9 +61,6 @@ namespace SampleConnector
             baseExchange = customReadWriteModel;
 
             Autodesk.DataExchange.UI.Configuration uiConfiguration = new Autodesk.DataExchange.UI.Configuration();
-            uiConfiguration.ConnectorVersion = "1.0.0";
-            uiConfiguration.HostingProductID = "Dummy";
-            uiConfiguration.HostingProductVersion = "1.0";
 
             uiConfiguration.LogLevel = GetLogLevel(logLevel);
             if (uiConfiguration.LogLevel == Autodesk.DataExchange.Core.Enums.LogLevel.Debug)
