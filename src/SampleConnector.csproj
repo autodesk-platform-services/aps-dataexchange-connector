@@ -117,8 +117,8 @@
     <Reference Include="Autodesk.Forge, Version=1.9.8.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\Autodesk.Forge.1.9.8\lib\net48\Autodesk.Forge.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.GeometryPrimitives, Version=0.7.5.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>packages\geometry-primitives-sdk-win-release-x64.0.7.5\lib\net48\Autodesk.GeometryPrimitives.dll</HintPath>
+    <Reference Include="Autodesk.GeometryPrimitives, Version=0.7.6.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>packages\geometry-primitives-sdk-win-release-x64.0.7.6\lib\net48\Autodesk.GeometryPrimitives.dll</HintPath>
     </Reference>
     <Reference Include="CBOR, Version=4.5.2.0, Culture=neutral, PublicKeyToken=9cd62db60ea5554c, processorArchitecture=MSIL">
       <HintPath>packages\PeterO.Cbor.4.5.2\lib\net40\CBOR.dll</HintPath>

@@ -114,8 +114,8 @@
     <Reference Include="Autodesk.Forge, Version=1.9.8.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\src\packages\Autodesk.Forge.1.9.8\lib\net48\Autodesk.Forge.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.GeometryPrimitives, Version=0.7.5.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\src\packages\geometry-primitives-sdk-win-release-x64.0.7.5\lib\net48\Autodesk.GeometryPrimitives.dll</HintPath>
+    <Reference Include="Autodesk.GeometryPrimitives, Version=0.7.6.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\src\packages\geometry-primitives-sdk-win-release-x64.0.7.6\lib\net48\Autodesk.GeometryPrimitives.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Autodesk.GeometryUtilities">
