@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web.Hosting;
 using System.Windows.Markup;
 using Autodesk.DataExchange.BaseModels;
 using Autodesk.DataExchange.Core;
@@ -63,12 +64,12 @@ namespace SampleConnector
         public async Task GetLatestExchangeDataAsync(Object sender,  ExchangeItem exchangeItem)
         {
             //start loader
-            Application.ClearBusyState();
-            Application.SetBusyState("Downloading..");
+            Application.ClearBusyMessage();
+            Application.ShowBusyMessage("Downloading..");
 
             //clear existing notifications
             Application.ClearAllNotification();
-            Application.ShowNotification(exchangeItem.Name + " Downloading", Autodesk.DataExchange.Core.Enums.NotificationType.Information);
+            Application.ShowNotification(exchangeItem.Name + " Downloading", NotificationType.Information);
 
             var exchangeIdentifier = new DataExchangeIdentifier
             {
@@ -78,36 +79,69 @@ namespace SampleConnector
             };
             try
             {
-                
                 //Get a list of all revisions
                 var revisions = await Client.GetExchangeRevisionsAsync(exchangeIdentifier);
                 //Get the latest revision
 
                 var firstRev = revisions.First().Id;
-                List<string> newerRevisions = new List<string>();
 
                 if (!string.IsNullOrEmpty(currentRevision) && currentRevision == firstRev)
                 {
                     Console.WriteLine("No changes found");
                     return;
                 }
-                // Use ElementDataModel Wrapper
-                ElementDataModel data = null;
 
                 // Get Exchange data
-                if (currentExchangeData == null)
+                if (currentExchangeData == null || currentExchangeData?.ExchangeID != exchangeIdentifier.ExchangeId)
                 {
-                    // Get full data exchange data till the latest revision
+                    // Get full Exchange Data till the latest revision
                     currentExchangeData = await Client.GetExchangeDataAsync(exchangeIdentifier);
                     currentRevision = firstRev;
 
-                    data = ElementDataModel.Create(Client, currentExchangeData);
-                    newerRevisions.Add(firstRev);
+                    // Use ElementDataModel Wrapper
+                    var data = ElementDataModel.Create(Client, currentExchangeData);
+
+                    // Get all Wall Elements
+                    var wallElements = data.Elements.Where(element => element.Category == "Walls").ToList();
+
+                    var wallElements2 = data.Elements.Where(element => element.InstanceParameters.Count > 0).ToList();
+
+                    // Get all added Elements
+                    var addedElements = data.GetCreatedElements(new List<string> { currentRevision });
+
+                    // Get all modified Elements
+                    var modifiedElements = data.GetModifiedElements(new List<string> { currentRevision }); ;
+
+                    // Get all deleted Elements
+                    var deletedElements = data.DeletedElements.ToList();
+
+                    var allGeometries = await data.GetElementGeometriesByElementsAsync(data.Elements).ConfigureAwait(false);
+
+                    var typeParametersDict = data.GetTypeParameters(new List<string>() { "Generic Object" });
+                    foreach (var item in typeParametersDict)
+                    {
+                        foreach (var parameter in item.Value)
+                            ShowParameter(parameter);
+                    }
+
+                    foreach (var element in data.Elements)
+                    {
+                        var parameters = element.InstanceParameters;
+                        foreach (var parameter in parameters)
+                        {
+                            ShowParameter(parameter);
+                        }
+                    }
+
+                    //Get Geometry of whole exchange file as STEP
+                    var wholeGeometryPath = Client.DownloadCompleteExchangeAsSTEP(data.ExchangeData.ExchangeIdentifier);
+                    var wholeGeometryPathOBJ = Client.DownloadCompleteExchangeAsOBJ(data.ExchangeData.ExchangeID, data.ExchangeData.ExchangeIdentifier.CollectionId);
                 }
                 else
                 {
-                    // Update data exchange data with Delta
+                    // Update Data Exchange data with Delta
                     var newRevision = await Client.RetrieveLatestExchangeDataAsync(currentExchangeData);
+                    var newerRevisions = new List<string>();
                     if (!string.IsNullOrEmpty(newRevision))
                     {
                         foreach (var revision in revisions)
@@ -119,66 +153,47 @@ namespace SampleConnector
 
                             newerRevisions.Add(revision.Id);
                         }
+
                         currentRevision = newRevision;
                     }
 
                     // Use ElementDataModel Wrapper
-                    data = ElementDataModel.Create(Client, currentExchangeData);
+                    var data = ElementDataModel.Create(Client, currentExchangeData);
+
+                    // Get all Wall Elements
+                    var wallElements = data.Elements.Where(element => element.Category == "Walls").ToList();
+
+                    // Get all added Elements
+                    var addedElements = data.GetCreatedElements(newerRevisions);
+
+                    // Get all modified Elements
+                    var modifiedElements = data.GetModifiedElements(newerRevisions);
+
+                    // Get all deleted Elements
+                    var deletedElements = data.GetDeletedElements(newerRevisions);
+
+                    var allGeometries = await data.GetElementGeometriesByElementsAsync(data.Elements).ConfigureAwait(false);
+
+                    //Get Geometry of whole exchange file as STEP
+                    var wholeGeometryPathSTEP = Client.DownloadCompleteExchangeAsSTEP(data.ExchangeData.ExchangeIdentifier);
+                    var wholeGeometryPathOBJ = Client.DownloadCompleteExchangeAsOBJ(data.ExchangeData.ExchangeID, data.ExchangeData.ExchangeIdentifier.CollectionId);
                 }
 
-                // Get all Wall Elements
-                var wallElements = data.Elements.Where(element => element.Category == "Walls").ToList();
+               Application.ShowNotification(exchangeItem.Name + " Download complete.", NotificationType.Information);
+               await UpdateLocalExchange(exchangeItem);
 
-                // Get all added Elements
-                var addedElements = data.GetCreatedElements(newerRevisions);
-
-                // Get all modified Elements
-                var modifiedElements = data.GetModifiedElements(newerRevisions);
-
-                // Get all deleted Elements
-                var deletedElements = data.GetDeletedElements(newerRevisions);
-
-
-                List<Task> geometryResults = new List<Task>();
-                foreach (var element in data.Elements)
-                {
-                    geometryResults.Add(data.GetElementGeometryByElementAsync(element));
-                }
-
-                await Task.WhenAll(geometryResults).ConfigureAwait(false);
-
-
-                //Get Geometry of whole data exchange file as STEP
-                var wholeGeometryPath = Client.DownloadCompleteExchangeAsSTEP(data.ExchangeData.ExchangeID);
-
-                //Get Geometry of whole data exchange file as OBJ
-                var wholeGeometryPathOBJ = Client.DownloadCompleteExchangeAsOBJ(data.ExchangeData.ExchangeID, data.ExchangeData.ExchangeIdentifier.CollectionId);
-
-                // Get Type Parameters of an element
-                var typeParams = wallElements.FirstOrDefault()?.TypeParameters;
-
-                // Get Reference Element
-                if (typeParams != null)
-                {
-                    var refEelement = currentExchangeData.GetAssetById(typeParams[typeParams.Count() - 1].Value);
-                }
-
-                Application.ShowNotification(exchangeItem.Name + " Download complete.", Autodesk.DataExchange.Core.Enums.NotificationType.Information);
-
-                UpdateLocalExchange(exchangeItem);
             }
             catch (Exception e)
             {
-                Application.ShowNotification(exchangeItem.Name + " Download failed.", Autodesk.DataExchange.Core.Enums.NotificationType.Error);
+                Application.ShowNotification(exchangeItem.Name + " Download failed.", NotificationType.Error);
                 Console.WriteLine(e);
             }
             finally
             {
                 //clear loader after loading data exchange
-                Application.ClearBusyState();
+                Application.ClearBusyMessage();
                 Application.ClearAllNotification();
             }
-
         }
 
         public void AfterCreateExchangeAction(Object sender, DataExchange exchange)
@@ -198,6 +213,7 @@ namespace SampleConnector
             _sDKOptions.Storage.Save();
         }
 
+        
         public override async Task UpdateExchangeAsync(ExchangeItem ExchangeItem)
         {
             try
@@ -240,14 +256,14 @@ namespace SampleConnector
                     createExchangeHelper.AddIFCGeometry(currentElementDataModel);  
                   
                     //Add NIST object
-                    var newBRep = currentElementDataModel.AddElement(new ElementProperties("NISTSTEP", "Generics", "Generic", "Generic Object"));
+                    var newBRep = currentElementDataModel.AddElement(new ElementProperties("NISTSTEP", "SampleStep", "Generics", "Generic", "Generic Object"));
                     createExchangeHelper.AddNISTObject(currentElementDataModel, newBRep);
 
                     //Create built in parameters
                     await createExchangeHelper.AddInstanceParametersToElement(newBRep);
 
                     //create bool Custom parameter for type design
-                    await createExchangeHelper.AddCustomParametersToElement(newBRep, ExchangeItem.SchemaNamespace);
+                    await createExchangeHelper.AddCustomParametersToElement(currentElementDataModel, newBRep, ExchangeItem.SchemaNamespace);
                     
                 }
                 else
@@ -273,8 +289,8 @@ namespace SampleConnector
                
                 await Client.SyncExchangeDataAsync(exchangeIdentifier, currentElementDataModel.ExchangeData);
 
-                Application.ClearBusyState();
-                Application.SetBusyState("Generate ACC Viewable");
+                Application.ClearBusyMessage();
+                Application.ShowBusyMessage("Generate ACC Viewable");
                 await Task.Run(() =>
                 {
                     try
@@ -314,7 +330,7 @@ namespace SampleConnector
                     }
                     AfterUpdateExchange(exchangeDetails);
                 });
-                Application.ClearBusyState();
+                Application.ClearBusyMessage();
             }
         }
 
@@ -350,15 +366,31 @@ namespace SampleConnector
         {
             localStorage.AddRange(dataExchanges);
         }
+        private void ShowParameter(Autodesk.DataExchange.DataModels.Parameter parameter)
+        {
+            if (parameter.ParameterDataType == ParameterDataType.ParameterSet)
+            {
+                Console.WriteLine((parameter as ParameterSet).Id);
+                Console.WriteLine((parameter as ParameterSet).Parameters.Count);
+                foreach (var param in (parameter as ParameterSet).Parameters)
+                {
+                    ShowParameter(param);
+                }
+            }
+            else
+            {
+                Console.WriteLine(parameter.Name);
+            }
+        }
 
         public override Task<IEnumerable<string>> UnloadExchangesAsync(List<ExchangeItem> exchanges)
         {
             return Task.Run(() => exchanges.Select(n => n.ExchangeID));
         }
 
-        public override void SelectElements(List<string> exchangeIds)
+        public override Task<bool> SelectElementsAsync(List<string> exchangeIds)
         {
-            //throw new NotImplementedException();
+            return Task.FromResult(true);
         }
     }
 }

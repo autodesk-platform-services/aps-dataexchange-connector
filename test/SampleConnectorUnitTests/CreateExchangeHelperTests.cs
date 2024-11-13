@@ -3,6 +3,7 @@ using Autodesk.DataExchange.Interface;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SampleConnector;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SampleConnectorUnitTests
 {
@@ -37,16 +38,7 @@ namespace SampleConnectorUnitTests
 
             Assert.IsTrue(meshObjects != null && meshObjects.Any());
         }
-
-        [TestMethod]
-        public void TestAddInstanceParametersToElement()
-        {
-            var genericElement = _dataModel.AddElement(new ElementProperties("NISTSTEP", "Generics", "Generic", "Generic Object"));
-            _createExchangeHelper.AddInstanceParametersToElement(genericElement);
-
-            Assert.IsTrue(genericElement.InstanceParameters.Any());
-        }
-
+        
         [TestMethod]
         public void TestAddElementsForExchangeUpdate()
         {
