@@ -238,8 +238,8 @@
       <HintPath>packages\protobuf-net.Core.3.0.101\lib\net461\protobuf-net.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="PubnubPCL, Version=6.19.5.0, Culture=neutral, PublicKeyToken=dc66f52ce6619f44, processorArchitecture=MSIL">
-      <HintPath>packages\PubnubPCL.6.19.5\lib\netstandard2.0\PubnubPCL.dll</HintPath>
+    <Reference Include="PubnubPCL, Version=6.17.0.0, Culture=neutral, PublicKeyToken=dc66f52ce6619f44, processorArchitecture=MSIL">
+      <HintPath>packages\PubnubPCL.6.17.0\lib\netstandard2.0\PubnubPCL.dll</HintPath>
     </Reference>
     <Reference Include="RestSharp, Version=108.0.1.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
       <HintPath>packages\RestSharp.108.0.1\lib\netstandard2.0\RestSharp.dll</HintPath>
