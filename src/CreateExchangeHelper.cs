@@ -1,9 +1,9 @@
 ﻿using Autodesk.DataExchange.Core.Enums;
 using Autodesk.DataExchange.DataModels;
 using Autodesk.DataExchange.SchemaObjects.Units;
-using Autodesk.GeometryPrimitives.Design;
-using Autodesk.GeometryPrimitives.Geometry;
-using Autodesk.GeometryPrimitives.Math;
+using Autodesk.GeometryPrimitives.Data;
+using Autodesk.GeometryPrimitives.Data.DX;
+using Autodesk.GeometryUtilities.MeshAPI;
 using Autodesk.Parameters;
 using System.Collections.Generic;
 using System.IO;
@@ -122,9 +122,9 @@ namespace SampleConnector
             data.SetElementGeometryByElement(circleElement, circleElementGeometry);
         }
 
-        private void AddCurveGeometries(Autodesk.GeometryPrimitives.Design.GeometryContainer geometryContainer)
+        private void AddCurveGeometries(GeometryContainer geometryContainer)
         {
-            geometryContainer.Curves = new CurveArray();
+            geometryContainer.Curves = new List<Curve>();
 
             AddCircleGeometries(geometryContainer);
 
@@ -202,7 +202,7 @@ namespace SampleConnector
 
         private void AddSurfaceGeometries(GeometryContainer geometryContainer)
         {
-            geometryContainer.Surfaces = new SurfaceArray()
+            geometryContainer.Surfaces = new List<Surface>()
             {
                 new Plane()
                 {
@@ -236,11 +236,269 @@ namespace SampleConnector
 
         public void AddMeshGeometry(ElementDataModel data)
         {
-            var newMeshElement = data.AddElement(new ElementProperties("MeshEElement", "SampleMesh", "GenericsMesh", "GenericMesh", "Mesh Object"));
-            var newMeshGeometry = new List<ElementGeometry>();
-            var filePathMesh = $"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\\InputStepFile\\mesh1.obj";
-            newMeshGeometry.Add(ElementDataModel.CreateGeometry(new GeometryProperties(filePathMesh, commonRenderStyle)));
-            data.SetElementGeometryByElement(newMeshElement, newMeshGeometry);
+            Autodesk.GeometryUtilities.MeshAPI.Mesh inMemoryMesh = new Autodesk.GeometryUtilities.MeshAPI.Mesh()
+            {
+                Vertices = new List<Vertex>
+                        {
+                            new Vertex(0.0, 0.0, 0.0),
+                            new Vertex(1.0, 0.0, 0.0),
+                            new Vertex(0.0, 1.0, 0.0),
+                            new Vertex(1.0, 1.0, 0.0),
+                        },
+                Faces = new List<Face>
+                        {
+                            new Face()
+                            {
+                                Corners = new List<int> { 0, 1, 2 },
+                                Normals = new List<Normal>
+                                {
+                                    new Normal(0, 0, 1),
+                                    new Normal(0, 0, 1),
+                                    new Normal(0, 0, 1),
+                                },
+                            },
+                            new Face()
+                            {
+                                Corners = new List<int> { 2, 1, 3 },
+                                Normals = new List<Normal>
+                                {
+                                    new Normal(0, 0, 1),
+                                    new Normal(0, 0, 1),
+                                    new Normal(0, 0, 1),
+                                },
+                            },
+                        },
+            };
+
+            var meshObjWithColor = new Autodesk.GeometryUtilities.MeshAPI.Mesh()
+            {
+                MeshColor = new Color(0.9f, 0.2f, 0.2f, 1.0f),  // mesh body color
+                Vertices = new List<Vertex>
+                        {
+                            new Vertex(0.0, 0.0, 0.0),
+                            new Vertex(1.0, 0.0, 0.0),
+                            new Vertex(0.0, 1.0, 0.0),
+                            new Vertex(1.0, 1.0, 0.0),
+                        },
+                Faces = new List<Face>
+                        {
+                            new Face()
+                            {
+                                Corners = new List<int> { 0, 1, 2 },
+                                Normals = new List<Normal>
+                                {
+                                    new Normal(0, 0, 1),
+                                    new Normal(0, 0, 1),
+                                    new Normal(0, 0, 1),
+                                },
+                                FaceColor = new Color(0.2f, 0.2f, 0.9f, 1.0f),  // face color
+                            },
+                            new Face()
+                            {
+                                Corners = new List<int> { 2, 1, 3 },
+                                Normals = new List<Normal>
+                                {
+                                    new Normal(0, 0, 1),
+                                    new Normal(0, 0, 1),
+                                    new Normal(0, 0, 1),
+                                },
+                                FaceColor = new Color(0.2f, 0.9f, 0.2f, 1.0f),  // face color
+                            },
+                        },
+            };
+
+            var complexMesh = new Autodesk.GeometryUtilities.MeshAPI.Mesh()
+            {
+                MeshColor = new Color(0.5f, 0.5f, 0.5f, 1.0f),  // mesh body color
+                Vertices = new List<Vertex>
+                {
+                    new Vertex(0.0, 0.0, 0.0),
+                    new Vertex(1.0, 0.0, 0.0),
+                    new Vertex(0.0, 1.0, 0.0),
+                    new Vertex(1.0, 1.0, 0.0),
+                    new Vertex(0.0, 0.0, 1.0),
+                    new Vertex(1.0, 0.0, 1.0),
+                    new Vertex(0.0, 1.0, 1.0),
+                    new Vertex(1.0, 1.0, 1.0),
+                    new Vertex(0.5, 0.5, 1.5),
+                },
+                Faces = new List<Face>
+                {
+                    new Face()
+                    {
+                        Corners = new List<int> { 0, 1, 2 },
+                        Normals = new List<Normal>
+                        {
+                            new Normal(0, 0, 1),
+                            new Normal(0, 0, 1),
+                            new Normal(0, 0, 1),
+                        },
+                        FaceColor = new Color(0.2f, 0.2f, 0.9f, 1.0f),  // face color
+                    },
+                    new Face()
+                    {
+                        Corners = new List<int> { 2, 1, 3 },
+                        Normals = new List<Normal>
+                        {
+                            new Normal(0, 0, 1),
+                            new Normal(0, 0, 1),
+                            new Normal(0, 0, 1),
+                        },
+                        FaceColor = new Color(0.2f, 0.9f, 0.2f, 1.0f),  // face color
+                    },
+                    new Face()
+                    {
+                        Corners = new List<int> { 0, 1, 4 },
+                        Normals = new List<Normal>
+                        {
+                            new Normal(0, 1, 0),
+                            new Normal(0, 1, 0),
+                            new Normal(0, 1, 0),
+                        },
+                        FaceColor = new Color(0.9f, 0.2f, 0.2f, 1.0f),  // face color
+                    },
+                    new Face()
+                    {
+                        Corners = new List<int> { 1, 5, 4 },
+                        Normals = new List<Normal>
+                        {
+                            new Normal(0, 1, 0),
+                            new Normal(0, 1, 0),
+                            new Normal(0, 1, 0),
+                        },
+                        FaceColor = new Color(0.9f, 0.2f, 0.2f, 1.0f),  // face color
+                    },
+                    new Face()
+                    {
+                        Corners = new List<int> { 0, 2, 4 },
+                        Normals = new List<Normal>
+                        {
+                            new Normal(1, 0, 0),
+                            new Normal(1, 0, 0),
+                            new Normal(1, 0, 0),
+                        },
+                        FaceColor = new Color(0.2f, 0.9f, 0.9f, 1.0f),  // face color
+                    },
+                    new Face()
+                    {
+                        Corners = new List<int> { 2, 6, 4 },
+                        Normals = new List<Normal>
+                        {
+                            new Normal(1, 0, 0),
+                            new Normal(1, 0, 0),
+                            new Normal(1, 0, 0),
+                        },
+                        FaceColor = new Color(0.2f, 0.9f, 0.9f, 1.0f),  // face color
+                    },
+                    new Face()
+                    {
+                        Corners = new List<int> { 1, 3, 5 },
+                        Normals = new List<Normal>
+                        {
+                            new Normal(0, -1, 0),
+                            new Normal(0, -1, 0),
+                            new Normal(0, -1, 0),
+                        },
+                        FaceColor = new Color(0.9f, 0.9f, 0.2f, 1.0f),  // face color
+                    },
+                    new Face()
+                    {
+                        Corners = new List<int> { 3, 7, 5 },
+                        Normals = new List<Normal>
+                        {
+                            new Normal(0, -1, 0),
+                            new Normal(0, -1, 0),
+                            new Normal(0, -1, 0),
+                        },
+                        FaceColor = new Color(0.9f, 0.9f, 0.2f, 1.0f),  // face color
+                    },
+                    new Face()
+                    {
+                        Corners = new List<int> { 2, 3, 6 },
+                        Normals = new List<Normal>
+                        {
+                            new Normal(-1, 0, 0),
+                            new Normal(-1, 0, 0),
+                            new Normal(-1, 0, 0),
+                        },
+                        FaceColor = new Color(0.9f, 0.2f, 0.9f, 1.0f),  // face color
+                    },
+                    new Face()
+                    {
+                        Corners = new List<int> { 3, 7, 6 },
+                        Normals = new List<Normal>
+                        {
+                            new Normal(-1, 0, 0),
+                            new Normal(-1, 0, 0),
+                            new Normal(-1, 0, 0),
+                        },
+                        FaceColor = new Color(0.9f, 0.2f, 0.9f, 1.0f),  // face color
+                    },
+                    new Face()
+                    {
+                        Corners = new List<int> { 4, 5, 6 },
+                        Normals = new List<Normal>
+                        {
+                            new Normal(0, 0, -1),
+                            new Normal(0, 0, -1),
+                            new Normal(0, 0, -1),
+                        },
+                        FaceColor = new Color(0.2f, 0.2f, 0.2f, 1.0f),  // face color
+                    },
+                    new Face()
+                    {
+                        Corners = new List<int> { 5, 7, 6 },
+                        Normals = new List<Normal>
+                        {
+                            new Normal(0, 0, -1),
+                            new Normal(0, 0, -1),
+                            new Normal(0, 0, -1),
+                        },
+                        FaceColor = new Color(0.2f, 0.2f, 0.2f, 1.0f),  // face color
+                    },
+                    new Face()
+                    {
+                        Corners = new List<int> { 4, 6, 8 },
+                        Normals = new List<Normal>
+                        {
+                            new Normal(0, 0, 1),
+                            new Normal(0, 0, 1),
+                            new Normal(0, 0, 1),
+                        },
+                        FaceColor = new Color(0.5f, 0.5f, 0.5f, 1.0f),  // face color
+                    },
+                    new Face()
+                    {
+                        Corners = new List<int> { 5, 7, 8 },
+                        Normals = new List<Normal>
+                        {
+                            new Normal(0, 0, 1),
+                            new Normal(0, 0, 1),
+                            new Normal(0, 0, 1),
+                        },
+                        FaceColor = new Color(0.5f, 0.5f, 0.5f, 1.0f),  // face color
+                    },
+                    new Face()
+                    {
+                        Corners = new List<int> { 6, 7, 8 },
+                        Normals = new List<Normal>
+                        {
+                            new Normal(0, 0, 1),
+                            new Normal(0, 0, 1),
+                            new Normal(0, 0, 1),
+                        },
+                        FaceColor = new Color(0.5f, 0.5f, 0.5f, 1.0f),  // face color
+                    },
+                },
+            };
+
+            var meshGeom = ElementDataModel.CreateMeshGeometry(new GeometryProperties(meshObjWithColor, "Mesh With Color"));
+            var meshElement = data.AddElement(new ElementProperties("Mesh1", "SampleMesh", "Mesh", "Mesh", "In memory mesh"));
+            data.SetElementGeometryByElement(meshElement, new List<ElementGeometry> { meshGeom });
+
+            var complexMeshGeom = ElementDataModel.CreateMeshGeometry(new GeometryProperties(complexMesh, "Complex Mesh With Color"));
+            var complexMeshElement = data.AddElement(new ElementProperties("ComplexMesh", "ComplexSampleMesh", "Mesh", "Mesh", "Complex In memory mesh"));
+            data.SetElementGeometryByElement(complexMeshElement, new List<ElementGeometry> { complexMeshGeom });
         }
 
         public void AddIFCGeometry(ElementDataModel data)
@@ -435,11 +693,47 @@ namespace SampleConnector
             data.SetElementGeometryByElement(newBRep, newBRepGeometry);
 
             //Add Element with Mesh Geometry
-            var newMeshElement = data.AddElement(new ElementProperties("MeshElementUpdate", "SampleMesh", "GenericsMeshUpdate", "GenericMeshUpdate", "Mesh Object Update"));
-            var newMeshGeometry = new List<ElementGeometry>();
-            var filePathToMesh = $"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\\InputStepFile\\mesh2.obj";
-            newMeshGeometry.Add(ElementDataModel.CreateGeometry(new GeometryProperties(filePathToMesh, commonRenderStyle)));
-            data.SetElementGeometryByElement(newMeshElement, newMeshGeometry);
+
+            var meshObjWithColor = new Autodesk.GeometryUtilities.MeshAPI.Mesh()
+            {
+                MeshColor = new Color(0.9f, 0.9f, 0.9f, 1.0f),  // mesh body color
+                Vertices = new List<Vertex>
+                {
+                    new Vertex(0.0, 0.0, 0.0),
+                    new Vertex(1.0, 0.0, 0.0),
+                    new Vertex(0.0, 1.0, 0.0),
+                    new Vertex(1.0, 1.0, 0.0),
+                },
+                Faces = new List<Face>
+                {
+                    new Face()
+                    {
+                        Corners = new List<int> { 0, 1, 2 },
+                        Normals = new List<Normal>
+                        {
+                            new Normal(0, 0, 1),
+                            new Normal(0, 0, 1),
+                            new Normal(0, 0, 1),
+                        },
+                        FaceColor = new Color(0.2f, 0.2f, 0.9f, 1.0f),  // face color
+                    },
+                    new Face()
+                    {
+                        Corners = new List<int> { 2, 1, 3 },
+                        Normals = new List<Normal>
+                        {
+                            new Normal(0, 0, 1),
+                            new Normal(0, 0, 1),
+                            new Normal(0, 0, 1),
+                        },
+                        FaceColor = new Color(0.9f, 0.9f, 0.2f, 1.0f),  // face color
+                    },
+                },
+            };
+
+            var meshGeom = ElementDataModel.CreateMeshGeometry(new GeometryProperties(meshObjWithColor, "Mesh With Color"));
+            var meshElement = data.AddElement(new ElementProperties("Mesh3", "SampleMesh", "Mesh", "Mesh", "In memory mesh with Color"));
+            data.SetElementGeometryByElement(meshElement, new List<ElementGeometry> { meshGeom });
         }
 
         private void AddPrimitivePolylineGeometry(ElementDataModel dataModel)
@@ -448,7 +742,7 @@ namespace SampleConnector
             var polyLineElementGeometry = new List<ElementGeometry>();
             var geomContainer = new GeometryContainer()
             {
-                Curves = new CurveArray()
+                Curves = new List<Curve>()
                 {
                     new Polyline()
                     {
@@ -459,9 +753,9 @@ namespace SampleConnector
                             new Point3d(12.5, 4, 0),
                             new Point3d(4.5, 4, 0),
                             new Point3d(11.25, 0, 0)
-                        }
-                    }
-                }
+                        },
+                    },
+                },
             };
 
             polyLineElementGeometry.Add(ElementDataModel.CreatePrimitiveGeometry(new GeometryProperties(geomContainer, commonRenderStyle)));
