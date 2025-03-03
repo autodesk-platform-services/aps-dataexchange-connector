@@ -59,7 +59,7 @@ namespace SampleConnector
         }
 
 
-        public async Task GetLatestExchangeDataAsync(Object sender,  ExchangeItem exchangeItem)
+        public async Task GetLatestExchangeDataAsync(Object sender,  ExchangeItem exchangeItem, CancellationToken cancellationToken)
         {
             //start loader
             Application.ClearBusyMessage();
@@ -113,7 +113,7 @@ namespace SampleConnector
                     // Get all deleted Elements
                     var deletedElements = data.DeletedElements.ToList();
 
-                    var allGeometries = await data.GetElementGeometriesByElementsAsync(data.Elements).ConfigureAwait(false);
+                    var allGeometries = await data.GetElementGeometriesByElementsAsync(data.Elements, cancellationToken).ConfigureAwait(false);
 
                     var typeParametersDict = data.GetTypeParameters(new List<string>() { "Generic Object" });
                     foreach (var item in typeParametersDict)
@@ -132,8 +132,8 @@ namespace SampleConnector
                     }
 
                     //Get Geometry of whole exchange file as STEP
-                    var wholeGeometryPath = Client.DownloadCompleteExchangeAsSTEP(data.ExchangeData.ExchangeIdentifier);
-                    var wholeGeometryPathOBJ = Client.DownloadCompleteExchangeAsOBJ(data.ExchangeData.ExchangeID, data.ExchangeData.ExchangeIdentifier.CollectionId);
+                    var wholeGeometryPath = Client.DownloadCompleteExchangeAsSTEP(data.ExchangeData.ExchangeIdentifier, cancellationToken);
+                    var wholeGeometryPathOBJ = Client.DownloadCompleteExchangeAsOBJ(data.ExchangeData.ExchangeID, data.ExchangeData.ExchangeIdentifier.CollectionId, cancellationToken);
                 }
                 else
                 {
@@ -170,16 +170,21 @@ namespace SampleConnector
                     // Get all deleted Elements
                     var deletedElements = data.GetDeletedElements(newerRevisions);
 
-                    var allGeometries = await data.GetElementGeometriesByElementsAsync(data.Elements).ConfigureAwait(false);
+                    var allGeometries = await data.GetElementGeometriesByElementsAsync(data.Elements, cancellationToken).ConfigureAwait(false);
 
                     //Get Geometry of whole exchange file as STEP
-                    var wholeGeometryPathSTEP = Client.DownloadCompleteExchangeAsSTEP(data.ExchangeData.ExchangeIdentifier);
-                    var wholeGeometryPathOBJ = Client.DownloadCompleteExchangeAsOBJ(data.ExchangeData.ExchangeID, data.ExchangeData.ExchangeIdentifier.CollectionId);
+                    var wholeGeometryPathSTEP = Client.DownloadCompleteExchangeAsSTEP(data.ExchangeData.ExchangeIdentifier, cancellationToken);
+                    var wholeGeometryPathOBJ = Client.DownloadCompleteExchangeAsOBJ(data.ExchangeData.ExchangeID, data.ExchangeData.ExchangeIdentifier.CollectionId, cancellationToken);
                 }
 
                Application.ShowNotification(exchangeItem.Name + " Download complete.", NotificationType.Information);
                await UpdateLocalExchange(exchangeItem);
 
+            }
+            catch (OperationCanceledException ex)
+            {
+                Application.ClearBusyMessage();
+                Application.ShowNotification("Operation Cancelled", NotificationType.Information);
             }
             catch (Exception e)
             {
@@ -212,7 +217,7 @@ namespace SampleConnector
         }
 
         
-        public override async Task UpdateExchangeAsync(ExchangeItem ExchangeItem)
+        public override async Task UpdateExchangeAsync(ExchangeItem ExchangeItem, CancellationToken cancellationToken)
         {
             try
             {
@@ -285,7 +290,7 @@ namespace SampleConnector
                     HubId = ExchangeItem.HubId,
                 };
                
-                await Client.SyncExchangeDataAsync(exchangeIdentifier, currentElementDataModel.ExchangeData);
+                await Client.SyncExchangeDataAsync(exchangeIdentifier, currentElementDataModel.ExchangeData, cancellationToken);
 
                 Application.ClearBusyMessage();
                 Application.ShowBusyMessage("Generate ACC Viewable");
@@ -304,6 +309,11 @@ namespace SampleConnector
                         throw ex;
                     }
                 });
+            }
+            catch (OperationCanceledException ex)
+            {
+                Application.ClearBusyMessage();
+                Application.ShowNotification("Operation Cancelled", NotificationType.Information);
             }
             catch (Exception e)
             {
