@@ -185,6 +185,14 @@ namespace SampleConnector
             {
                 Application.ClearBusyMessage();
                 Application.ShowNotification("Operation Cancelled", NotificationType.Information);
+
+                // Remove from storage if added
+                if (localStorage.Any(item => item.ExchangeID == exchangeItem.ExchangeID))
+                {
+                    localStorage.Remove(localStorage.First(item => item.ExchangeID == exchangeItem.ExchangeID));
+                }
+
+                throw;
             }
             catch (Exception e)
             {
@@ -314,6 +322,14 @@ namespace SampleConnector
             {
                 Application.ClearBusyMessage();
                 Application.ShowNotification("Operation Cancelled", NotificationType.Information);
+
+                //Remove item from storage if it was added
+                if (localStorage.Any(item => item.ExchangeID == ExchangeItem.ExchangeID))
+                {
+                    localStorage.Remove(localStorage.First(item => item.ExchangeID == ExchangeItem.ExchangeID));
+                }
+
+                throw;
             }
             catch (Exception e)
             {
