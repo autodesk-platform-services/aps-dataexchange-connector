@@ -57,56 +57,56 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Autodesk.DataExchange, Version=5.2.2.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\src\packages\Autodesk.DataExchange.5.2.2-beta\lib\net48\Autodesk.DataExchange.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange, Version=5.2.1.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\src\packages\Autodesk.DataExchange.5.2.1-beta\lib\net48\Autodesk.DataExchange.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.Authentication, Version=5.2.2.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\src\packages\Autodesk.DataExchange.5.2.2-beta\lib\net48\Autodesk.DataExchange.Authentication.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange.Authentication, Version=5.2.1.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\src\packages\Autodesk.DataExchange.5.2.1-beta\lib\net48\Autodesk.DataExchange.Authentication.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.BaseModels, Version=5.2.2.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\src\packages\Autodesk.DataExchange.UI.5.2.2-beta\lib\net48\Autodesk.DataExchange.BaseModels.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange.BaseModels, Version=5.2.1.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\src\packages\Autodesk.DataExchange.UI.5.2.1-beta\lib\net48\Autodesk.DataExchange.BaseModels.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.ContractProvider, Version=5.2.2.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\src\packages\Autodesk.DataExchange.5.2.2-beta\lib\net48\Autodesk.DataExchange.ContractProvider.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange.ContractProvider, Version=5.2.1.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\src\packages\Autodesk.DataExchange.5.2.1-beta\lib\net48\Autodesk.DataExchange.ContractProvider.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.Core, Version=5.2.2.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\src\packages\Autodesk.DataExchange.UI.5.2.2-beta\lib\net48\Autodesk.DataExchange.Core.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange.Core, Version=5.2.1.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\src\packages\Autodesk.DataExchange.UI.5.2.1-beta\lib\net48\Autodesk.DataExchange.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.Exceptions, Version=5.2.2.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\src\packages\Autodesk.DataExchange.UI.5.2.2-beta\lib\net48\Autodesk.DataExchange.Exceptions.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange.Exceptions, Version=5.2.1.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\src\packages\Autodesk.DataExchange.UI.5.2.1-beta\lib\net48\Autodesk.DataExchange.Exceptions.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.Extensions.HostingProvider, Version=5.2.2.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\src\packages\Autodesk.DataExchange.5.2.2-beta\lib\net48\Autodesk.DataExchange.Extensions.HostingProvider.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange.Extensions.HostingProvider, Version=5.2.1.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\src\packages\Autodesk.DataExchange.5.2.1-beta\lib\net48\Autodesk.DataExchange.Extensions.HostingProvider.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.Extensions.Logging.File, Version=5.2.2.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\src\packages\Autodesk.DataExchange.5.2.2-beta\lib\net48\Autodesk.DataExchange.Extensions.Logging.File.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange.Extensions.Logging.File, Version=5.2.1.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\src\packages\Autodesk.DataExchange.5.2.1-beta\lib\net48\Autodesk.DataExchange.Extensions.Logging.File.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.Extensions.Storage.File, Version=5.2.2.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\src\packages\Autodesk.DataExchange.5.2.2-beta\lib\net48\Autodesk.DataExchange.Extensions.Storage.File.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange.Extensions.Storage.File, Version=5.2.1.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\src\packages\Autodesk.DataExchange.5.2.1-beta\lib\net48\Autodesk.DataExchange.Extensions.Storage.File.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.Metrics, Version=5.2.2.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\src\packages\Autodesk.DataExchange.UI.5.2.2-beta\lib\net48\Autodesk.DataExchange.Metrics.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange.Metrics, Version=5.2.1.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\src\packages\Autodesk.DataExchange.UI.5.2.1-beta\lib\net48\Autodesk.DataExchange.Metrics.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.OpenAPI, Version=5.2.2.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\src\packages\Autodesk.DataExchange.5.2.2-beta\lib\net48\Autodesk.DataExchange.OpenAPI.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange.OpenAPI, Version=5.2.1.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\src\packages\Autodesk.DataExchange.5.2.1-beta\lib\net48\Autodesk.DataExchange.OpenAPI.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.Resiliency, Version=5.2.2.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\src\packages\Autodesk.DataExchange.UI.5.2.2-beta\lib\net48\Autodesk.DataExchange.Resiliency.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange.Resiliency, Version=5.2.1.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\src\packages\Autodesk.DataExchange.UI.5.2.1-beta\lib\net48\Autodesk.DataExchange.Resiliency.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.Schemas, Version=5.2.2.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\src\packages\Autodesk.DataExchange.5.2.2-beta\lib\net48\Autodesk.DataExchange.Schemas.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange.Schemas, Version=5.2.1.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\src\packages\Autodesk.DataExchange.5.2.1-beta\lib\net48\Autodesk.DataExchange.Schemas.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.SourceProvider, Version=5.2.2.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\src\packages\Autodesk.DataExchange.5.2.2-beta\lib\net48\Autodesk.DataExchange.SourceProvider.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange.SourceProvider, Version=5.2.1.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\src\packages\Autodesk.DataExchange.5.2.1-beta\lib\net48\Autodesk.DataExchange.SourceProvider.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.UI, Version=5.2.2.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\src\packages\Autodesk.DataExchange.UI.5.2.2-beta\lib\net48\Autodesk.DataExchange.UI.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange.UI, Version=5.2.1.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\src\packages\Autodesk.DataExchange.UI.5.2.1-beta\lib\net48\Autodesk.DataExchange.UI.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.UI.Bridge, Version=5.2.2.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\src\packages\Autodesk.DataExchange.UI.5.2.2-beta\lib\net48\Autodesk.DataExchange.UI.Bridge.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange.UI.Bridge, Version=5.2.1.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\src\packages\Autodesk.DataExchange.UI.5.2.1-beta\lib\net48\Autodesk.DataExchange.UI.Bridge.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.UI.ViewModels, Version=5.2.2.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\src\packages\Autodesk.DataExchange.UI.5.2.2-beta\lib\net48\Autodesk.DataExchange.UI.ViewModels.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange.UI.ViewModels, Version=5.2.1.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\src\packages\Autodesk.DataExchange.UI.5.2.1-beta\lib\net48\Autodesk.DataExchange.UI.ViewModels.dll</HintPath>
     </Reference>
     <Reference Include="Autodesk.Extensions.Http.ForgeRetry, Version=8.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\src\packages\Autodesk.Extensions.Http.ForgeRetry.8.0.0\lib\netstandard2.0\Autodesk.Extensions.Http.ForgeRetry.dll</HintPath>
@@ -114,14 +114,17 @@
     <Reference Include="Autodesk.Forge, Version=1.9.8.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\src\packages\Autodesk.Forge.1.9.8\lib\net48\Autodesk.Forge.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.GeometryPrimitives.Data, Version=0.7.11.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\src\packages\Autodesk.DataExchange.GeometryDefinitions.0.1.2\lib\net48\Autodesk.GeometryPrimitives.Data.dll</HintPath>
+    <Reference Include="Autodesk.GeometryPrimitives.Data, Version=0.7.10.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\src\packages\Autodesk.DataExchange.GeometryDefinitions.0.1.1\lib\net48\Autodesk.GeometryPrimitives.Data.dll</HintPath>
     </Reference>
     <Reference Include="Autodesk.GeometryUtilities">
       <HintPath>..\..\src\packages\Autodesk.DataExchange.5.0.0-beta\build\native\libs\Autodesk.GeometryUtilities.dll</HintPath>
     </Reference>
+    <Reference Include="Autodesk.GeometryUtilities.BRepAPI, Version=0.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\src\packages\Autodesk.DataExchange.GeometryDefinitions.0.1.1\lib\net48\Autodesk.GeometryUtilities.BRepAPI.dll</HintPath>
+    </Reference>
     <Reference Include="Autodesk.GeometryUtilities.MeshAPI, Version=0.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\src\packages\Autodesk.DataExchange.GeometryDefinitions.0.1.2\lib\net48\Autodesk.GeometryUtilities.MeshAPI.dll</HintPath>
+      <HintPath>..\..\src\packages\Autodesk.DataExchange.GeometryDefinitions.0.1.1\lib\net48\Autodesk.GeometryUtilities.MeshAPI.dll</HintPath>
     </Reference>
     <Reference Include="CBOR, Version=4.5.2.0, Culture=neutral, PublicKeyToken=9cd62db60ea5554c, processorArchitecture=MSIL">
       <HintPath>..\..\src\packages\PeterO.Cbor.4.5.2\lib\net40\CBOR.dll</HintPath>
@@ -472,9 +475,9 @@
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\..\src\packages\Autodesk.DataExchange.5.2.2-beta\build\Autodesk.DataExchange.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\src\packages\Autodesk.DataExchange.5.2.2-beta\build\Autodesk.DataExchange.targets'))" />
-    <Error Condition="!Exists('..\..\src\packages\Autodesk.DataExchange.UI.5.2.2-beta\build\Autodesk.DataExchange.UI.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\src\packages\Autodesk.DataExchange.UI.5.2.2-beta\build\Autodesk.DataExchange.UI.targets'))" />
+    <Error Condition="!Exists('..\..\src\packages\Autodesk.DataExchange.5.2.1-beta\build\Autodesk.DataExchange.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\src\packages\Autodesk.DataExchange.5.2.1-beta\build\Autodesk.DataExchange.targets'))" />
+    <Error Condition="!Exists('..\..\src\packages\Autodesk.DataExchange.UI.5.2.1-beta\build\Autodesk.DataExchange.UI.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\src\packages\Autodesk.DataExchange.UI.5.2.1-beta\build\Autodesk.DataExchange.UI.targets'))" />
   </Target>
-  <Import Project="..\..\src\packages\Autodesk.DataExchange.5.2.2-beta\build\Autodesk.DataExchange.targets" Condition="Exists('..\..\src\packages\Autodesk.DataExchange.5.2.2-beta\build\Autodesk.DataExchange.targets')" />
-  <Import Project="..\..\src\packages\Autodesk.DataExchange.UI.5.2.2-beta\build\Autodesk.DataExchange.UI.targets" Condition="Exists('..\..\src\packages\Autodesk.DataExchange.UI.5.2.2-beta\build\Autodesk.DataExchange.UI.targets')" />
+  <Import Project="..\..\src\packages\Autodesk.DataExchange.5.2.1-beta\build\Autodesk.DataExchange.targets" Condition="Exists('..\..\src\packages\Autodesk.DataExchange.5.2.1-beta\build\Autodesk.DataExchange.targets')" />
+  <Import Project="..\..\src\packages\Autodesk.DataExchange.UI.5.2.1-beta\build\Autodesk.DataExchange.UI.targets" Condition="Exists('..\..\src\packages\Autodesk.DataExchange.UI.5.2.1-beta\build\Autodesk.DataExchange.UI.targets')" />
 </Project>
