@@ -17,6 +17,8 @@ using Autodesk.DataExchange.Models;
 using Autodesk.DataExchange.SchemaObjects.Assets;
 using Autodesk.DataExchange.SchemaObjects.Units;
 using Autodesk.DataExchange.Schemas.Models;
+using Autodesk.GeometryPrimitives.Design;
+using Autodesk.GeometryPrimitives.Geometry;
 using Autodesk.Parameters;
 using PrimitiveGeometry = Autodesk.GeometryPrimitives;
 
@@ -294,9 +296,7 @@ namespace SampleConnector
                     try
                     {
                         Thread.Sleep(5000);
-#pragma warning disable CS0618 // Type or member is obsolete
                         Client.GenerateViewableAsync(ExchangeItem.ExchangeID, ExchangeItem.ContainerID).Wait();
-#pragma warning restore CS0618 // Type or member is obsolete
                     }
                     catch (Exception ex)
                     {
