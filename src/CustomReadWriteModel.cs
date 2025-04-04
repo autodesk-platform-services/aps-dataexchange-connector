@@ -340,6 +340,7 @@ namespace SampleConnector
             {
                 CollectionId = exchangeItem.ContainerID,
                 ExchangeId = exchangeItem.ExchangeID,
+                HubId = exchangeItem.HubId,
             };
             DataExchange exchange = await base.GetExchangeAsync(dataExchangeIdentifier);
             if (exchange != null)
