@@ -1,4 +1,9 @@
-﻿using Autodesk.DataExchange.BaseModels;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using Autodesk.DataExchange.BaseModels;
 using Autodesk.DataExchange.Core;
 using Autodesk.DataExchange.Core.Enums;
 using Autodesk.DataExchange.Core.Events;
@@ -6,24 +11,16 @@ using Autodesk.DataExchange.Core.Models;
 using Autodesk.DataExchange.DataModels;
 using Autodesk.DataExchange.Interface;
 using Autodesk.DataExchange.Models;
-using Autodesk.DataExchange.SchemaObjects.Units;
-using Autodesk.DataExchange.UI.Core.Enums;
 using Autodesk.DataExchange.UI.Core.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using SeverityEnum = Autodesk.DataExchange.UI.Core.Enums.Severity;
 
 namespace SampleConnector
 {
     class CustomReadWriteModel : BaseReadWriteExchangeModel
     {
-        public IInteropBridge interopBridge = null;
+        internal IInteropBridge Bridge { get; set; }
 
         private string currentRevision;
-        //private ExchangeData currentExchangeData;
         private ElementDataModel currentElementDataModel;
         private GeometryConfiguration geometryConfiguration;
 
@@ -34,8 +31,7 @@ namespace SampleConnector
             //geometryConfiguration = _sDKOptions?.GeometryConfiguration;
         }
 
-        List<DataExchange> localStorage = new List<DataExchange>();
-        internal IInteropBridge Bridge { get; set; }
+        private List<DataExchange> localStorage = new List<DataExchange>();
         private const string SyncingMessage = "Syncing Exchange Data...";
         private const string GeneratingViewableMessage = "Generating ACC Viewable...";
         private const string DownloadingMessage = "Downloading...";

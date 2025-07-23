@@ -2,20 +2,18 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Markup;
 using Autodesk.DataExchange;
-using Autodesk.DataExchange.BaseModels;
-using Autodesk.DataExchange.Core;
 using Autodesk.DataExchange.Core.Enums;
 using Autodesk.DataExchange.Core.Interface;
 using Autodesk.DataExchange.Core.Models;
 using Autodesk.DataExchange.UI.Core;
 using Autodesk.DataExchange.UI.Core.Interfaces;
+using WindowStateEnum = Autodesk.DataExchange.UI.Core.Enums.WindowState;
 
 namespace SampleConnector
 {
@@ -45,10 +43,11 @@ namespace SampleConnector
                 this.sdkOptions?.Storage.Save();
 
                 // Destroy interop bridge object and Connector UI
-                if (customReadWriteModel.interopBridge != null)
+                if (customReadWriteModel.Bridge != null)
                 {
-                    InteropBridgeFactory.DestroyAsync(customReadWriteModel.interopBridge).Wait();
-                    customReadWriteModel.interopBridge = null;
+                    customReadWriteModel.Bridge.SetWindowState(WindowStateEnum.Close);
+                    InteropBridgeFactory.DestroyAsync(customReadWriteModel.Bridge);
+                    customReadWriteModel.Bridge = null;
                 }
             }
         }
@@ -58,7 +57,7 @@ namespace SampleConnector
             Thread.CurrentThread.CurrentCulture = Thread.CurrentThread.CurrentCulture;
             Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentUICulture;
 
-            FrameworkElement.LanguageProperty.OverrideMetadata(
+            LanguageProperty.OverrideMetadata(
                 typeof(FrameworkElement),
                 new FrameworkPropertyMetadata(
                     XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
@@ -94,6 +93,15 @@ namespace SampleConnector
             bridgeOptions.Exchange = customReadWriteModel;
             bridgeOptions.Invoker = new MainThreadInvoker(this.Dispatcher);
             bridgeOptions.FeedbackUrl = "https://some.feedback.url";
+
+            // At this point, the SampleHostWindow is still under construction, so the
+            // WindowInteropHelper.Handle returns IntPtr.Zero. As a result, the Connector
+            // UI becomes a standalone top-level window, not owned by SampleHostWindow.
+            // This may cause it to appear behind the host window when focus is lost.
+            //
+            // In a real-world scenario, the host application's main window would be fully
+            // constructed before the interop bridge is initialized, ensuring a valid Handle.
+            // Therefore, this behavior is not an issue in production.
             bridgeOptions.HostWindowHandle = new WindowInteropHelper(this).Handle;
 
             if (this.GetLogLevel(logLevel) == LogLevel.Debug)
@@ -102,24 +110,24 @@ namespace SampleConnector
                 this.EnableHttpLogsForDebugging(client);
             }
 
-            customReadWriteModel.interopBridge = InteropBridgeFactory.Create(bridgeOptions);
+            customReadWriteModel.Bridge = InteropBridgeFactory.Create(bridgeOptions);
 
             // Subscribe to ClientStateChanged event for UI state notifications
-            customReadWriteModel.interopBridge.ClientStateChanged += (sender, e) =>
+            customReadWriteModel.Bridge.ClientStateChanged += (sender, e) =>
             {
                 if (e.IsConnected)
                 {
                     // Set the document name only after the Connector UI is connected.
                     // If SetDocumentName is called too early, it will have no effect
                     // because the Connector UI does not yet exist at that point.
-                    customReadWriteModel.interopBridge.SetDocumentName("Sample Document");
+                    customReadWriteModel.Bridge.SetDocumentName("Sample Document");
                 }
             };
 
             this.LoadLocalExchanges(customReadWriteModel);
 
             // Initialize and launch the connector UI asynchronously
-            _ = this.InitializeAndLaunchConnectorUi(customReadWriteModel.interopBridge);
+            _ = this.InitializeAndLaunchConnectorUi(customReadWriteModel.Bridge);
         }
 
         private async Task InitializeAndLaunchConnectorUi(IInteropBridge interopBridge)
