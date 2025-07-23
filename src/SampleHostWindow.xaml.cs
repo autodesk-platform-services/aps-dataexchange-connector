@@ -30,35 +30,35 @@ namespace SampleConnector
 
         public override List<DataExchange> GetCachedExchanges()
         {
-            throw new NotImplementedException();
+            return new List<DataExchange>();
         }
 
         public override Task<List<DataExchange>> GetExchangesAsync(ExchangeSearchFilter exchangeSearchFilter)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(new List<DataExchange>());
         }
 
         public override Task<bool> SelectElementsAsync(List<string> exchangeIds)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(false);
         }
 
         public override Task<IEnumerable<string>> UnloadExchangesAsync(List<ExchangeItem> exchanges)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(Enumerable.Empty<string>());
         }
 
         public override Task UpdateExchangeAsync(ExchangeItem exchangeItem, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
 
-        public List<DataExchange> GetLocalExchanges()
+        internal List<DataExchange> GetLocalExchanges()
         {
             return localStorage?.ToList();
         }
 
-        public void SetLocalExchanges(List<DataExchange> dataExchanges)
+        internal void SetLocalExchanges(List<DataExchange> dataExchanges)
         {
             localStorage.AddRange(dataExchanges);
         }
@@ -110,24 +110,24 @@ namespace SampleConnector
 
         private void InitializeInteropBridge()
         {
-            string authClientID = ConfigurationManager.AppSettings["AuthClientID"];
+            var authClientId = ConfigurationManager.AppSettings["AuthClientId"];
             var authClientSecret = ConfigurationManager.AppSettings["AuthClientSecret"];
-            var authCallBack = ConfigurationManager.AppSettings["AuthCallBack"];
-
+            var authCallback = ConfigurationManager.AppSettings["AuthCallback"];
             var logLevel = ConfigurationManager.AppSettings?["LogLevel"];
-            var applicationName = ConfigurationManager.AppSettings["ApplicationName"];
-            if (string.IsNullOrEmpty(applicationName))
-                applicationName = "SampleConnector";
+            var connectorName = ConfigurationManager.AppSettings["ConnectorName"];
+            var connectorVersion = ConfigurationManager.AppSettings["ConnectorVersion"];
+            var hostApplicationName = ConfigurationManager.AppSettings["HostApplicationName"];
+            var hostApplicationVersion = ConfigurationManager.AppSettings["HostApplicationVersion"];
 
             this.sdkOptions = new SDKOptionsDefaultSetup()
             {
-                HostApplicationName = applicationName,
-                ClientId = authClientID,
+                CallBack = authCallback,
+                ClientId = authClientId,
                 ClientSecret = authClientSecret,
-                CallBack = authCallBack,
-                ConnectorName = applicationName,
-                ConnectorVersion = "1.0.0",
-                HostApplicationVersion = "1.0",
+                ConnectorName = connectorName,
+                ConnectorVersion = connectorVersion,
+                HostApplicationName = hostApplicationName,
+                HostApplicationVersion = hostApplicationVersion,
             };
 
             var client = new Autodesk.DataExchange.Client(this.sdkOptions);
@@ -136,6 +136,7 @@ namespace SampleConnector
 
             var bridgeOptions = InteropBridgeOptions.FromClient(client);
             bridgeOptions.Exchange = customReadWriteModel;
+            bridgeOptions.Invoker = new MainThreadInvoker(this.Dispatcher);
 
             if (this.GetLogLevel(logLevel) == LogLevel.Debug)
             {
