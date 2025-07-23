@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Web.Hosting;
-using System.Windows.Markup;
 using Autodesk.DataExchange.BaseModels;
 using Autodesk.DataExchange.Core;
 using Autodesk.DataExchange.Core.Enums;
@@ -14,11 +10,7 @@ using Autodesk.DataExchange.Core.Models;
 using Autodesk.DataExchange.DataModels;
 using Autodesk.DataExchange.Interface;
 using Autodesk.DataExchange.Models;
-using Autodesk.DataExchange.SchemaObjects.Assets;
 using Autodesk.DataExchange.SchemaObjects.Units;
-using Autodesk.DataExchange.Schemas.Models;
-using Autodesk.Parameters;
-using PrimitiveGeometry = Autodesk.GeometryPrimitives;
 
 namespace SampleConnector
 {
@@ -28,6 +20,7 @@ namespace SampleConnector
         private string currentRevision;
         private ExchangeData currentExchangeData;
         private GeometryConfiguration geometryConfiguration;
+
         public CustomReadWriteModel(IClient client) : base(client)
         {
             AfterCreateExchange += AfterCreateExchangeAction;
@@ -39,9 +32,9 @@ namespace SampleConnector
 
         public override async Task<List<DataExchange>> GetExchangesAsync(ExchangeSearchFilter exchangeSearchFilter)
         {
-            
-            localStorage =  await GetValidExchangesAsync(exchangeSearchFilter,localStorage);
-           
+
+            localStorage = await GetValidExchangesAsync(exchangeSearchFilter, localStorage);
+
             return localStorage;
         }
 
@@ -59,7 +52,7 @@ namespace SampleConnector
         }
 
 
-        public async Task GetLatestExchangeDataAsync(Object sender,  ExchangeItem exchangeItem)
+        public async Task GetLatestExchangeDataAsync(Object sender, ExchangeItem exchangeItem)
         {
             //start loader
             Application.ClearBusyMessage();
@@ -75,6 +68,7 @@ namespace SampleConnector
                 ExchangeId = exchangeItem.ExchangeID,
                 HubId = exchangeItem.HubId,
             };
+
             try
             {
                 //Get a list of all revisions
@@ -177,8 +171,8 @@ namespace SampleConnector
                     var wholeGeometryPathOBJ = Client.DownloadCompleteExchangeAsOBJ(data.ExchangeData.ExchangeID, data.ExchangeData.ExchangeIdentifier.CollectionId);
                 }
 
-               Application.ShowNotification(exchangeItem.Name + " Download complete.", NotificationType.Information);
-               await UpdateLocalExchange(exchangeItem);
+                Application.ShowNotification(exchangeItem.Name + " Download complete.", NotificationType.Information);
+                await UpdateLocalExchange(exchangeItem);
 
             }
             catch (Exception e)
@@ -207,20 +201,20 @@ namespace SampleConnector
                 dataExchange.Updated = exchange.LastModifiedTime;
                 dataExchange.FileVersionId = exchange.FileVersionUrn;
             }
+
             _sDKOptions.Storage.Add("LocalExchanges", localStorage);
             _sDKOptions.Storage.Save();
         }
 
-        
         public override async Task UpdateExchangeAsync(ExchangeItem ExchangeItem)
         {
             try
             {
                 ElementDataModel currentElementDataModel = null;
                 currentExchangeData = await Client.GetExchangeDataAsync(
-                    new DataExchangeIdentifier 
-                    { 
-                        ExchangeId = ExchangeItem.ExchangeID, 
+                    new DataExchangeIdentifier
+                    {
+                        ExchangeId = ExchangeItem.ExchangeID,
                         CollectionId = ExchangeItem.ContainerID,
                         HubId = ExchangeItem.HubId,
                     });
@@ -251,8 +245,8 @@ namespace SampleConnector
                     createExchangeHelper.AddMeshGeometry(currentElementDataModel);
 
                     //Add IFC
-                    createExchangeHelper.AddIFCGeometry(currentElementDataModel);  
-                  
+                    createExchangeHelper.AddIFCGeometry(currentElementDataModel);
+
                     //Add NIST object
                     var newBRep = currentElementDataModel.AddElement(new ElementProperties("NISTSTEP", "SampleStep", "Generics", "Generic", "Generic Object"));
                     createExchangeHelper.AddNISTObject(currentElementDataModel, newBRep);
@@ -262,15 +256,14 @@ namespace SampleConnector
 
                     //create bool Custom parameter for type design
                     await createExchangeHelper.AddCustomParametersToElement(currentElementDataModel, newBRep, ExchangeItem.SchemaNamespace);
-                    
                 }
                 else
                 {
                     /*Code block to update exchange. Add few dummy elements for sync*/
 
                     //Create ElementDataModel wrapper on top of existing ExchangeData object
-                    currentElementDataModel = ElementDataModel.Create(Client,currentExchangeData);
-                    
+                    currentElementDataModel = ElementDataModel.Create(Client, currentExchangeData);
+
                     //Try deleting an element
                     currentElementDataModel.DeleteElement("1");
 
@@ -284,7 +277,7 @@ namespace SampleConnector
                     ExchangeId = ExchangeItem.ExchangeID,
                     HubId = ExchangeItem.HubId,
                 };
-               
+
                 await Client.SyncExchangeDataAsync(exchangeIdentifier, currentElementDataModel.ExchangeData);
 
                 Application.ClearBusyMessage();
@@ -328,8 +321,10 @@ namespace SampleConnector
                         ExchangeItem.FileVersion = exchangeDetails.FileVersionUrn;
                         ExchangeItem.LastModified = exchangeDetails.LastModifiedTime;
                     }
+
                     AfterUpdateExchange(exchangeDetails);
                 });
+
                 Application.ClearBusyMessage();
             }
         }
@@ -342,12 +337,14 @@ namespace SampleConnector
                 ExchangeId = exchangeItem.ExchangeID,
                 HubId = exchangeItem.HubId,
             };
+
             DataExchange exchange = await base.GetExchangeAsync(dataExchangeIdentifier);
             if (exchange != null)
             {
                 exchangeItem.FileVersion = exchange.FileVersionId;
                 exchangeItem.LastModified = exchange.Updated;
             }
+
             var localExchange = localStorage.FirstOrDefault(item => item.ExchangeID == exchange.ExchangeID);
             if (localExchange != null)
             {
@@ -367,6 +364,7 @@ namespace SampleConnector
         {
             localStorage.AddRange(dataExchanges);
         }
+
         private void ShowParameter(Autodesk.DataExchange.DataModels.Parameter parameter)
         {
             if (parameter.ParameterDataType == ParameterDataType.ParameterSet)

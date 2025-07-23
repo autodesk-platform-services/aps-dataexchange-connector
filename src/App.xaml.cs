@@ -1,16 +1,16 @@
-﻿using Autodesk.DataExchange.Core.Interface;
-using Autodesk.DataExchange;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
+using System.IO;
+using System.Reflection;
 using System.Threading;
 using System.Windows;
 using System.Windows.Markup;
-using Autodesk.DataExchange.Core.Models;
+using Autodesk.DataExchange;
 using Autodesk.DataExchange.Core.Enums;
-using System.Reflection;
-using System.IO;
+using Autodesk.DataExchange.Core.Interface;
+using Autodesk.DataExchange.Core.Models;
 
 namespace SampleConnector
 {
@@ -22,19 +22,19 @@ namespace SampleConnector
         private IExchange baseExchange;
         private SDKOptions _sdkOptions;
         internal static string _installationPath;
-        private AppDomain _appDomain;
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             RegisterSystemLanguage();
             StartConnector();
         }
+
         private void StartConnector()
-        { 
+        {
             string authClientID = ConfigurationManager.AppSettings["AuthClientID"];
             var authClientSecret = ConfigurationManager.AppSettings["AuthClientSecret"];
             var authCallBack = ConfigurationManager.AppSettings["AuthCallBack"];
-            
+
             var logLevel = ConfigurationManager.AppSettings?["LogLevel"];
             var applicationName = ConfigurationManager.AppSettings["ApplicationName"];
             if (string.IsNullOrEmpty(applicationName))
@@ -56,7 +56,7 @@ namespace SampleConnector
             };
 
             Client client = new Autodesk.DataExchange.Client(_sdkOptions);
-            
+
             CustomReadWriteModel customReadWriteModel = new CustomReadWriteModel(client);
             baseExchange = customReadWriteModel;
 
@@ -68,13 +68,14 @@ namespace SampleConnector
                 SetDebugLogLevel(_sdkOptions?.Logger);
                 EnableHttpLogsForDebugging(client);
             }
-            
+
             var application = new Autodesk.DataExchange.UI.Application(customReadWriteModel, uiConfiguration);
             customReadWriteModel.Application = application;
             application.AdvanceLoadExchangeEvent += AppManager_AdvanceLoadExchangeEvent;
             LoadLocalExchanges(customReadWriteModel);
             application.Show();
         }
+
         /// <summary>
         /// Assembly resolve event.
         /// </summary>
@@ -100,6 +101,7 @@ namespace SampleConnector
                 _sdkOptions.Logger?.Debug("Failed to load assembly " + args.Name);
                 _sdkOptions.Logger?.Error(e);
             }
+
             return assembly;
         }
 
@@ -119,17 +121,15 @@ namespace SampleConnector
             {
                 name = args.Name;
             }
+
             return name;
         }
-    
-    private LogLevel GetLogLevel(string logLevel)
+
+        private LogLevel GetLogLevel(string logLevel)
         {
             LogLevel parsedlogLevel;
-            bool canConvertToEnum =  Enum.TryParse<LogLevel>(logLevel, true, out parsedlogLevel);
-
-            if(canConvertToEnum)
-                return parsedlogLevel;
-            else return LogLevel.Error;
+            bool canConvertToEnum = Enum.TryParse<LogLevel>(logLevel, true, out parsedlogLevel);
+            return canConvertToEnum ? parsedlogLevel : LogLevel.Error;
         }
 
         private void SetDebugLogLevel(Autodesk.DataExchange.Core.Interface.ILogger logger)
@@ -144,7 +144,6 @@ namespace SampleConnector
 
         private void AppManager_AdvanceLoadExchangeEvent(object obj)
         {
-            
         }
 
         private void RegisterSystemLanguage()
@@ -167,6 +166,7 @@ namespace SampleConnector
                 {
                     _sdkOptions?.Storage.Add("LocalExchanges", exchanges);
                 }
+
                 _sdkOptions?.Storage.Save();
             }
         }
@@ -176,8 +176,8 @@ namespace SampleConnector
             var exchanges = _sdkOptions.Storage.Get<List<DataExchange>>("LocalExchanges");
             if (exchanges != null)
             {
-                customReadWriteModel.SetLocalExchanges(exchanges);                
-           }
+                customReadWriteModel.SetLocalExchanges(exchanges);
+            }
         }
     }
 }
