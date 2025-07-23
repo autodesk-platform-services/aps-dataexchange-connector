@@ -1,12 +1,4 @@
-﻿using Autodesk.DataExchange;
-using Autodesk.DataExchange.BaseModels;
-using Autodesk.DataExchange.Core;
-using Autodesk.DataExchange.Core.Enums;
-using Autodesk.DataExchange.Core.Interface;
-using Autodesk.DataExchange.Core.Models;
-using Autodesk.DataExchange.UI.Core;
-using Autodesk.DataExchange.UI.Core.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
@@ -14,7 +6,16 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Interop;
 using System.Windows.Markup;
+using Autodesk.DataExchange;
+using Autodesk.DataExchange.BaseModels;
+using Autodesk.DataExchange.Core;
+using Autodesk.DataExchange.Core.Enums;
+using Autodesk.DataExchange.Core.Interface;
+using Autodesk.DataExchange.Core.Models;
+using Autodesk.DataExchange.UI.Core;
+using Autodesk.DataExchange.UI.Core.Interfaces;
 
 namespace SampleConnector
 {
@@ -137,6 +138,8 @@ namespace SampleConnector
             var bridgeOptions = InteropBridgeOptions.FromClient(client);
             bridgeOptions.Exchange = customReadWriteModel;
             bridgeOptions.Invoker = new MainThreadInvoker(this.Dispatcher);
+            bridgeOptions.FeedbackUrl = "https://some.feedback.url";
+            bridgeOptions.HostWindowHandle = new WindowInteropHelper(this).Handle;
 
             if (this.GetLogLevel(logLevel) == LogLevel.Debug)
             {
@@ -145,16 +148,41 @@ namespace SampleConnector
             }
 
             customReadWriteModel.interopBridge = InteropBridgeFactory.Create(bridgeOptions);
+
+            // Subscribe to ClientStateChanged event for UI state notifications
+            customReadWriteModel.interopBridge.ClientStateChanged += (sender, e) =>
+            {
+                if (e.IsConnected)
+                {
+                    // Set the document name only after the Connector UI is connected.
+                    // If SetDocumentName is called too early, it will have no effect
+                    // because the Connector UI does not yet exist at that point.
+                    customReadWriteModel.interopBridge.SetDocumentName("Sample Document");
+                }
+            };
+
             this.LoadLocalExchanges(customReadWriteModel);
 
-            // Launch the connector UI asynchronously
-            _ = this.LaunchConnectorUi();
+            // Initialize and launch the connector UI asynchronously
+            _ = this.InitializeAndLaunchConnectorUi(customReadWriteModel.interopBridge);
         }
 
-        private async Task LaunchConnectorUi()
+        private async Task InitializeAndLaunchConnectorUi(IInteropBridge interopBridge)
         {
-            // Add connector UI launching logic here
-            await Task.CompletedTask;
+            try
+            {
+                // Initialize the interop bridge first
+                await interopBridge.InitializeAsync();
+
+                // Then launch the connector UI
+                await interopBridge.LaunchConnectorUiAsync();
+            }
+            catch (Exception ex)
+            {
+                // Log errors during initialization/launching
+                this.sdkOptions?.Logger?.Error(ex);
+                throw;
+            }
         }
 
         private LogLevel GetLogLevel(string logLevel)
