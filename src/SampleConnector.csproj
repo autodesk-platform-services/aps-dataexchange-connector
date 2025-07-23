@@ -517,21 +517,21 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="SampleInputFiles\ball.mtl">
+    <Content Include="SampleInputFiles\ball.mtl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="SampleInputFiles\ball.obj">
+    </Content>
+    <Content Include="SampleInputFiles\ball.obj">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="SampleInputFiles\BasinAdvancedBrep.ifc">
+    </Content>
+    <Content Include="SampleInputFiles\BasinAdvancedBrep.ifc">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="SampleInputFiles\BuiltInParams.json">
+    </Content>
+    <Content Include="SampleInputFiles\BuiltInParams.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="SampleInputFiles\nist_ftc_09_asme1_rd.stp">
+    </Content>
+    <Content Include="SampleInputFiles\nist_ftc_09_asme1_rd.stp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
