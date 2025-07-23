@@ -516,6 +516,11 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="SampleInputFiles\ball.mtl" />
+    <None Include="SampleInputFiles\ball.obj" />
+    <None Include="SampleInputFiles\BasinAdvancedBrep.ifc" />
+    <None Include="SampleInputFiles\BuiltInParams.json" />
+    <None Include="SampleInputFiles\nist_ftc_09_asme1_rd.stp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
