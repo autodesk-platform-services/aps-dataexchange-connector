@@ -5,6 +5,7 @@ using Autodesk.GeometryPrimitives.Data;
 using Autodesk.GeometryPrimitives.Data.DX;
 using Autodesk.GeometryUtilities.MeshAPI;
 using Autodesk.Parameters;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -16,14 +17,105 @@ namespace SampleConnector
     {
         private RenderStyle commonRenderStyle = new RenderStyle("Common Render Style", new RGBA(255, 0, 0, 255), 1);
 
-        public void AddWallGeometry(ElementDataModel data)
+        /// <summary>
+        /// Adds objects with varied geometry types cycling through STP, IFC, OBJ, and MeshAPI.
+        /// </summary>
+        public static Task AddVariedGeometryObjects(ElementDataModel dataModel, int numberOfObjects)
         {
-            ElementGeometry wallGeometry = ElementDataModel.CreateGeometry(new GeometryProperties($"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\\InputStepFile\\11DB159F6864D8FC02B33D7E9280498F08DFC4FB.stp", commonRenderStyle));
+            if (dataModel == null) throw new ArgumentNullException(nameof(dataModel));
 
-            var wallElement = data.AddElement(new ElementProperties("1", "Wall-1", "Walls", "Wall", "Generic Wall"));
-            var wallGeometries = new List<ElementGeometry> { wallGeometry };
+            try
+            {
+                string uniquePrefix = GetRandomId();
+                for (int i = 0; i < numberOfObjects; i++)
+                {
+                    var element = dataModel.AddElement(CreateElementProperties(
+                        $"Object-{uniquePrefix}-{i + 1}",
+                        $"Object-{uniquePrefix}-{i + 1}"));
 
-            data.SetElementGeometryByElement(wallElement, wallGeometries);
+                    var geometry = CreateGeometryByType(i % 4, i);
+                    dataModel.SetElementGeometry(element, new List<ElementGeometry> { geometry });
+                }
+
+                return Task.CompletedTask;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error adding varied geometry objects: {ex.Message}");
+                throw;
+            }
+        }
+
+        
+
+        // Available geometry files for cycling through different types
+        private static readonly string[] AvailableGeometryFiles =
+        {
+            BrepGeometryFilePath,  // STP file
+            IfcGeometryFilePath,   // IFC file
+            MeshGeometryFilePath   // OBJ file
+        };
+
+        /// <summary>
+        /// Generates a random unique identifier for naming purposes.
+        /// </summary>
+        public static string GetRandomId()
+        {
+            // Fix for CS8370, CS0518: Avoid using the range operator and use Substring instead.
+            return Guid.NewGuid().ToString("N").Substring(0, 5);
+        }
+
+        private static ElementProperties CreateElementProperties(string id, string name)
+        {
+            return new ElementProperties(id, name, "Generic", "Generic", "Generic Object");
+        }
+
+        /// <summary>
+        /// Adds a unique string parameter to the specified element.
+        /// </summary>
+        public static async Task AddUniqueStringParameter(Element element)
+        {
+            if (element == null) throw new ArgumentNullException(nameof(element));
+
+            var uniqueId = GetRandomId();
+            await AddStringParameter(element, uniqueId);
+        }
+
+        private static async Task AddStringParameter(Element element, string uniqueId)
+        {
+            var parameter = new Parameter($"TestString{uniqueId}", "TestStringValue")
+            {
+                SampleText = "Sample string parameter",
+                Description = "Demo string parameter for sample connector",
+                ReadOnly = false,
+                IsCustomParameter = true,
+                GroupID = Group.Graphics.DisplayName()
+            };
+
+            await element.CreateInstanceParameterAsync(parameter);
+        }
+
+
+        //public void AddWallGeometry(ElementDataModel data)
+        //{
+        //    ElementGeometry wallGeometry = ElementDataModel.CreateGeometry(new GeometryProperties($"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\\InputStepFile\\11DB159F6864D8FC02B33D7E9280498F08DFC4FB.stp", commonRenderStyle));
+
+        //    var wallElement = data.AddElement(new ElementProperties("1", "Wall-1", "Walls", "Wall", "Generic Wall"));
+        //    var wallGeometries = new List<ElementGeometry> { wallGeometry };
+
+        //    data.SetElementGeometryByElement(wallElement, wallGeometries);
+        //}
+
+        private static ElementGeometry CreateGeometryByType(int geometryType, int index)
+        {
+            return geometryType switch
+            {
+                0 => ElementDataModel.CreateFileGeometry(new GeometryProperties(BrepGeometryFilePath, CommonRenderStyle)),
+                1 => ElementDataModel.CreateFileGeometry(new GeometryProperties(IfcGeometryFilePath, CommonRenderStyle)),
+                2 => ElementDataModel.CreateFileGeometry(new GeometryProperties(MeshGeometryFilePath, CommonRenderStyle)),
+                3 => ElementDataModel.CreateMeshGeometry(new GeometryProperties(SampleMeshApiObject, $"MeshAPI-{index}")),
+                _ => throw new ArgumentOutOfRangeException(nameof(geometryType), "Invalid geometry type")
+            };
         }
 
         public void AddGeometryWithLengthUnit(ElementDataModel data)
