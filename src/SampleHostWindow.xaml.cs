@@ -19,51 +19,6 @@ using Autodesk.DataExchange.UI.Core.Interfaces;
 
 namespace SampleConnector
 {
-    // TODO: Remove this CustomReadWriteModel class later.
-    public class CustomReadWriteModel : BaseReadWriteExchangeModel
-    {
-        public IInteropBridge interopBridge;
-        private List<DataExchange> localStorage = new List<DataExchange>();
-
-        public CustomReadWriteModel(Client client) : base(client)
-        {
-        }
-
-        public override List<DataExchange> GetCachedExchanges()
-        {
-            return new List<DataExchange>();
-        }
-
-        public override Task<List<DataExchange>> GetExchangesAsync(ExchangeSearchFilter exchangeSearchFilter)
-        {
-            return Task.FromResult(new List<DataExchange>());
-        }
-
-        public override Task<bool> SelectElementsAsync(List<string> exchangeIds)
-        {
-            return Task.FromResult(false);
-        }
-
-        public override Task<IEnumerable<string>> UnloadExchangesAsync(List<ExchangeItem> exchanges)
-        {
-            return Task.FromResult(Enumerable.Empty<string>());
-        }
-
-        public override Task UpdateExchangeAsync(ExchangeItem exchangeItem, CancellationToken cancellationToken = default)
-        {
-            return Task.CompletedTask;
-        }
-
-        internal List<DataExchange> GetLocalExchanges()
-        {
-            return localStorage?.ToList();
-        }
-
-        internal void SetLocalExchanges(List<DataExchange> dataExchanges)
-        {
-            localStorage.AddRange(dataExchanges);
-        }
-    }
 
     public partial class SampleHostWindow : Window
     {
