@@ -11,6 +11,7 @@ using Autodesk.DataExchange;
 using Autodesk.DataExchange.Core.Enums;
 using Autodesk.DataExchange.Core.Interface;
 using Autodesk.DataExchange.Core.Models;
+using Autodesk.DataExchange.UI.Core;
 
 namespace SampleConnector
 {
@@ -42,7 +43,6 @@ namespace SampleConnector
 
             var connectorInstallationDir = new System.Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath;
             _installationPath = Path.GetDirectoryName(connectorInstallationDir);
-            _appDomain = AppDomain.CurrentDomain;
 
             _sdkOptions = new SDKOptionsDefaultSetup()
             {
@@ -60,18 +60,16 @@ namespace SampleConnector
             CustomReadWriteModel customReadWriteModel = new CustomReadWriteModel(client);
             baseExchange = customReadWriteModel;
 
-            Autodesk.DataExchange.UI.Configuration uiConfiguration = new Autodesk.DataExchange.UI.Configuration();
+            var bridgeOptions = InteropBridgeOptions.FromClient(client);
+            bridgeOptions.Exchange = customReadWriteModel;
 
-            uiConfiguration.LogLevel = GetLogLevel(logLevel);
-            if (uiConfiguration.LogLevel == Autodesk.DataExchange.Core.Enums.LogLevel.Debug)
+            if (this.GetLogLevel(logLevel) == LogLevel.Debug)
             {
                 SetDebugLogLevel(_sdkOptions?.Logger);
                 EnableHttpLogsForDebugging(client);
             }
 
-            var application = new Autodesk.DataExchange.UI.Application(customReadWriteModel, uiConfiguration);
-            customReadWriteModel.Application = application;
-            application.AdvanceLoadExchangeEvent += AppManager_AdvanceLoadExchangeEvent;
+            customReadWriteModel.interopBridge = InteropBridgeFactory.Create(bridgeOptions);
             LoadLocalExchanges(customReadWriteModel);
             application.Show();
         }
@@ -140,10 +138,6 @@ namespace SampleConnector
         private void EnableHttpLogsForDebugging(Client client)
         {
             (client as Client)?.EnableHttpDebugLogging();
-        }
-
-        private void AppManager_AdvanceLoadExchangeEvent(object obj)
-        {
         }
 
         private void RegisterSystemLanguage()

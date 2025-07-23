@@ -5,18 +5,20 @@ using System.Threading;
 using System.Threading.Tasks;
 using Autodesk.DataExchange.BaseModels;
 using Autodesk.DataExchange.Core;
-using Autodesk.DataExchange.Core.Enums;
 using Autodesk.DataExchange.Core.Models;
 using Autodesk.DataExchange.DataModels;
 using Autodesk.DataExchange.Interface;
 using Autodesk.DataExchange.Models;
 using Autodesk.DataExchange.SchemaObjects.Units;
+using Autodesk.DataExchange.UI.Core.Enums;
+using Autodesk.DataExchange.UI.Core.Interfaces;
 
 namespace SampleConnector
 {
     class CustomReadWriteModel : BaseReadWriteExchangeModel
     {
-        public Autodesk.DataExchange.UI.Application Application;
+        public IInteropBridge interopBridge = null;
+
         private string currentRevision;
         private ExchangeData currentExchangeData;
         private GeometryConfiguration geometryConfiguration;
@@ -55,12 +57,10 @@ namespace SampleConnector
         public async Task GetLatestExchangeDataAsync(Object sender, ExchangeItem exchangeItem)
         {
             //start loader
-            Application.ClearBusyMessage();
-            Application.ShowBusyMessage("Downloading..");
+            interopBridge?.SetProgressMessage("Downloading exchange...");
 
             //clear existing notifications
-            Application.ClearAllNotification();
-            Application.ShowNotification(exchangeItem.Name + " Downloading", NotificationType.Information);
+            interopBridge?.SendNotification($"Downloading '{exchangeItem.Name}'", Severity.Info);
 
             var exchangeIdentifier = new DataExchangeIdentifier
             {
@@ -171,20 +171,17 @@ namespace SampleConnector
                     var wholeGeometryPathOBJ = Client.DownloadCompleteExchangeAsOBJ(data.ExchangeData.ExchangeID, data.ExchangeData.ExchangeIdentifier.CollectionId);
                 }
 
-                Application.ShowNotification(exchangeItem.Name + " Download complete.", NotificationType.Information);
+                interopBridge?.SendNotification($"Downloaded '{exchangeItem.Name}' successfully.", Severity.Success);
                 await UpdateLocalExchange(exchangeItem);
 
             }
             catch (Exception e)
             {
-                Application.ShowNotification(exchangeItem.Name + " Download failed.", NotificationType.Error);
+                interopBridge?.SendNotification($"Failed to download '{exchangeItem.Name}'.", Severity.Error);
                 Console.WriteLine(e);
             }
             finally
             {
-                //clear loader after loading data exchange
-                Application.ClearBusyMessage();
-                Application.ClearAllNotification();
             }
         }
 
@@ -280,8 +277,8 @@ namespace SampleConnector
 
                 await Client.SyncExchangeDataAsync(exchangeIdentifier, currentElementDataModel.ExchangeData);
 
-                Application.ClearBusyMessage();
-                Application.ShowBusyMessage("Generate ACC Viewable");
+                interopBridge?.SetProgressMessage("Generate ACC Viewable");
+
                 await Task.Run(() =>
                 {
                     try
@@ -324,8 +321,6 @@ namespace SampleConnector
 
                     AfterUpdateExchange(exchangeDetails);
                 });
-
-                Application.ClearBusyMessage();
             }
         }
 
