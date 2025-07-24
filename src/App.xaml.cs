@@ -17,13 +17,13 @@ namespace SampleConnector
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             // Create and show the main host window
-            hostWindow = new SampleHostWindow();
-            hostWindow.Show();
+            this.hostWindow = new SampleHostWindow();
+            this.hostWindow.Show();
         }
 
         private void Application_Exit(object sender, ExitEventArgs e)
         {
-            hostWindow?.Destroy();
+            this.hostWindow?.Destroy();
         }
     }
 }
