@@ -28,7 +28,6 @@ namespace SampleConnector
         {
             AfterCreateExchange += AfterCreateExchangeAction;
             GetLatestExchangeDetails += GetLatestExchangeDataAsync;
-            //geometryConfiguration = _sDKOptions?.GeometryConfiguration;
         }
 
         private List<DataExchange> localStorage = new List<DataExchange>();
@@ -58,7 +57,7 @@ namespace SampleConnector
             return response;
         }
 
-        //TODO: similar to HandleGetLatestExchangeDetails
+        
         public async Task GetLatestExchangeDataAsync(GetLatestExchangeDetailsEventArgs arg)
         {
             var exchangeItem = arg.ExchangeItem;
@@ -177,7 +176,6 @@ namespace SampleConnector
         }
 
 
-        //TODO: same for HandleAfterCreateExchange
         public void AfterCreateExchangeAction(object sender, AfterCreateExchangeEventArgs e)
         {
             this.localStorage.Add(e.DataExchange);
@@ -319,12 +317,6 @@ namespace SampleConnector
 
             // Demonstrate various geometry types with sample data
             await CreateExchangeHelper.AddVariedGeometryObjects(elementDataModel, 3);
-            //await CreateExchangeHelper.AddMeshAPIObjects(elementDataModel, 1);
-
-            // Add sample parameters to demonstrate parameter handling
-            //await CreateExchangeHelper.AddCustomParametersToAllElements(elementDataModel, 3, 12);
-            //await CreateExchangeHelper.AddBuiltInParametersToAllElements(elementDataModel, 2, 8);
-            //await this.AddSampleParametersToSpecificElements(elementDataModel);
 
             return elementDataModel;
         }
@@ -340,10 +332,7 @@ namespace SampleConnector
 
             // Add new elements to demonstrate updates
             await CreateExchangeHelper.AddVariedGeometryObjects(elementDataModel, 4);
-            //await CreateExchangeHelper.AddMeshAPIObjects(elementDataModel, 2);
-
             // Add parameters to new elements
-            //await CreateExchangeHelper.AddCustomParametersToAllElements(elementDataModel, 2, 8);
             await this.AddSampleParametersToNewElements(elementDataModel);
 
             return elementDataModel;
@@ -351,11 +340,9 @@ namespace SampleConnector
 
         private async Task AddSampleParametersToNewElements(ElementDataModel elementDataModel)
         {
-            var newElements = elementDataModel.Elements.Reverse().Take(6).Reverse().ToList(); // Get last 6 elements added // Get last 6 elements added
+            var newElements = elementDataModel.Elements.Reverse().Take(6).Reverse().ToList();
 
             if (newElements.Count > 0) await CreateExchangeHelper.AddUniqueStringParameter(newElements[0]);
-            //if (newElements.Count > 1) await CreateExchangeHelper.AddUniqueFloatParameter(newElements[1]);
-
         }
 
         private void DeleteSampleElement(ElementDataModel elementDataModel)
@@ -366,127 +353,6 @@ namespace SampleConnector
                 elementDataModel.DeleteElement(existingElements[0].Id);
             }
         }
-
-        //        public override async Task UpdateExchangeAsync(ExchangeItem ExchangeItem)
-        //        {
-        //            try
-        //            {
-        //                ElementDataModel currentElementDataModel = null;
-        //                currentExchangeData = await Client.GetExchangeDataAsync(
-        //                    new DataExchangeIdentifier
-        //                    {
-        //                        ExchangeId = ExchangeItem.ExchangeID,
-        //                        CollectionId = ExchangeItem.ContainerID,
-        //                        HubId = ExchangeItem.HubId,
-        //                    });
-
-        //                CreateExchangeHelper createExchangeHelper = new CreateExchangeHelper();
-        //                //Check if this is the initial sync to newly created blank Exchange
-        //                if (currentExchangeData == null)
-        //                {
-        //                    /*Code block to Add Elements to blank Exchange for syncing*/
-
-        //                    //Create a new ElementDataModel wrapper
-        //                    currentElementDataModel = ElementDataModel.Create(Client);
-
-        //                    //Set Unit info on Root Asset
-        //                    (currentElementDataModel.ExchangeData.RootAsset as DesignAsset).LengthUnit = UnitFactory.Feet;
-        //                    (currentElementDataModel.ExchangeData.RootAsset as DesignAsset).DisplayLengthUnit = UnitFactory.Feet;
-
-        //                    //Add a basic wall geometry
-        //                    createExchangeHelper.AddWallGeometry(currentElementDataModel);
-
-        //                    //Add geometry with specific length unit
-        //                    createExchangeHelper.AddGeometryWithLengthUnit(currentElementDataModel);
-
-        //                    //Add primitive geometries - Line, Point and Circle
-        //                    createExchangeHelper.AddPrimitiveGeometries(currentElementDataModel);
-
-        //                    //Add Mesh geometry
-        //                    createExchangeHelper.AddMeshGeometry(currentElementDataModel);
-
-        //                    //Add IFC
-        //                    createExchangeHelper.AddIFCGeometry(currentElementDataModel);
-
-        //                    //Add NIST object
-        //                    var newBRep = currentElementDataModel.AddElement(new ElementProperties("NISTSTEP", "SampleStep", "Generics", "Generic", "Generic Object"));
-        //                    createExchangeHelper.AddNISTObject(currentElementDataModel, newBRep);
-
-        //                    //Create built in parameters
-        //                    await createExchangeHelper.AddInstanceParametersToElement(newBRep);
-
-        //                    //create bool Custom parameter for type design
-        //                    await createExchangeHelper.AddCustomParametersToElement(currentElementDataModel, newBRep, ExchangeItem.SchemaNamespace);
-        //                }
-        //                else
-        //                {
-        //                    /*Code block to update exchange. Add few dummy elements for sync*/
-
-        //                    //Create ElementDataModel wrapper on top of existing ExchangeData object
-        //                    currentElementDataModel = ElementDataModel.Create(Client, currentExchangeData);
-
-        //                    //Try deleting an element
-        //                    currentElementDataModel.DeleteElement("1");
-
-        //                    //Add few elements with Geometries to update exchange for Sync
-        //                    createExchangeHelper.AddElementsForExchangeUpdate(currentElementDataModel);
-        //                }
-
-        //                DataExchangeIdentifier exchangeIdentifier = new DataExchangeIdentifier()
-        //                {
-        //                    CollectionId = ExchangeItem.ContainerID,
-        //                    ExchangeId = ExchangeItem.ExchangeID,
-        //                    HubId = ExchangeItem.HubId,
-        //                };
-
-        //                await Client.SyncExchangeDataAsync(exchangeIdentifier, currentElementDataModel.ExchangeData);
-
-        //                interopBridge?.SetProgressMessage("Generate ACC Viewable");
-
-        //                await Task.Run(() =>
-        //                {
-        //                    try
-        //                    {
-        //                        Thread.Sleep(5000);
-        //#pragma warning disable CS0618 // Type or member is obsolete
-        //                        Client.GenerateViewableAsync(ExchangeItem.ExchangeID, ExchangeItem.ContainerID).Wait();
-        //#pragma warning restore CS0618 // Type or member is obsolete
-        //                    }
-        //                    catch (Exception ex)
-        //                    {
-        //                        _sDKOptions.Logger.Error(ex);
-        //                        throw ex;
-        //                    }
-        //                });
-        //            }
-        //            catch (Exception e)
-        //            {
-        //                System.Windows.MessageBox.Show(e.Message);
-        //                Console.WriteLine(e);
-        //                throw;
-        //            }
-        //            finally
-        //            {
-        //                _ = Task.Run(async () =>
-        //                {
-        //                    DataExchangeIdentifier dataExchangeIdentifier = new DataExchangeIdentifier()
-        //                    {
-        //                        CollectionId = ExchangeItem.ContainerID,
-        //                        ExchangeId = ExchangeItem.ExchangeID,
-        //                        HubId = ExchangeItem.HubId,
-        //                    };
-
-        //                    ExchangeDetails exchangeDetails = await Client.GetExchangeDetailsAsync(dataExchangeIdentifier);
-        //                    if (exchangeDetails != null)
-        //                    {
-        //                        ExchangeItem.FileVersion = exchangeDetails.FileVersionUrn;
-        //                        ExchangeItem.LastModified = exchangeDetails.LastModifiedTime;
-        //                    }
-
-        //                    AfterUpdateExchange(exchangeDetails);
-        //                });
-        //            }
-        //        }
 
         private async Task UpdateLocalExchange(ExchangeItem exchangeItem)
         {
@@ -524,24 +390,6 @@ namespace SampleConnector
             localStorage.AddRange(dataExchanges);
         }
 
-
-        //TODO: just remove it
-        //private void ShowParameter(Autodesk.DataExchange.DataModels.Parameter parameter)
-        //{
-        //    if (parameter.ParameterDataType == ParameterDataType.ParameterSet)
-        //    {
-        //        Console.WriteLine((parameter as ParameterSet).Id);
-        //        Console.WriteLine((parameter as ParameterSet).Parameters.Count);
-        //        foreach (var param in (parameter as ParameterSet).Parameters)
-        //        {
-        //            ShowParameter(param);
-        //        }
-        //    }
-        //    else
-        //    {
-        //        Console.WriteLine(parameter.Name);
-        //    }
-        //}
 
         public override Task<IEnumerable<string>> UnloadExchangesAsync(List<ExchangeItem> exchanges)
         {
