@@ -21,14 +21,14 @@ namespace SampleConnectorUnitTests
             _dataModel = ElementDataModel.Create(_client);
         }
 
-        [TestMethod]
-        public void TestAddWallGeometry()
-        {
-            _createExchangeHelper.AddWallGeometry(_dataModel);
-            var wallElements = _dataModel.Elements.Where(element => element.Category == "Walls").ToList();
+        //[TestMethod]
+        //public void TestAddWallGeometry()
+        //{
+        //    _createExchangeHelper.AddWallGeometry(_dataModel);
+        //    var wallElements = _dataModel.Elements.Where(element => element.Category == "Walls").ToList();
 
-            Assert.IsTrue(wallElements != null && wallElements.Any());
-        }
+        //    Assert.IsTrue(wallElements != null && wallElements.Any());
+        //}
 
         [TestMethod]
         public void TestAddMeshGeometry()

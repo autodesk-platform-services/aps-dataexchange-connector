@@ -22,8 +22,6 @@ namespace SampleConnector
         private static readonly string IfcGeometryFilePath = GetSampleFilePath("BasinAdvancedBrep.ifc");
         private static readonly string BuiltInParamsFilePath = GetSampleFilePath("BuiltInParams.json");
 
-        // Fix for CS8370: Replace target-typed object creation with explicit type instantiation.
-        // Fix for SA1000: Ensure there is a space after the 'new' keyword.
 
         /// <summary>
         /// Common render style used across the application.
@@ -95,23 +93,11 @@ namespace SampleConnector
             }
         }
 
-
-
-        // Available geometry files for cycling through different types
-        //TODO: if not being used, we can delete it
-        //private static readonly string[] AvailableGeometryFiles =
-        //{
-        //    BrepGeometryFilePath,  // STP file
-        //    IfcGeometryFilePath,   // IFC file
-        //    MeshGeometryFilePath   // OBJ file
-        //};
-
         /// <summary>
         /// Generates a random unique identifier for naming purposes.
         /// </summary>
         public static string GetRandomId()
         {
-            // Fix for CS8370, CS0518: Avoid using the range operator and use Substring instead.
             return Guid.NewGuid().ToString("N").Substring(0, 5);
         }
 
@@ -145,18 +131,6 @@ namespace SampleConnector
             await element.CreateInstanceParameterAsync(parameter);
         }
 
-
-        //public void AddWallGeometry(ElementDataModel data)
-        //{
-        //    ElementGeometry wallGeometry = ElementDataModel.CreateGeometry(new GeometryProperties($"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\\InputStepFile\\11DB159F6864D8FC02B33D7E9280498F08DFC4FB.stp", commonRenderStyle));
-
-        //    var wallElement = data.AddElement(new ElementProperties("1", "Wall-1", "Walls", "Wall", "Generic Wall"));
-        //    var wallGeometries = new List<ElementGeometry> { wallGeometry };
-
-        //    data.SetElementGeometry(wallElement, wallGeometries);
-        //}
-
-
         //TODO: question: do we need to create geometry using files?
         private static ElementGeometry CreateGeometryByType(int geometryType, int index)
         {
@@ -175,21 +149,6 @@ namespace SampleConnector
             }
         }
 
-
-        //TODO: remove if needed
-        //public void AddGeometryWithLengthUnit(ElementDataModel data)
-        //{
-        //    var millimeterRodStepFile = $"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\\InputStepFile\\1000mm_rod.stp";
-
-        //    //Specify default LengthUnit of the step file; for this file it is millimeters
-        //    var millimeterRodGeometry = ElementDataModel.CreateGeometry(new GeometryProperties(millimeterRodStepFile, commonRenderStyle) { LengthUnit = UnitFactory.MilliMeter, DisplayLengthUnit = UnitFactory.MilliMeter, DisplayAngleUnit = UnitFactory.Radian });
-
-        //    var rodElement = data.AddElement(new ElementProperties("RodElement", "SampleRod", "GenericRods", "GenericRod", "Generic Rod") { LengthUnit = UnitFactory.MilliMeter, DisplayLengthUnit = UnitFactory.MilliMeter });
-
-        //    var rodElementGeometry = new List<ElementGeometry>() { millimeterRodGeometry };
-
-        //    data.SetElementGeometry(rodElement, rodElementGeometry);
-        //}
 
         public void AddPrimitiveGeometries(ElementDataModel data)
         {
@@ -657,188 +616,6 @@ namespace SampleConnector
             var complexMeshElement = data.AddElement(new ElementProperties("ComplexMesh", "ComplexSampleMesh", "Mesh", "Mesh", "Complex In memory mesh"));
             data.SetElementGeometry(complexMeshElement, new List<ElementGeometry> { complexMeshGeom });
         }
-
-        //public void AddIFCGeometry(ElementDataModel data)
-        //{
-        //    var newIfcBrep = data.AddElement(new ElementProperties("NISTIFC", "SampleIFC", "IFCs", "IFC", "IFC Object"));
-
-        //    var newIfcBRepGeometry = new List<ElementGeometry>();
-        //    var ifcfilePath = $"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\\InputStepFile\\Beam.ifc";
-        //    newIfcBRepGeometry.Add(ElementDataModel.CreateGeometry(new GeometryProperties(ifcfilePath, commonRenderStyle)));
-        //    data.SetElementGeometry(newIfcBrep, newIfcBRepGeometry);
-        //}
-
-        //public async Task AddCustomParametersToElement(ElementDataModel elementDataModel, Element element, string schemaNamespace)
-        //{
-        //    /* Custom Instance Parameters */
-        //    //create bool Custom parameter for instance
-        //    await CreateCustomInstanceParameter_Bool(element, schemaNamespace);
-
-        //    //create float Custom parameter for instance
-        //    await CreateCustomInstanceParameter_Float(element, schemaNamespace);
-
-        //    //create int Custom parameter for instance
-        //    await CreateCustomInstanceParameter_Int(element, schemaNamespace);
-
-        //    //Create string Custom parameter for instance
-        //    await CreateCustomInstanceParameter_String(element, schemaNamespace);
-
-        //    /* Custom Design Parameters */
-        //    //Create bool Custom parameter for design
-        //    await CreateCustomDesignParameter_Bool(elementDataModel, schemaNamespace);
-
-        //    //Create float Custom parameter for design
-        //    await CreateCustomDesignParameter_Float(elementDataModel, schemaNamespace);
-
-        //    //Create int Custom parameter for design
-        //    await CreateCustomDesignParameter_Int(elementDataModel, schemaNamespace);
-
-        //    //Create string Custom parameter for design
-        //    await CreateCustomDesignParameter_String(elementDataModel, schemaNamespace);
-        //}
-
-        //private async Task CreateCustomInstanceParameter_Bool(Element element, string schemaNamespace)
-        //{
-        //    string schemaId = "exchange.parameter." + schemaNamespace + ":BoolTestCustomParameter-1.0.0";
-        //    ParameterDefinition customParameter = ParameterDefinition.Create(schemaId, ParameterDataType.Bool);
-        //    customParameter.Name = "Test";
-        //    customParameter.SampleText = "";
-        //    customParameter.Description = "";
-        //    customParameter.ReadOnly = false;
-        //    customParameter.IsCustomParameter = true;
-        //    customParameter.GroupID = Group.General.DisplayName();
-        //    (customParameter as BoolParameterDefinition).Value = true;
-        //    await element.CreateInstanceParameterAsync(customParameter);
-        //}
-
-        //private async Task CreateCustomInstanceParameter_Float(Element element, string schemaNamespace)
-        //{
-        //    string schemaId = "exchange.parameter." + schemaNamespace + ":Float64TestCustomParameter-1.0.0";
-        //    ParameterDefinition customParameterFloat = ParameterDefinition.Create(schemaId, ParameterDataType.Float64);
-        //    customParameterFloat.Name = "TestFloat64";
-        //    customParameterFloat.SampleText = "SampleText-FloatCustomParam";
-        //    customParameterFloat.Description = "Description-FloatCustomParam";
-        //    customParameterFloat.ReadOnly = false;
-        //    customParameterFloat.GroupID = Group.Dimensions.DisplayName();
-        //    customParameterFloat.SpecID = Spec.Volume.DisplayName();
-        //    customParameterFloat.IsCustomParameter = true;
-        //    (customParameterFloat as MeasurableParameterDefinition).Value = 4.52;
-        //    await element.CreateInstanceParameterAsync(customParameterFloat);
-        //}
-
-        //private async Task CreateCustomInstanceParameter_Int(Element element, string schemaNamespace)
-        //{
-        //    string schemaId = "exchange.parameter." + schemaNamespace + ":Int64TestCustomParameter-1.0.0";
-        //    ParameterDefinition customParameterInt = ParameterDefinition.Create(schemaId, ParameterDataType.Int64);
-        //    customParameterInt.Name = "TestInt64";
-        //    customParameterInt.SampleText = "";
-        //    customParameterInt.Description = "";
-        //    customParameterInt.ReadOnly = false;
-        //    customParameterInt.GroupID = Group.General.DisplayName();
-        //    customParameterInt.IsCustomParameter = true;
-        //    (customParameterInt as Int64ParameterDefinition).Value = 5;
-        //    await element.CreateInstanceParameterAsync(customParameterInt);
-        //}
-
-        //private async Task CreateCustomInstanceParameter_String(Element element, string schemaNamespace)
-        //{
-        //    string schemaId = "exchange.parameter." + schemaNamespace + ":StringTestCustomParameter-1.0.0";
-        //    ParameterDefinition customParameterString = ParameterDefinition.Create(schemaId, ParameterDataType.String);
-        //    customParameterString.Name = "TestString";
-        //    customParameterString.SampleText = "SampleTest-String";
-        //    customParameterString.Description = "Description-String";
-        //    customParameterString.ReadOnly = false;
-        //    customParameterString.GroupID = Group.Graphics.DisplayName();
-        //    customParameterString.IsCustomParameter = true;
-        //    (customParameterString as StringParameterDefinition).Value = "TestStringValue";
-        //    await element.CreateInstanceParameterAsync(customParameterString);
-        //}
-
-        //private async Task CreateCustomDesignParameter_Bool(ElementDataModel element, string schemaNamespace)
-        //{
-        //    string schemaId = "exchange.parameter." + schemaNamespace + ":BoolTestCustomTypeParameter-1.0.0";
-        //    ParameterDefinition customParameterTestDesign = ParameterDefinition.Create(schemaId, ParameterDataType.Bool);
-        //    customParameterTestDesign.Name = "Test_Design_Param";
-        //    customParameterTestDesign.SampleText = "";
-        //    customParameterTestDesign.Description = "";
-        //    customParameterTestDesign.ReadOnly = false;
-        //    customParameterTestDesign.GroupID = Group.Graphics.DisplayName();
-        //    customParameterTestDesign.IsCustomParameter = true;
-        //    (customParameterTestDesign as BoolParameterDefinition).Value = true;
-        //    await element.CreateTypeParameterAsync("Generic Object", customParameterTestDesign);
-        //}
-
-        //private async Task CreateCustomDesignParameter_Float(ElementDataModel element, string schemaNamespace)
-        //{
-        //    string schemaId = "exchange.parameter." + schemaNamespace + ":Float64TestCustomTypeParameter-1.0.0";
-        //    ParameterDefinition customParameterFloatDesign = ParameterDefinition.Create(schemaId, ParameterDataType.Float64);
-        //    customParameterFloatDesign.Name = "TestFloat64_Desig_Param";
-        //    customParameterFloatDesign.SampleText = "SampleText-FloatCustomParam";
-        //    customParameterFloatDesign.Description = "Description-FloatCustomParam";
-        //    customParameterFloatDesign.ReadOnly = false;
-        //    customParameterFloatDesign.GroupID = Group.Dimensions.DisplayName();
-        //    customParameterFloatDesign.SpecID = Spec.Volume.DisplayName();
-        //    customParameterFloatDesign.IsCustomParameter = true;
-        //    (customParameterFloatDesign as MeasurableParameterDefinition).Value = 4.52;
-        //    await element.CreateTypeParameterAsync("Generic Object", customParameterFloatDesign);
-        //}
-
-        //private async Task CreateCustomDesignParameter_Int(ElementDataModel element, string schemaNamespace)
-        //{
-        //    string schemaId = "exchange.parameter." + schemaNamespace + ":Int64TestCustomTypeParameter-1.0.0";
-        //    ParameterDefinition customParameterIntDesign = ParameterDefinition.Create(schemaId, ParameterDataType.Int64);
-        //    customParameterIntDesign.Name = "TestInt64_Design_Param";
-        //    customParameterIntDesign.SampleText = "SampleText-Int64CustomParam";
-        //    customParameterIntDesign.Description = "Desc-Int64CustomParam";
-        //    customParameterIntDesign.ReadOnly = false;
-        //    customParameterIntDesign.GroupID = Group.Graphics.DisplayName();
-        //    customParameterIntDesign.IsCustomParameter = true;
-        //    (customParameterIntDesign as Int64ParameterDefinition).Value = 5;
-        //    await element.CreateTypeParameterAsync("Generic Object", customParameterIntDesign);
-        //}
-
-        //private async Task CreateCustomDesignParameter_String(ElementDataModel element, string schemaNamespace)
-        //{
-        //    string schemaId = "exchange.parameter." + schemaNamespace + ":StringTestCustomTypeParameter-1.0.0";
-        //    ParameterDefinition customParameterStringDesign = ParameterDefinition.Create(schemaId, ParameterDataType.String);
-        //    customParameterStringDesign.Name = "TestString-Design";
-        //    customParameterStringDesign.SampleText = "SampleTest-String-Design";
-        //    customParameterStringDesign.Description = "Description-String-Design";
-        //    customParameterStringDesign.ReadOnly = false;
-        //    customParameterStringDesign.GroupID = Group.Graphics.DisplayName();
-        //    customParameterStringDesign.IsCustomParameter = true;
-        //    (customParameterStringDesign as StringParameterDefinition).Value = "TestStringValue";
-        //    await element.CreateTypeParameterAsync("Generic Object", customParameterStringDesign);
-        //}
-
-        //public async Task AddInstanceParametersToElement(Element element)
-        //{
-        //    //add element instance parameter
-        //    var hostAreaComputed = ParameterDefinition.Create(Autodesk.Parameters.Parameter.HostAreaComputed, ParameterDataType.Float64);
-        //    (hostAreaComputed as MeasurableParameterDefinition).Value = 4.684312000000002;
-        //    await element.CreateInstanceParameterAsync(hostAreaComputed);
-
-        //    ParameterDefinition relatedToMass = ParameterDefinition.Create(Autodesk.Parameters.Parameter.RelatedToMass, ParameterDataType.Bool);
-        //    (relatedToMass as BoolParameterDefinition).Value = true;
-        //    await element.CreateInstanceParameterAsync(relatedToMass);
-
-        //    ParameterDefinition wallStructuralUsageParam = ParameterDefinition.Create(Autodesk.Parameters.Parameter.WallStructuralUsageParam, ParameterDataType.Int64);
-        //    (wallStructuralUsageParam as Int64ParameterDefinition).Value = 42;
-        //    await element.CreateInstanceParameterAsync(wallStructuralUsageParam);
-
-        //    ParameterDefinition ifcGuid = ParameterDefinition.Create(Autodesk.Parameters.Parameter.IfcGuid, ParameterDataType.String);
-        //    (ifcGuid as StringParameterDefinition).Value = "0q69lF83X65vuO5PXJfXpH";
-        //    await element.CreateInstanceParameterAsync(ifcGuid);
-
-        //    ParameterDefinition wallCrossSection = ParameterDefinition.Create(Autodesk.Parameters.Parameter.WallCrossSection, ParameterDataType.Int32);
-        //    (wallCrossSection as Int32ParameterDefinition).Value = 1;
-        //    await element.CreateInstanceParameterAsync(wallCrossSection);
-
-        //    //add element instance reference parameter
-        //    await element.CreateReferenceParameterAsync(Autodesk.Parameters.Parameter.WallBaseConstraint, "1C4F1B4A52597F316FE15C0533238314EEA43E75");
-        //    //add element instance reference Name Only parameter
-        //    await element.CreateReferenceNameOnlyParametersAsync(Autodesk.Parameters.Parameter.PhaseCreated, "New Construction");
-        //}
 
         public void AddElementsForExchangeUpdate(ElementDataModel data)
         {
