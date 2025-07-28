@@ -1,21 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Autodesk.DataExchange.BaseModels;
-using Autodesk.DataExchange.Core;
-using Autodesk.DataExchange.Core.Enums;
-using Autodesk.DataExchange.Core.Events;
-using Autodesk.DataExchange.Core.Models;
-using Autodesk.DataExchange.DataModels;
-using Autodesk.DataExchange.Interface;
-using Autodesk.DataExchange.Models;
-using Autodesk.DataExchange.UI.Core.Interfaces;
-using SeverityEnum = Autodesk.DataExchange.UI.Core.Enums.Severity;
-
-namespace SampleConnector
+﻿namespace SampleConnector
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using Autodesk.DataExchange.BaseModels;
+    using Autodesk.DataExchange.Core;
+    using Autodesk.DataExchange.Core.Enums;
+    using Autodesk.DataExchange.Core.Events;
+    using Autodesk.DataExchange.Core.Models;
+    using Autodesk.DataExchange.DataModels;
+    using Autodesk.DataExchange.Interface;
+    using Autodesk.DataExchange.Models;
+    using Autodesk.DataExchange.UI.Core.Interfaces;
+    using SeverityEnum = Autodesk.DataExchange.UI.Core.Enums.Severity;
+
     class CustomReadWriteModel : BaseReadWriteExchangeModel
     {
         internal IInteropBridge Bridge { get; set; }
