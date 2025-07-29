@@ -57,59 +57,62 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Autodesk.DataExchange, Version=5.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\src\packages\Autodesk.DataExchange.6.2.0-release-local-v5\lib\net48\Autodesk.DataExchange.dll</HintPath>
+    <Reference Include="AngleSharp, Version=1.2.0.0, Culture=neutral, PublicKeyToken=e83494dcdc6d31ea, processorArchitecture=MSIL">
+      <HintPath>..\..\src\packages\AngleSharp.1.2.0\lib\net472\AngleSharp.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.Authentication, Version=5.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\src\packages\Autodesk.DataExchange.6.2.0-release-local-v5\lib\net48\Autodesk.DataExchange.Authentication.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange, Version=6.2.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\src\packages\Autodesk.DataExchange.6.2.0-beta\lib\net48\Autodesk.DataExchange.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.BaseModels, Version=5.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\src\packages\Autodesk.DataExchange.UI.6.2.0-release-local-v5\lib\net48\Autodesk.DataExchange.BaseModels.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange.Authentication, Version=6.2.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\src\packages\Autodesk.DataExchange.6.2.0-beta\lib\net48\Autodesk.DataExchange.Authentication.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.ContractProvider, Version=5.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\src\packages\Autodesk.DataExchange.6.2.0-release-local-v5\lib\net48\Autodesk.DataExchange.ContractProvider.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange.BaseModels, Version=6.2.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\src\packages\Autodesk.DataExchange.UI.6.2.0-beta\lib\net48\Autodesk.DataExchange.BaseModels.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.Core, Version=5.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\src\packages\Autodesk.DataExchange.UI.6.2.0-release-local-v5\lib\net48\Autodesk.DataExchange.Core.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange.ContractProvider, Version=6.2.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\src\packages\Autodesk.DataExchange.6.2.0-beta\lib\net48\Autodesk.DataExchange.ContractProvider.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.Exceptions, Version=5.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\src\packages\Autodesk.DataExchange.UI.6.2.0-release-local-v5\lib\net48\Autodesk.DataExchange.Exceptions.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange.Core, Version=6.2.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\src\packages\Autodesk.DataExchange.UI.6.2.0-beta\lib\net48\Autodesk.DataExchange.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.Extensions.HostingProvider, Version=5.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\src\packages\Autodesk.DataExchange.6.2.0-release-local-v5\lib\net48\Autodesk.DataExchange.Extensions.HostingProvider.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange.Exceptions, Version=6.2.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\src\packages\Autodesk.DataExchange.UI.6.2.0-beta\lib\net48\Autodesk.DataExchange.Exceptions.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.Extensions.Loader, Version=5.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\src\packages\Autodesk.DataExchange.6.2.0-release-local-v5\lib\net48\Autodesk.DataExchange.Extensions.Loader.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange.Extensions.HostingProvider, Version=6.2.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\src\packages\Autodesk.DataExchange.6.2.0-beta\lib\net48\Autodesk.DataExchange.Extensions.HostingProvider.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.Extensions.Logging.File, Version=5.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\src\packages\Autodesk.DataExchange.6.2.0-release-local-v5\lib\net48\Autodesk.DataExchange.Extensions.Logging.File.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange.Extensions.Loader, Version=6.2.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\src\packages\Autodesk.DataExchange.6.2.0-beta\lib\net48\Autodesk.DataExchange.Extensions.Loader.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.Extensions.Storage.File, Version=5.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\src\packages\Autodesk.DataExchange.6.2.0-release-local-v5\lib\net48\Autodesk.DataExchange.Extensions.Storage.File.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange.Extensions.Logging.File, Version=6.2.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\src\packages\Autodesk.DataExchange.6.2.0-beta\lib\net48\Autodesk.DataExchange.Extensions.Logging.File.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.Metrics, Version=5.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\src\packages\Autodesk.DataExchange.UI.6.2.0-release-local-v5\lib\net48\Autodesk.DataExchange.Metrics.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange.Extensions.Storage.File, Version=6.2.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\src\packages\Autodesk.DataExchange.6.2.0-beta\lib\net48\Autodesk.DataExchange.Extensions.Storage.File.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.OpenAPI, Version=5.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\src\packages\Autodesk.DataExchange.6.2.0-release-local-v5\lib\net48\Autodesk.DataExchange.OpenAPI.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange.Metrics, Version=6.2.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\src\packages\Autodesk.DataExchange.UI.6.2.0-beta\lib\net48\Autodesk.DataExchange.Metrics.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.Resiliency, Version=5.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\src\packages\Autodesk.DataExchange.UI.6.2.0-release-local-v5\lib\net48\Autodesk.DataExchange.Resiliency.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange.OpenAPI, Version=6.2.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\src\packages\Autodesk.DataExchange.6.2.0-beta\lib\net48\Autodesk.DataExchange.OpenAPI.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.Schemas, Version=5.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\src\packages\Autodesk.DataExchange.6.2.0-release-local-v5\lib\net48\Autodesk.DataExchange.Schemas.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange.Resiliency, Version=6.2.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\src\packages\Autodesk.DataExchange.UI.6.2.0-beta\lib\net48\Autodesk.DataExchange.Resiliency.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.SourceProvider, Version=5.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\src\packages\Autodesk.DataExchange.6.2.0-release-local-v5\lib\net48\Autodesk.DataExchange.SourceProvider.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange.Schemas, Version=6.2.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\src\packages\Autodesk.DataExchange.6.2.0-beta\lib\net48\Autodesk.DataExchange.Schemas.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.UI, Version=5.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\src\packages\Autodesk.DataExchange.UI.6.2.0-release-local-v5\lib\net48\Autodesk.DataExchange.UI.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange.SourceProvider, Version=6.2.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\src\packages\Autodesk.DataExchange.6.2.0-beta\lib\net48\Autodesk.DataExchange.SourceProvider.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.UI.Bridge, Version=5.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\src\packages\Autodesk.DataExchange.UI.6.2.0-release-local-v5\lib\net48\Autodesk.DataExchange.UI.Bridge.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange.UI, Version=6.2.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\src\packages\Autodesk.DataExchange.UI.6.2.0-beta\lib\net48\Autodesk.DataExchange.UI.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.DataExchange.UI.ViewModels, Version=5.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\src\packages\Autodesk.DataExchange.UI.6.2.0-release-local-v5\lib\net48\Autodesk.DataExchange.UI.ViewModels.dll</HintPath>
+    <Reference Include="Autodesk.DataExchange.UI.Bridge, Version=6.2.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\src\packages\Autodesk.DataExchange.UI.6.2.0-beta\lib\net48\Autodesk.DataExchange.UI.Bridge.dll</HintPath>
+    </Reference>
+    <Reference Include="Autodesk.DataExchange.UI.ViewModels, Version=6.2.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\src\packages\Autodesk.DataExchange.UI.6.2.0-beta\lib\net48\Autodesk.DataExchange.UI.ViewModels.dll</HintPath>
     </Reference>
     <Reference Include="Autodesk.Extensions.Http.ForgeRetry, Version=8.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\src\packages\Autodesk.Extensions.Http.ForgeRetry.8.0.0\lib\netstandard2.0\Autodesk.Extensions.Http.ForgeRetry.dll</HintPath>
@@ -126,11 +129,11 @@
     <Reference Include="CBOR, Version=4.5.2.0, Culture=neutral, PublicKeyToken=9cd62db60ea5554c, processorArchitecture=MSIL">
       <HintPath>..\..\src\packages\PeterO.Cbor.4.5.2\lib\net40\CBOR.dll</HintPath>
     </Reference>
-    <Reference Include="ForgeParametersCLR, Version=3.0.6.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\src\packages\ForgeParameters-csharp_win_release_intel64_v140.3.0.6\lib\net48\ForgeParametersCLR.dll</HintPath>
+    <Reference Include="ForgeParametersCLR, Version=4.3.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\src\packages\ForgeParameters-csharp_win_release_intel64_v140.4.3.0\lib\net48\ForgeParametersCLR.dll</HintPath>
     </Reference>
-    <Reference Include="ForgeUnitsCLR, Version=5.1.4.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\src\packages\ForgeUnits-csharp_win_release_intel64_v140.5.1.4\lib\net48\ForgeUnitsCLR.dll</HintPath>
+    <Reference Include="ForgeUnitsCLR, Version=5.3.2.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\..\src\packages\ForgeUnits-csharp_win_release_intel64_v140.5.3.2\lib\net48\ForgeUnitsCLR.dll</HintPath>
     </Reference>
     <Reference Include="Google.Protobuf, Version=3.19.4.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
       <HintPath>..\..\src\packages\Google.Protobuf.3.19.4\lib\net45\Google.Protobuf.dll</HintPath>
@@ -157,11 +160,11 @@
     <Reference Include="Microsoft.Extensions.Configuration, Version=3.1.17.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\..\src\packages\Microsoft.Extensions.Configuration.3.1.17\lib\netstandard2.0\Microsoft.Extensions.Configuration.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Extensions.Configuration.Abstractions, Version=3.1.17.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\..\src\packages\Microsoft.Extensions.Configuration.Abstractions.3.1.17\lib\netstandard2.0\Microsoft.Extensions.Configuration.Abstractions.dll</HintPath>
+    <Reference Include="Microsoft.Extensions.Configuration.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\..\src\packages\Microsoft.Extensions.Configuration.Abstractions.6.0.0\lib\net461\Microsoft.Extensions.Configuration.Abstractions.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Extensions.Configuration.Binder, Version=3.1.17.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\..\src\packages\Microsoft.Extensions.Configuration.Binder.3.1.17\lib\netstandard2.0\Microsoft.Extensions.Configuration.Binder.dll</HintPath>
+    <Reference Include="Microsoft.Extensions.Configuration.Binder, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\..\src\packages\Microsoft.Extensions.Configuration.Binder.6.0.0\lib\net461\Microsoft.Extensions.Configuration.Binder.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Extensions.DependencyInjection, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\..\src\packages\Microsoft.Extensions.DependencyInjection.7.0.0\lib\net462\Microsoft.Extensions.DependencyInjection.dll</HintPath>
@@ -401,6 +404,9 @@
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Text.Encoding.CodePages, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\src\packages\System.Text.Encoding.CodePages.8.0.0\lib\net462\System.Text.Encoding.CodePages.dll</HintPath>
+    </Reference>
     <Reference Include="System.Text.Encodings.Web, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\..\src\packages\System.Text.Encodings.Web.7.0.0\lib\net462\System.Text.Encodings.Web.dll</HintPath>
     </Reference>
@@ -473,15 +479,17 @@
   <PropertyGroup>
     <PostBuildEvent>xcopy /Y /I /E "$(SolutionDir)\InputStepFile\*.*" "$(TargetDir)InputStepFile"</PostBuildEvent>
   </PropertyGroup>
-  <Import Project="..\..\src\packages\ForgeUnits-csharp_win_release_intel64_v140.5.1.4\build\ForgeUnits-csharp_win_release_intel64_v140.targets" Condition="Exists('..\..\src\packages\ForgeUnits-csharp_win_release_intel64_v140.5.1.4\build\ForgeUnits-csharp_win_release_intel64_v140.targets')" />
-  <Import Project="..\..\src\packages\ForgeParameters-csharp_win_release_intel64_v140.3.0.6\build\ForgeParameters-csharp_win_release_intel64_v140.targets" Condition="Exists('..\..\src\packages\ForgeParameters-csharp_win_release_intel64_v140.3.0.6\build\ForgeParameters-csharp_win_release_intel64_v140.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\..\src\packages\Autodesk.DataExchange.6.2.0-release-local-v5\build\Autodesk.DataExchange.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\src\packages\Autodesk.DataExchange.6.2.0-release-local-v5\build\Autodesk.DataExchange.targets'))" />
-    <Error Condition="!Exists('..\..\src\packages\Autodesk.DataExchange.UI.6.2.0-release-local-v5\build\Autodesk.DataExchange.UI.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\src\packages\Autodesk.DataExchange.UI.6.2.0-release-local-v5\build\Autodesk.DataExchange.UI.targets'))" />
+    <Error Condition="!Exists('..\..\src\packages\ForgeUnits-csharp_win_release_intel64_v140.5.3.2\build\ForgeUnits-csharp_win_release_intel64_v140.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\src\packages\ForgeUnits-csharp_win_release_intel64_v140.5.3.2\build\ForgeUnits-csharp_win_release_intel64_v140.targets'))" />
+    <Error Condition="!Exists('..\..\src\packages\ForgeParameters-csharp_win_release_intel64_v140.4.3.0\build\ForgeParameters-csharp_win_release_intel64_v140.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\src\packages\ForgeParameters-csharp_win_release_intel64_v140.4.3.0\build\ForgeParameters-csharp_win_release_intel64_v140.targets'))" />
+    <Error Condition="!Exists('..\..\src\packages\Autodesk.DataExchange.6.2.0-beta\build\Autodesk.DataExchange.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\src\packages\Autodesk.DataExchange.6.2.0-beta\build\Autodesk.DataExchange.targets'))" />
+    <Error Condition="!Exists('..\..\src\packages\Autodesk.DataExchange.UI.6.2.0-beta\build\Autodesk.DataExchange.UI.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\src\packages\Autodesk.DataExchange.UI.6.2.0-beta\build\Autodesk.DataExchange.UI.targets'))" />
   </Target>
-  <Import Project="..\..\src\packages\Autodesk.DataExchange.6.2.0-release-local-v5\build\Autodesk.DataExchange.targets" Condition="Exists('..\..\src\packages\Autodesk.DataExchange.6.2.0-release-local-v5\build\Autodesk.DataExchange.targets')" />
-  <Import Project="..\..\src\packages\Autodesk.DataExchange.UI.6.2.0-release-local-v5\build\Autodesk.DataExchange.UI.targets" Condition="Exists('..\..\src\packages\Autodesk.DataExchange.UI.6.2.0-release-local-v5\build\Autodesk.DataExchange.UI.targets')" />
+  <Import Project="..\..\src\packages\ForgeUnits-csharp_win_release_intel64_v140.5.3.2\build\ForgeUnits-csharp_win_release_intel64_v140.targets" Condition="Exists('..\..\src\packages\ForgeUnits-csharp_win_release_intel64_v140.5.3.2\build\ForgeUnits-csharp_win_release_intel64_v140.targets')" />
+  <Import Project="..\..\src\packages\ForgeParameters-csharp_win_release_intel64_v140.4.3.0\build\ForgeParameters-csharp_win_release_intel64_v140.targets" Condition="Exists('..\..\src\packages\ForgeParameters-csharp_win_release_intel64_v140.4.3.0\build\ForgeParameters-csharp_win_release_intel64_v140.targets')" />
+  <Import Project="..\..\src\packages\Autodesk.DataExchange.6.2.0-beta\build\Autodesk.DataExchange.targets" Condition="Exists('..\..\src\packages\Autodesk.DataExchange.6.2.0-beta\build\Autodesk.DataExchange.targets')" />
+  <Import Project="..\..\src\packages\Autodesk.DataExchange.UI.6.2.0-beta\build\Autodesk.DataExchange.UI.targets" Condition="Exists('..\..\src\packages\Autodesk.DataExchange.UI.6.2.0-beta\build\Autodesk.DataExchange.UI.targets')" />
 </Project>
