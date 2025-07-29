@@ -59,9 +59,6 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AngleSharp, Version=1.2.0.0, Culture=neutral, PublicKeyToken=e83494dcdc6d31ea, processorArchitecture=MSIL">
-      <HintPath>packages\AngleSharp.1.2.0\lib\net472\AngleSharp.dll</HintPath>
-    </Reference>
     <Reference Include="Autodesk.DataExchange, Version=6.2.0.0, Culture=neutral, processorArchitecture=AMD64">
       <HintPath>packages\Autodesk.DataExchange.6.2.0-beta\lib\net48\Autodesk.DataExchange.dll</HintPath>
     </Reference>
