@@ -5,6 +5,7 @@ using Autodesk.GeometryPrimitives.Data;
 using Autodesk.GeometryPrimitives.Data.DX;
 using Autodesk.GeometryUtilities.MeshAPI;
 using Autodesk.Parameters;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -16,29 +17,138 @@ namespace SampleConnector
     {
         private RenderStyle commonRenderStyle = new RenderStyle("Common Render Style", new RGBA(255, 0, 0, 255), 1);
 
-        public void AddWallGeometry(ElementDataModel data)
+        private static readonly string BrepGeometryFilePath = GetSampleFilePath("nist_ftc_09_asme1_rd.stp");
+        private static readonly string MeshGeometryFilePath = GetSampleFilePath("ball.obj");
+        private static readonly string IfcGeometryFilePath = GetSampleFilePath("BasinAdvancedBrep.ifc");
+        private static readonly string BuiltInParamsFilePath = GetSampleFilePath("BuiltInParams.json");
+
+
+        /// <summary>
+        /// Common render style used across the application.
+        /// </summary>
+        internal static readonly RenderStyle CommonRenderStyle = new RenderStyle(
+            "Sample Render Style",
+            new RGBA(255, 0, 0, 255),
+            1);
+
+
+        private static readonly Autodesk.GeometryUtilities.MeshAPI.Mesh SampleMeshApiObject = new Autodesk.GeometryUtilities.MeshAPI.Mesh
         {
-            ElementGeometry wallGeometry = ElementDataModel.CreateGeometry(new GeometryProperties($"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\\InputStepFile\\11DB159F6864D8FC02B33D7E9280498F08DFC4FB.stp", commonRenderStyle));
+            MeshColor = new Color(0.5f, 0.0f, 0.70f, 1.0f),
+            Vertices = new List<Vertex>
+            {
+                new Vertex(-1, -1, -1),
+                new Vertex(1, -1, -1),
+                new Vertex(1, 1, -1),
+                new Vertex(-1, 1, -1),
+                new Vertex(-1, -1, 1),
+                new Vertex(1, -1, 1),
+                new Vertex(1, 1, 1),
+                new Vertex(-1, 1, 1)
+},
+            Faces = new List<Face>
+            {
+                new Face { Corners = new List<int> { 0, 2, 1 }, FaceColor = new Color(1.0f, 1.0f, 1.0f, 1.0f) },
+                new Face { Corners = new List<int> { 0, 3, 2 }, FaceColor = new Color(1.0f, 1.0f, 1.0f, 1.0f) },
+                new Face { Corners = new List<int> { 4, 5, 6 }, FaceColor = new Color(1.0f, 1.0f, 1.0f, 1.0f) },
+                new Face { Corners = new List<int> { 4, 6, 7 }, FaceColor = new Color(0.0f, 0.4f, 1.0f, 1.0f) },
+                new Face { Corners = new List<int> { 0, 3, 7 }, FaceColor = new Color(1.0f, 1.0f, 1.0f, 1.0f) },
+                new Face { Corners = new List<int> { 0, 7, 4 }, FaceColor = new Color(1.0f, 1.0f, 1.0f, 1.0f) },
+                new Face { Corners = new List<int> { 1, 5, 6 }, FaceColor = new Color(1.0f, 1.0f, 1.0f, 1.0f) },
+                new Face { Corners = new List<int> { 1, 6, 2 }, FaceColor = new Color(1.0f, 0.3f, 1.0f, 1.0f) },
+                new Face { Corners = new List<int> { 3, 2, 7 }, FaceColor = new Color(1.0f, 1.0f, 1.0f, 1.0f) },
+                new Face { Corners = new List<int> { 2, 6, 7 }, FaceColor = new Color(1.0f, 1.0f, 0.1f, 1.0f) },
+                new Face { Corners = new List<int> { 0, 1, 5 }, FaceColor = new Color(1.0f, 1.0f, 1.0f, 1.0f) },
+                new Face { Corners = new List<int> { 0, 5, 4 }, FaceColor = new Color(1.0f, 1.0f, 0.8f, 1.0f) }
 
-            var wallElement = data.AddElement(new ElementProperties("1", "Wall-1", "Walls", "Wall", "Generic Wall"));
-            var wallGeometries = new List<ElementGeometry> { wallGeometry };
+            }
+        };
 
-            data.SetElementGeometryByElement(wallElement, wallGeometries);
+        /// <summary>
+        /// Adds objects with varied geometry types cycling through STP, IFC, OBJ, and MeshAPI.
+        /// </summary>
+        public static Task AddVariedGeometryObjects(ElementDataModel dataModel, int numberOfObjects)
+        {
+            if (dataModel == null) throw new ArgumentNullException(nameof(dataModel));
+
+            try
+            {
+                string uniquePrefix = GetRandomId();
+                for (int i = 0; i < numberOfObjects; i++)
+                {
+                    var element = dataModel.AddElement(CreateElementProperties(
+                        $"Object-{uniquePrefix}-{i + 1}",
+                        $"Object-{uniquePrefix}-{i + 1}"));
+
+                    var geometry = CreateGeometryByType(i % 4, i);
+                    dataModel.SetElementGeometry(element, new List<ElementGeometry> { geometry });
+                }
+
+                return Task.CompletedTask;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error adding varied geometry objects: {ex.Message}");
+                throw;
+            }
         }
 
-        public void AddGeometryWithLengthUnit(ElementDataModel data)
+        /// <summary>
+        /// Generates a random unique identifier for naming purposes.
+        /// </summary>
+        public static string GetRandomId()
         {
-            var millimeterRodStepFile = $"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\\InputStepFile\\1000mm_rod.stp";
-
-            //Specify default LengthUnit of the step file; for this file it is millimeters
-            var millimeterRodGeometry = ElementDataModel.CreateGeometry(new GeometryProperties(millimeterRodStepFile, commonRenderStyle) { LengthUnit = UnitFactory.MilliMeter, DisplayLengthUnit = UnitFactory.MilliMeter, DisplayAngleUnit = UnitFactory.Radian });
-
-            var rodElement = data.AddElement(new ElementProperties("RodElement", "SampleRod", "GenericRods", "GenericRod", "Generic Rod") { LengthUnit = UnitFactory.MilliMeter, DisplayLengthUnit = UnitFactory.MilliMeter });
-
-            var rodElementGeometry = new List<ElementGeometry>() { millimeterRodGeometry };
-
-            data.SetElementGeometryByElement(rodElement, rodElementGeometry);
+            return Guid.NewGuid().ToString("N").Substring(0, 5);
         }
+
+        private static ElementProperties CreateElementProperties(string id, string name)
+        {
+            return new ElementProperties(id, name, "Generic", "Generic", "Generic Object");
+        }
+
+        /// <summary>
+        /// Adds a unique string parameter to the specified element.
+        /// </summary>
+        public static async Task AddUniqueStringParameter(Element element)
+        {
+            if (element == null) throw new ArgumentNullException(nameof(element));
+
+            var uniqueId = GetRandomId();
+            await AddStringParameter(element, uniqueId);
+        }
+
+        private static async Task AddStringParameter(Element element, string uniqueId)
+        {
+            var parameter = new Parameter($"TestString{uniqueId}", "TestStringValue")
+            {
+                SampleText = "Sample string parameter",
+                Description = "Demo string parameter for sample connector",
+                ReadOnly = false,
+                IsCustomParameter = true,
+                GroupID = Group.Graphics.DisplayName()
+            };
+
+            await element.CreateInstanceParameterAsync(parameter);
+        }
+
+        //TODO: question: do we need to create geometry using files?
+        private static ElementGeometry CreateGeometryByType(int geometryType, int index)
+        {
+            switch (geometryType)
+            {
+                case 0:
+                    return ElementDataModel.CreateFileGeometry(new GeometryProperties(BrepGeometryFilePath, CommonRenderStyle));
+                case 1:
+                    return ElementDataModel.CreateFileGeometry(new GeometryProperties(IfcGeometryFilePath, CommonRenderStyle));
+                case 2:
+                    return ElementDataModel.CreateFileGeometry(new GeometryProperties(MeshGeometryFilePath, CommonRenderStyle));
+                case 3:
+                    return ElementDataModel.CreateMeshGeometry(new GeometryProperties(SampleMeshApiObject, $"MeshAPI-{index}"));
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(geometryType), "Invalid geometry type");
+            }
+        }
+
 
         public void AddPrimitiveGeometries(ElementDataModel data)
         {
@@ -46,6 +156,12 @@ namespace SampleConnector
             AddPrimitivePointGeometry(data);
             AddPrimitiveCurveAndSurfaceGeometries(data);
             AddPrimitivePolylineGeometry(data);
+        }
+
+        private static string GetSampleFilePath(string fileName)
+        {
+            return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? string.Empty,
+                               "SampleInputFiles", fileName);
         }
 
         private void AddPrimitiveLineGeometries(ElementDataModel data)
@@ -67,7 +183,7 @@ namespace SampleConnector
             setOfLines.Add(lineone);
 
             newBRepElementGeometry.Add(ElementDataModel.CreatePrimitiveGeometry(new GeometryProperties(setOfLines, commonRenderStyle)));
-            data.SetElementGeometryByElement(newElement, newBRepElementGeometry);
+            data.SetElementGeometry(newElement, newBRepElementGeometry);
 
             var newLineElement2 = data.AddElement(new ElementProperties("Line2", "SampleLine", "Generics", "Generic", "Generic Object"));
 
@@ -87,7 +203,7 @@ namespace SampleConnector
 
             newlineElementGeometry.Add(ElementDataModel.CreatePrimitiveGeometry(new GeometryProperties(settwoOfLines, commonRenderStyle)));
             newlineElementGeometry.Add(ElementDataModel.CreatePrimitiveGeometry(new GeometryProperties(setthreeOfLines, commonRenderStyle)));
-            data.SetElementGeometryByElement(newLineElement2, newlineElementGeometry);
+            data.SetElementGeometry(newLineElement2, newlineElementGeometry);
 
         }
 
@@ -95,8 +211,8 @@ namespace SampleConnector
         {
             var newBRepGeometry = new List<ElementGeometry>();
             var filePath = $"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\\InputStepFile\\cone.stp";
-            newBRepGeometry.Add(ElementDataModel.CreateGeometry(new GeometryProperties(filePath, commonRenderStyle)));
-            data.SetElementGeometryByElement(newBRep, newBRepGeometry);
+            newBRepGeometry.Add(ElementDataModel.CreateFileGeometry(new GeometryProperties(filePath, commonRenderStyle)));
+            data.SetElementGeometry(newBRep, newBRepGeometry);
         }
 
         public void AddPrimitivePointGeometry(ElementDataModel data)
@@ -106,7 +222,7 @@ namespace SampleConnector
             var newPointElementGeometry = new List<ElementGeometry>();
             DesignPoint point = new DesignPoint(10.0, 10.0, 10.0);
             newPointElementGeometry.Add(ElementDataModel.CreatePrimitiveGeometry(new GeometryProperties(point, commonRenderStyle)));
-            data.SetElementGeometryByElement(newPointElement, newPointElementGeometry);
+            data.SetElementGeometry(newPointElement, newPointElementGeometry);
 
         }
         public void AddPrimitiveCurveAndSurfaceGeometries(ElementDataModel data)
@@ -119,7 +235,7 @@ namespace SampleConnector
             AddSurfaceGeometries(geomContainer);
 
             circleElementGeometry.Add(ElementDataModel.CreatePrimitiveGeometry(new GeometryProperties(geomContainer, commonRenderStyle)));
-            data.SetElementGeometryByElement(circleElement, circleElementGeometry);
+            data.SetElementGeometry(circleElement, circleElementGeometry);
         }
 
         private void AddCurveGeometries(GeometryContainer geometryContainer)
@@ -494,193 +610,11 @@ namespace SampleConnector
 
             var meshGeom = ElementDataModel.CreateMeshGeometry(new GeometryProperties(meshObjWithColor, "Mesh With Color"));
             var meshElement = data.AddElement(new ElementProperties("Mesh1", "SampleMesh", "Mesh", "Mesh", "In memory mesh"));
-            data.SetElementGeometryByElement(meshElement, new List<ElementGeometry> { meshGeom });
+            data.SetElementGeometry(meshElement, new List<ElementGeometry> { meshGeom });
 
             var complexMeshGeom = ElementDataModel.CreateMeshGeometry(new GeometryProperties(complexMesh, "Complex Mesh With Color"));
             var complexMeshElement = data.AddElement(new ElementProperties("ComplexMesh", "ComplexSampleMesh", "Mesh", "Mesh", "Complex In memory mesh"));
-            data.SetElementGeometryByElement(complexMeshElement, new List<ElementGeometry> { complexMeshGeom });
-        }
-
-        public void AddIFCGeometry(ElementDataModel data)
-        {
-            var newIfcBrep = data.AddElement(new ElementProperties("NISTIFC", "SampleIFC", "IFCs", "IFC", "IFC Object"));
-
-            var newIfcBRepGeometry = new List<ElementGeometry>();
-            var ifcfilePath = $"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\\InputStepFile\\Beam.ifc";
-            newIfcBRepGeometry.Add(ElementDataModel.CreateGeometry(new GeometryProperties(ifcfilePath, commonRenderStyle)));
-            data.SetElementGeometryByElement(newIfcBrep, newIfcBRepGeometry);
-        }
-
-        public async Task AddCustomParametersToElement(ElementDataModel elementDataModel, Element element, string schemaNamespace)
-        {
-            /* Custom Instance Parameters */
-            //create bool Custom parameter for instance
-            await CreateCustomInstanceParameter_Bool(element, schemaNamespace);
-
-            //create float Custom parameter for instance
-            await CreateCustomInstanceParameter_Float(element, schemaNamespace);
-
-            //create int Custom parameter for instance
-            await CreateCustomInstanceParameter_Int(element, schemaNamespace);
-
-            //Create string Custom parameter for instance
-            await CreateCustomInstanceParameter_String(element, schemaNamespace);
-
-            /* Custom Design Parameters */
-            //Create bool Custom parameter for design
-            await CreateCustomDesignParameter_Bool(elementDataModel, schemaNamespace);
-
-            //Create float Custom parameter for design
-            await CreateCustomDesignParameter_Float(elementDataModel, schemaNamespace);
-
-            //Create int Custom parameter for design
-            await CreateCustomDesignParameter_Int(elementDataModel, schemaNamespace);
-
-            //Create string Custom parameter for design
-            await CreateCustomDesignParameter_String(elementDataModel, schemaNamespace);
-        }
-
-        private async Task CreateCustomInstanceParameter_Bool(Element element, string schemaNamespace)
-        {
-            string schemaId = "exchange.parameter." + schemaNamespace + ":BoolTestCustomParameter-1.0.0";
-            ParameterDefinition customParameter = ParameterDefinition.Create(schemaId, ParameterDataType.Bool);
-            customParameter.Name = "Test";
-            customParameter.SampleText = "";
-            customParameter.Description = "";
-            customParameter.ReadOnly = false;
-            customParameter.IsCustomParameter = true;
-            customParameter.GroupID = Group.General.DisplayName();
-            (customParameter as BoolParameterDefinition).Value = true;
-            await element.CreateInstanceParameterAsync(customParameter);
-        }
-
-        private async Task CreateCustomInstanceParameter_Float(Element element, string schemaNamespace)
-        {
-            string schemaId = "exchange.parameter." + schemaNamespace + ":Float64TestCustomParameter-1.0.0";
-            ParameterDefinition customParameterFloat = ParameterDefinition.Create(schemaId, ParameterDataType.Float64);
-            customParameterFloat.Name = "TestFloat64";
-            customParameterFloat.SampleText = "SampleText-FloatCustomParam";
-            customParameterFloat.Description = "Description-FloatCustomParam";
-            customParameterFloat.ReadOnly = false;
-            customParameterFloat.GroupID = Group.Dimensions.DisplayName();
-            customParameterFloat.SpecID = Spec.Volume.DisplayName();
-            customParameterFloat.IsCustomParameter = true;
-            (customParameterFloat as MeasurableParameterDefinition).Value = 4.52;
-            await element.CreateInstanceParameterAsync(customParameterFloat);
-        }
-
-        private async Task CreateCustomInstanceParameter_Int(Element element, string schemaNamespace)
-        {
-            string schemaId = "exchange.parameter." + schemaNamespace + ":Int64TestCustomParameter-1.0.0";
-            ParameterDefinition customParameterInt = ParameterDefinition.Create(schemaId, ParameterDataType.Int64);
-            customParameterInt.Name = "TestInt64";
-            customParameterInt.SampleText = "";
-            customParameterInt.Description = "";
-            customParameterInt.ReadOnly = false;
-            customParameterInt.GroupID = Group.General.DisplayName();
-            customParameterInt.IsCustomParameter = true;
-            (customParameterInt as Int64ParameterDefinition).Value = 5;
-            await element.CreateInstanceParameterAsync(customParameterInt);
-        }
-
-        private async Task CreateCustomInstanceParameter_String(Element element, string schemaNamespace)
-        {
-            string schemaId = "exchange.parameter." + schemaNamespace + ":StringTestCustomParameter-1.0.0";
-            ParameterDefinition customParameterString = ParameterDefinition.Create(schemaId, ParameterDataType.String);
-            customParameterString.Name = "TestString";
-            customParameterString.SampleText = "SampleTest-String";
-            customParameterString.Description = "Description-String";
-            customParameterString.ReadOnly = false;
-            customParameterString.GroupID = Group.Graphics.DisplayName();
-            customParameterString.IsCustomParameter = true;
-            (customParameterString as StringParameterDefinition).Value = "TestStringValue";
-            await element.CreateInstanceParameterAsync(customParameterString);
-        }
-
-        private async Task CreateCustomDesignParameter_Bool(ElementDataModel element, string schemaNamespace)
-        {
-            string schemaId = "exchange.parameter." + schemaNamespace + ":BoolTestCustomTypeParameter-1.0.0";
-            ParameterDefinition customParameterTestDesign = ParameterDefinition.Create(schemaId, ParameterDataType.Bool);
-            customParameterTestDesign.Name = "Test_Design_Param";
-            customParameterTestDesign.SampleText = "";
-            customParameterTestDesign.Description = "";
-            customParameterTestDesign.ReadOnly = false;
-            customParameterTestDesign.GroupID = Group.Graphics.DisplayName();
-            customParameterTestDesign.IsCustomParameter = true;
-            (customParameterTestDesign as BoolParameterDefinition).Value = true;
-            await element.CreateTypeParameterAsync("Generic Object", customParameterTestDesign);
-        }
-
-        private async Task CreateCustomDesignParameter_Float(ElementDataModel element, string schemaNamespace)
-        {
-            string schemaId = "exchange.parameter." + schemaNamespace + ":Float64TestCustomTypeParameter-1.0.0";
-            ParameterDefinition customParameterFloatDesign = ParameterDefinition.Create(schemaId, ParameterDataType.Float64);
-            customParameterFloatDesign.Name = "TestFloat64_Desig_Param";
-            customParameterFloatDesign.SampleText = "SampleText-FloatCustomParam";
-            customParameterFloatDesign.Description = "Description-FloatCustomParam";
-            customParameterFloatDesign.ReadOnly = false;
-            customParameterFloatDesign.GroupID = Group.Dimensions.DisplayName();
-            customParameterFloatDesign.SpecID = Spec.Volume.DisplayName();
-            customParameterFloatDesign.IsCustomParameter = true;
-            (customParameterFloatDesign as MeasurableParameterDefinition).Value = 4.52;
-            await element.CreateTypeParameterAsync("Generic Object", customParameterFloatDesign);
-        }
-
-        private async Task CreateCustomDesignParameter_Int(ElementDataModel element, string schemaNamespace)
-        {
-            string schemaId = "exchange.parameter." + schemaNamespace + ":Int64TestCustomTypeParameter-1.0.0";
-            ParameterDefinition customParameterIntDesign = ParameterDefinition.Create(schemaId, ParameterDataType.Int64);
-            customParameterIntDesign.Name = "TestInt64_Design_Param";
-            customParameterIntDesign.SampleText = "SampleText-Int64CustomParam";
-            customParameterIntDesign.Description = "Desc-Int64CustomParam";
-            customParameterIntDesign.ReadOnly = false;
-            customParameterIntDesign.GroupID = Group.Graphics.DisplayName();
-            customParameterIntDesign.IsCustomParameter = true;
-            (customParameterIntDesign as Int64ParameterDefinition).Value = 5;
-            await element.CreateTypeParameterAsync("Generic Object", customParameterIntDesign);
-        }
-
-        private async Task CreateCustomDesignParameter_String(ElementDataModel element, string schemaNamespace)
-        {
-            string schemaId = "exchange.parameter." + schemaNamespace + ":StringTestCustomTypeParameter-1.0.0";
-            ParameterDefinition customParameterStringDesign = ParameterDefinition.Create(schemaId, ParameterDataType.String);
-            customParameterStringDesign.Name = "TestString-Design";
-            customParameterStringDesign.SampleText = "SampleTest-String-Design";
-            customParameterStringDesign.Description = "Description-String-Design";
-            customParameterStringDesign.ReadOnly = false;
-            customParameterStringDesign.GroupID = Group.Graphics.DisplayName();
-            customParameterStringDesign.IsCustomParameter = true;
-            (customParameterStringDesign as StringParameterDefinition).Value = "TestStringValue";
-            await element.CreateTypeParameterAsync("Generic Object", customParameterStringDesign);
-        }
-
-        public async Task AddInstanceParametersToElement(Element element)
-        {
-            //add element instance parameter
-            var hostAreaComputed = ParameterDefinition.Create(Autodesk.Parameters.Parameter.HostAreaComputed, ParameterDataType.Float64);
-            (hostAreaComputed as MeasurableParameterDefinition).Value = 4.684312000000002;
-            await element.CreateInstanceParameterAsync(hostAreaComputed);
-
-            ParameterDefinition relatedToMass = ParameterDefinition.Create(Autodesk.Parameters.Parameter.RelatedToMass, ParameterDataType.Bool);
-            (relatedToMass as BoolParameterDefinition).Value = true;
-            await element.CreateInstanceParameterAsync(relatedToMass);
-
-            ParameterDefinition wallStructuralUsageParam = ParameterDefinition.Create(Autodesk.Parameters.Parameter.WallStructuralUsageParam, ParameterDataType.Int64);
-            (wallStructuralUsageParam as Int64ParameterDefinition).Value = 42;
-            await element.CreateInstanceParameterAsync(wallStructuralUsageParam);
-
-            ParameterDefinition ifcGuid = ParameterDefinition.Create(Autodesk.Parameters.Parameter.IfcGuid, ParameterDataType.String);
-            (ifcGuid as StringParameterDefinition).Value = "0q69lF83X65vuO5PXJfXpH";
-            await element.CreateInstanceParameterAsync(ifcGuid);
-
-            ParameterDefinition wallCrossSection = ParameterDefinition.Create(Autodesk.Parameters.Parameter.WallCrossSection, ParameterDataType.Int32);
-            (wallCrossSection as Int32ParameterDefinition).Value = 1;
-            await element.CreateInstanceParameterAsync(wallCrossSection);
-
-            //add element instance reference parameter
-            await element.CreateReferenceParameterAsync(Autodesk.Parameters.Parameter.WallBaseConstraint, "1C4F1B4A52597F316FE15C0533238314EEA43E75");
-            //add element instance reference Name Only parameter
-            await element.CreateReferenceNameOnlyParametersAsync(Autodesk.Parameters.Parameter.PhaseCreated, "New Construction");
+            data.SetElementGeometry(complexMeshElement, new List<ElementGeometry> { complexMeshGeom });
         }
 
         public void AddElementsForExchangeUpdate(ElementDataModel data)
@@ -688,9 +622,9 @@ namespace SampleConnector
             //Add Element with BRep Geometry
             var newBRepGeometry = new List<ElementGeometry>();
             var filePath = $"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\\InputStepFile\\nist_ftc_09_asme1_rd.stp";
-            newBRepGeometry.Add(ElementDataModel.CreateGeometry(new GeometryProperties(filePath, commonRenderStyle)));
+            newBRepGeometry.Add(ElementDataModel.CreateFileGeometry(new GeometryProperties(filePath, commonRenderStyle)));
             var newBRep = data.AddElement(new ElementProperties("0-new", "SampleBrep", "Generics", "Generic", "Non-Generic Object"));
-            data.SetElementGeometryByElement(newBRep, newBRepGeometry);
+            data.SetElementGeometry(newBRep, newBRepGeometry);
 
             //Add Element with Mesh Geometry
 
@@ -733,7 +667,7 @@ namespace SampleConnector
 
             var meshGeom = ElementDataModel.CreateMeshGeometry(new GeometryProperties(meshObjWithColor, "Mesh With Color"));
             var meshElement = data.AddElement(new ElementProperties("Mesh3", "SampleMesh", "Mesh", "Mesh", "In memory mesh with Color"));
-            data.SetElementGeometryByElement(meshElement, new List<ElementGeometry> { meshGeom });
+            data.SetElementGeometry(meshElement, new List<ElementGeometry> { meshGeom });
         }
 
         private void AddPrimitivePolylineGeometry(ElementDataModel dataModel)
@@ -759,7 +693,7 @@ namespace SampleConnector
             };
 
             polyLineElementGeometry.Add(ElementDataModel.CreatePrimitiveGeometry(new GeometryProperties(geomContainer, commonRenderStyle)));
-            dataModel.SetElementGeometryByElement(polyLineElement, polyLineElementGeometry);
+            dataModel.SetElementGeometry(polyLineElement, polyLineElementGeometry);
         }
     }
 }

@@ -363,3 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 
 !*/InputStepFile/*.obj
+/MIGRATION_GUIDE.md

@@ -1,47 +1,46 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Web.Hosting;
-using System.Windows.Markup;
-using Autodesk.DataExchange.BaseModels;
-using Autodesk.DataExchange.Core;
-using Autodesk.DataExchange.Core.Enums;
-using Autodesk.DataExchange.Core.Models;
-using Autodesk.DataExchange.DataModels;
-using Autodesk.DataExchange.Interface;
-using Autodesk.DataExchange.Models;
-using Autodesk.DataExchange.SchemaObjects.Assets;
-using Autodesk.DataExchange.SchemaObjects.Units;
-using Autodesk.DataExchange.Schemas.Models;
-using Autodesk.Parameters;
-using PrimitiveGeometry = Autodesk.GeometryPrimitives;
-
-namespace SampleConnector
+﻿namespace SampleConnector
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using Autodesk.DataExchange.BaseModels;
+    using Autodesk.DataExchange.Core;
+    using Autodesk.DataExchange.Core.Enums;
+    using Autodesk.DataExchange.Core.Events;
+    using Autodesk.DataExchange.Core.Models;
+    using Autodesk.DataExchange.DataModels;
+    using Autodesk.DataExchange.Interface;
+    using Autodesk.DataExchange.Models;
+    using Autodesk.DataExchange.UI.Core.Interfaces;
+    using SeverityEnum = Autodesk.DataExchange.UI.Core.Enums.Severity;
+
     class CustomReadWriteModel : BaseReadWriteExchangeModel
     {
-        public Autodesk.DataExchange.UI.Application Application;
+        internal IInteropBridge Bridge { get; set; }
+
         private string currentRevision;
-        private ExchangeData currentExchangeData;
+        private ElementDataModel currentElementDataModel;
         private GeometryConfiguration geometryConfiguration;
+
         public CustomReadWriteModel(IClient client) : base(client)
         {
             AfterCreateExchange += AfterCreateExchangeAction;
             GetLatestExchangeDetails += GetLatestExchangeDataAsync;
-            geometryConfiguration = _sDKOptions?.GeometryConfiguration;
         }
 
-        List<DataExchange> localStorage = new List<DataExchange>();
+        private List<DataExchange> localStorage = new List<DataExchange>();
+        private const string SyncingMessage = "Syncing Exchange Data...";
+        private const string GeneratingViewableMessage = "Generating ACC Viewable...";
+        private const string DownloadingMessage = "Downloading...";
+        private const int ViewableGenerationDelayMs = 5000;
 
         public override async Task<List<DataExchange>> GetExchangesAsync(ExchangeSearchFilter exchangeSearchFilter)
         {
-            
-            localStorage =  await GetValidExchangesAsync(exchangeSearchFilter,localStorage);
-           
+
+            localStorage = await GetValidExchangesAsync(exchangeSearchFilter, localStorage);
+
             return localStorage;
         }
 
@@ -58,145 +57,128 @@ namespace SampleConnector
             return response;
         }
 
-
-        public async Task GetLatestExchangeDataAsync(Object sender,  ExchangeItem exchangeItem)
+        
+        public async Task GetLatestExchangeDataAsync(GetLatestExchangeDetailsEventArgs arg)
         {
-            //start loader
-            Application.ClearBusyMessage();
-            Application.ShowBusyMessage("Downloading..");
+            var exchangeItem = arg.ExchangeItem;
+            this.Bridge?.SetProgressMessage(DownloadingMessage);
+            this.Bridge?.SendNotification($"Downloading '{exchangeItem.Name}'", SeverityEnum.Info, 5000);
 
-            //clear existing notifications
-            Application.ClearAllNotification();
-            Application.ShowNotification(exchangeItem.Name + " Downloading", NotificationType.Information);
+            var exchangeIdentifier = CreateDataExchangeIdentifier(exchangeItem);
 
-            var exchangeIdentifier = new DataExchangeIdentifier
-            {
-                CollectionId = exchangeItem.ContainerID,
-                ExchangeId = exchangeItem.ExchangeID,
-                HubId = exchangeItem.HubId,
-            };
             try
             {
-                //Get a list of all revisions
-                var revisions = await Client.GetExchangeRevisionsAsync(exchangeIdentifier);
-                //Get the latest revision
+                await this.ProcessExchangeRevisions(exchangeIdentifier, exchangeItem);
 
-                var firstRev = revisions.First().Id;
+                // Logs Skipped Elements
+                this._sDKOptions?.Logger?.LogSkippedElement(SkippedElementType.Failed, "elementId", "Line", "PolyLine");
+                this._sDKOptions?.Logger?.LogSkippedElement(SkippedElementType.Unsupported, "elementId", "Line", "FeatureLine");
+                this._sDKOptions?.Logger?.LogSkippedElement(SkippedElementType.Miscellaneous, "elementId", "Line", "CurveSet");
+                this._sDKOptions?.Logger?.LogSkippedElement(SkippedElementType.Failed, "elementId");
+                this._sDKOptions?.Logger?.LogSkippedElement(SkippedElementType.Failed, "elementId", "Line", "CurveSet");
 
-                if (!string.IsNullOrEmpty(currentRevision) && currentRevision == firstRev)
-                {
-                    Console.WriteLine("No changes found");
-                    return;
-                }
+                await this.DownloadExchangeGeometry(exchangeIdentifier);
 
-                // Get Exchange data
-                if (currentExchangeData == null || currentExchangeData?.ExchangeID != exchangeIdentifier.ExchangeId)
-                {
-                    // Get full Exchange Data till the latest revision
-                    currentExchangeData = await Client.GetExchangeDataAsync(exchangeIdentifier);
-                    currentRevision = firstRev;
+                var successMessage = $"Successfully downloaded '{exchangeItem.Name}'";
+                this.Bridge?.SendNotification(successMessage, SeverityEnum.Success, 0);
 
-                    // Use ElementDataModel Wrapper
-                    var data = ElementDataModel.Create(Client, currentExchangeData);
-
-                    // Get all Wall Elements
-                    var wallElements = data.Elements.Where(element => element.Category == "Walls").ToList();
-
-                    var wallElements2 = data.Elements.Where(element => element.InstanceParameters.Count > 0).ToList();
-
-                    // Get all added Elements
-                    var addedElements = data.GetCreatedElements(new List<string> { currentRevision });
-
-                    // Get all modified Elements
-                    var modifiedElements = data.GetModifiedElements(new List<string> { currentRevision }); ;
-
-                    // Get all deleted Elements
-                    var deletedElements = data.DeletedElements.ToList();
-
-                    var allGeometries = await data.GetElementGeometriesByElementsAsync(data.Elements).ConfigureAwait(false);
-
-                    var typeParametersDict = data.GetTypeParameters(new List<string>() { "Generic Object" });
-                    foreach (var item in typeParametersDict)
-                    {
-                        foreach (var parameter in item.Value)
-                            ShowParameter(parameter);
-                    }
-
-                    foreach (var element in data.Elements)
-                    {
-                        var parameters = element.InstanceParameters;
-                        foreach (var parameter in parameters)
-                        {
-                            ShowParameter(parameter);
-                        }
-                    }
-
-                    //Get Geometry of whole exchange file as STEP
-                    var wholeGeometryPath = Client.DownloadCompleteExchangeAsSTEP(data.ExchangeData.ExchangeIdentifier);
-                    var wholeGeometryPathOBJ = Client.DownloadCompleteExchangeAsOBJ(data.ExchangeData.ExchangeID, data.ExchangeData.ExchangeIdentifier.CollectionId);
-                }
-                else
-                {
-                    // Update Data Exchange data with Delta
-                    var newRevision = await Client.RetrieveLatestExchangeDataAsync(currentExchangeData);
-                    var newerRevisions = new List<string>();
-                    if (!string.IsNullOrEmpty(newRevision))
-                    {
-                        foreach (var revision in revisions)
-                        {
-                            if (revision.Id == currentRevision)
-                            {
-                                break;
-                            }
-
-                            newerRevisions.Add(revision.Id);
-                        }
-
-                        currentRevision = newRevision;
-                    }
-
-                    // Use ElementDataModel Wrapper
-                    var data = ElementDataModel.Create(Client, currentExchangeData);
-
-                    // Get all Wall Elements
-                    var wallElements = data.Elements.Where(element => element.Category == "Walls").ToList();
-
-                    // Get all added Elements
-                    var addedElements = data.GetCreatedElements(newerRevisions);
-
-                    // Get all modified Elements
-                    var modifiedElements = data.GetModifiedElements(newerRevisions);
-
-                    // Get all deleted Elements
-                    var deletedElements = data.GetDeletedElements(newerRevisions);
-
-                    var allGeometries = await data.GetElementGeometriesByElementsAsync(data.Elements).ConfigureAwait(false);
-
-                    //Get Geometry of whole exchange file as STEP
-                    var wholeGeometryPathSTEP = Client.DownloadCompleteExchangeAsSTEP(data.ExchangeData.ExchangeIdentifier);
-                    var wholeGeometryPathOBJ = Client.DownloadCompleteExchangeAsOBJ(data.ExchangeData.ExchangeID, data.ExchangeData.ExchangeIdentifier.CollectionId);
-                }
-
-               Application.ShowNotification(exchangeItem.Name + " Download complete.", NotificationType.Information);
-               await UpdateLocalExchange(exchangeItem);
-
+                await this.UpdateLocalExchange(exchangeItem);
             }
             catch (Exception e)
             {
-                Application.ShowNotification(exchangeItem.Name + " Download failed.", NotificationType.Error);
-                Console.WriteLine(e);
-            }
-            finally
-            {
-                //clear loader after loading data exchange
-                Application.ClearBusyMessage();
-                Application.ClearAllNotification();
+                var errorMessage = $"Failed to download '{exchangeItem.Name}'";
+                this.Bridge?.SendNotification(errorMessage, SeverityEnum.Error, 0);
+                Console.WriteLine($"{errorMessage}: {e.Message}");
             }
         }
 
-        public void AfterCreateExchangeAction(Object sender, DataExchange exchange)
+        private async Task DownloadExchangeGeometry(DataExchangeIdentifier exchangeIdentifier)
         {
-            localStorage.Add(exchange);
+            // Download complete exchange as different formats for demonstration
+            var stepFilePath = this.Client.DownloadCompleteExchangeAsSTEP(exchangeIdentifier);
+            var objFilePath = this.Client.DownloadCompleteExchangeAsOBJ(
+                exchangeIdentifier.ExchangeId,
+                exchangeIdentifier.CollectionId);
+
+            Console.WriteLine($"Downloaded geometry: STEP={stepFilePath}, OBJ={objFilePath}");
+        }
+
+        private async Task ProcessExchangeRevisions(DataExchangeIdentifier exchangeIdentifier, ExchangeItem exchangeItem)
+        {
+            var revResponse = await this.Client.GetExchangeRevisionsAsync(exchangeIdentifier);
+            var revisions = revResponse.Value;
+            var latestRevisionId = revisions.First().Id;
+            var newerRevisions = new List<string>();
+
+            if (!string.IsNullOrEmpty(this.currentRevision) && this.currentRevision == latestRevisionId)
+            {
+                Console.WriteLine("No changes found");
+                return;
+            }
+
+            ElementDataModel data = await this.GetOrUpdateElementData(exchangeIdentifier, latestRevisionId, revisions, newerRevisions);
+            await this.AnalyzeExchangeElements(data, newerRevisions);
+        }
+
+        private async Task AnalyzeExchangeElements(ElementDataModel data, List<string> newerRevisions)
+        {
+            // Demonstrate various element analysis operations
+            var wallElements = data.Elements.Where(element => element.Category == "Walls").ToList();
+            var addedElements = data.GetCreatedElements(newerRevisions);
+            var modifiedElements = data.GetModifiedElements(newerRevisions);
+            var deletedElements = data.GetDeletedElements(newerRevisions);
+
+            // Load geometry for all elements
+            var geometries = await data.GetElementGeometriesAsync(data.Elements);
+
+            // Log analysis results for sample purposes
+            Console.WriteLine($"Analysis: {wallElements.Count} walls, {addedElements.Count()} added, " +
+                            $"{modifiedElements.Count()} modified, {deletedElements.Count()} deleted elements");
+        }
+
+        private async Task<ElementDataModel> GetOrUpdateElementData(
+            DataExchangeIdentifier exchangeIdentifier,
+            string latestRevisionId,
+            IEnumerable<ExchangeRevision> revisions,
+            List<string> newerRevisions)
+        {
+            ElementDataModel data;
+
+            if (this.currentElementDataModel == null)
+            {
+                // Get full exchange data for the first time
+                var response = await this.Client.GetElementDataModelAsync(exchangeIdentifier);
+                this.currentElementDataModel = response.Value;
+                this.currentRevision = latestRevisionId;
+                data = ElementDataModel.Create(Client);
+                newerRevisions.Add(latestRevisionId);
+            }
+            else
+            {
+                // Update with delta changes
+                var response = await this.Client.RetrieveLatestExchangeDataAsync(this.currentElementDataModel);
+                var newRevision = response.Value;
+
+                if (!string.IsNullOrEmpty(newRevision))
+                {
+                    foreach (var revision in revisions)
+                    {
+                        if (revision.Id == this.currentRevision) break;
+                        newerRevisions.Add(revision.Id);
+                    }
+                    this.currentRevision = newRevision;
+                }
+
+                data = ElementDataModel.Create(Client);
+            }
+
+            return data;
+        }
+
+
+        public void AfterCreateExchangeAction(object sender, AfterCreateExchangeEventArgs e)
+        {
+            this.localStorage.Add(e.DataExchange);
         }
 
         public void AfterUpdateExchange(ExchangeDetails exchange)
@@ -207,130 +189,168 @@ namespace SampleConnector
                 dataExchange.Updated = exchange.LastModifiedTime;
                 dataExchange.FileVersionId = exchange.FileVersionUrn;
             }
+
             _sDKOptions.Storage.Add("LocalExchanges", localStorage);
             _sDKOptions.Storage.Save();
         }
 
-        
-        public override async Task UpdateExchangeAsync(ExchangeItem ExchangeItem)
+        public override List<DataExchange> GetCachedExchanges()
+        {
+            return this.localStorage?.ToList() ?? new List<DataExchange>();
+        }
+
+        public override async Task UpdateExchangeAsync(ExchangeItem exchangeItem, CancellationToken cancellationToken = default)
         {
             try
             {
-                ElementDataModel currentElementDataModel = null;
-                currentExchangeData = await Client.GetExchangeDataAsync(
-                    new DataExchangeIdentifier 
-                    { 
-                        ExchangeId = ExchangeItem.ExchangeID, 
-                        CollectionId = ExchangeItem.ContainerID,
-                        HubId = ExchangeItem.HubId,
-                    });
+                var dataExchangeIdentifier = CreateDataExchangeIdentifier(exchangeItem);
+                var response = await this.Client.GetElementDataModelAsync(dataExchangeIdentifier);
 
-                CreateExchangeHelper createExchangeHelper = new CreateExchangeHelper();
-                //Check if this is the initial sync to newly created blank Exchange
-                if (currentExchangeData == null)
-                {
-                    /*Code block to Add Elements to blank Exchange for syncing*/
+                // Logs Skipped Elements
+                this._sDKOptions?.Logger?.LogSkippedElement(SkippedElementType.Failed, "elementId", "Line", "PolyLine");
+                this._sDKOptions?.Logger?.LogSkippedElement(SkippedElementType.Unsupported, "elementId", "Line", "FeatureLine");
+                this._sDKOptions?.Logger?.LogSkippedElement(SkippedElementType.Miscellaneous, "elementId", "Line", "CurveSet");
+                this._sDKOptions?.Logger?.LogSkippedElement(SkippedElementType.Failed, "elementId");
+                this._sDKOptions?.Logger?.LogSkippedElement(SkippedElementType.Failed, "elementId", "Line", "CurveSet");
 
-                    //Create a new ElementDataModel wrapper
-                    currentElementDataModel = ElementDataModel.Create(Client);
+                this.currentElementDataModel = response.Value;
 
-                    //Set Unit info on Root Asset
-                    (currentElementDataModel.ExchangeData.RootAsset as DesignAsset).LengthUnit = UnitFactory.Feet;
-                    (currentElementDataModel.ExchangeData.RootAsset as DesignAsset).DisplayLengthUnit = UnitFactory.Feet;
+                ElementDataModel elementDataModel = await this.PrepareElementDataModel(exchangeItem);
 
-                    //Add a basic wall geometry
-                    createExchangeHelper.AddWallGeometry(currentElementDataModel);
+                this.Bridge?.SetProgressMessage(SyncingMessage);
+                await this.Client.SyncExchangeDataAsync(dataExchangeIdentifier, elementDataModel);
 
-                    //Add geometry with specific length unit
-                    createExchangeHelper.AddGeometryWithLengthUnit(currentElementDataModel);
-
-                    //Add primitive geometries - Line, Point and Circle
-                    createExchangeHelper.AddPrimitiveGeometries(currentElementDataModel);
-
-                    //Add Mesh geometry
-                    createExchangeHelper.AddMeshGeometry(currentElementDataModel);
-
-                    //Add IFC
-                    createExchangeHelper.AddIFCGeometry(currentElementDataModel);  
-                  
-                    //Add NIST object
-                    var newBRep = currentElementDataModel.AddElement(new ElementProperties("NISTSTEP", "SampleStep", "Generics", "Generic", "Generic Object"));
-                    createExchangeHelper.AddNISTObject(currentElementDataModel, newBRep);
-
-                    //Create built in parameters
-                    await createExchangeHelper.AddInstanceParametersToElement(newBRep);
-
-                    //create bool Custom parameter for type design
-                    await createExchangeHelper.AddCustomParametersToElement(currentElementDataModel, newBRep, ExchangeItem.SchemaNamespace);
-                    
-                }
-                else
-                {
-                    /*Code block to update exchange. Add few dummy elements for sync*/
-
-                    //Create ElementDataModel wrapper on top of existing ExchangeData object
-                    currentElementDataModel = ElementDataModel.Create(Client,currentExchangeData);
-                    
-                    //Try deleting an element
-                    currentElementDataModel.DeleteElement("1");
-
-                    //Add few elements with Geometries to update exchange for Sync
-                    createExchangeHelper.AddElementsForExchangeUpdate(currentElementDataModel);
-                }
-
-                DataExchangeIdentifier exchangeIdentifier = new DataExchangeIdentifier()
-                {
-                    CollectionId = ExchangeItem.ContainerID,
-                    ExchangeId = ExchangeItem.ExchangeID,
-                    HubId = ExchangeItem.HubId,
-                };
-               
-                await Client.SyncExchangeDataAsync(exchangeIdentifier, currentElementDataModel.ExchangeData);
-
-                Application.ClearBusyMessage();
-                Application.ShowBusyMessage("Generate ACC Viewable");
-                await Task.Run(() =>
-                {
-                    try
-                    {
-                        Thread.Sleep(5000);
-#pragma warning disable CS0618 // Type or member is obsolete
-                        Client.GenerateViewableAsync(ExchangeItem.ExchangeID, ExchangeItem.ContainerID).Wait();
-#pragma warning restore CS0618 // Type or member is obsolete
-                    }
-                    catch (Exception ex)
-                    {
-                        _sDKOptions.Logger.Error(ex);
-                        throw ex;
-                    }
-                });
+                await this.GenerateViewableAsync(exchangeItem);
             }
             catch (Exception e)
             {
-                System.Windows.MessageBox.Show(e.Message);
-                Console.WriteLine(e);
+                this.HandleUpdateError(e, exchangeItem.Name);
                 throw;
             }
             finally
             {
-                _ = Task.Run(async () =>
-                {
-                    DataExchangeIdentifier dataExchangeIdentifier = new DataExchangeIdentifier()
-                    {
-                        CollectionId = ExchangeItem.ContainerID,
-                        ExchangeId = ExchangeItem.ExchangeID,
-                        HubId = ExchangeItem.HubId,
-                    };
+                // Update exchange details in background
+                _ = Task.Run(async () => await this.UpdateExchangeDetailsAsync(exchangeItem));
+            }
+        }
 
-                    ExchangeDetails exchangeDetails = await Client.GetExchangeDetailsAsync(dataExchangeIdentifier);
-                    if (exchangeDetails != null)
-                    {
-                        ExchangeItem.FileVersion = exchangeDetails.FileVersionUrn;
-                        ExchangeItem.LastModified = exchangeDetails.LastModifiedTime;
-                    }
-                    AfterUpdateExchange(exchangeDetails);
-                });
-                Application.ClearBusyMessage();
+        private static DataExchangeIdentifier CreateDataExchangeIdentifier(ExchangeItem exchangeItem)
+        {
+            return new DataExchangeIdentifier
+            {
+                ExchangeId = exchangeItem.ExchangeID,
+                CollectionId = exchangeItem.ContainerID,
+                HubId = exchangeItem.HubId,
+            };
+        }
+
+        private async Task<ElementDataModel> PrepareElementDataModel(ExchangeItem exchangeItem)
+        {
+            if (this.currentElementDataModel == null)
+            {
+                return await this.CreateInitialExchangeData();
+            }
+            else
+            {
+                return await this.UpdateExistingExchangeData();
+            }
+        }
+
+        [Obsolete]
+        private async Task GenerateViewableAsync(ExchangeItem exchangeItem)
+        {
+            this.Bridge?.SetProgressMessage(GeneratingViewableMessage);
+
+            await Task.Run(async () =>
+            {
+                try
+                {
+                    // Simulate processing time - in real scenario this would be determined by the actual process
+                    await Task.Delay(ViewableGenerationDelayMs);
+                    await this.Client.GenerateViewableAsync(exchangeItem.ExchangeID, exchangeItem.ContainerID);
+                }
+                catch (Exception ex)
+                {
+                    this._sDKOptions?.Logger?.Error(ex);
+                    throw;
+                }
+            });
+        }
+
+        private void HandleUpdateError(Exception exception, string exchangeName)
+        {
+            var errorMessage = $"Failed to update exchange '{exchangeName}': {exception.Message}";
+            // Log the error
+            Console.WriteLine(errorMessage);
+            Console.WriteLine(exception);
+
+            // For demo purposes, show message box - in production, this should be handled by UI layer
+            System.Windows.MessageBox.Show(exception.Message, "Update Error",
+                System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+        }
+
+        private async Task UpdateExchangeDetailsAsync(ExchangeItem exchangeItem)
+        {
+            try
+            {
+                var dataExchangeIdentifier = CreateDataExchangeIdentifier(exchangeItem);
+                var response = await this.Client.GetExchangeDetailsAsync(dataExchangeIdentifier);
+                var exchangeDetails = response.Value;
+
+                if (exchangeDetails != null)
+                {
+                    exchangeItem.FileVersion = exchangeDetails.FileVersionUrn;
+                    exchangeItem.LastModified = exchangeDetails.LastModifiedTime;
+                    this.AfterUpdateExchange(exchangeDetails);
+                }
+            }
+            catch (Exception ex)
+            {
+                this._sDKOptions?.Logger?.Error($"Failed to update exchange details: {ex.Message}");
+            }
+        }
+
+        private async Task<ElementDataModel> CreateInitialExchangeData()
+        {
+            // Create a new ElementDataModel for blank exchange
+            var elementDataModel = ElementDataModel.Create(Client);
+
+            // Demonstrate various geometry types with sample data
+            await CreateExchangeHelper.AddVariedGeometryObjects(elementDataModel, 3);
+
+            return elementDataModel;
+        }
+
+
+        private async Task<ElementDataModel> UpdateExistingExchangeData()
+        {
+            // Create wrapper on existing exchange data
+            var elementDataModel = ElementDataModel.Create(Client);
+
+            // Demonstrate element deletion (if elements exist)
+            this.DeleteSampleElement(elementDataModel);
+
+            // Add new elements to demonstrate updates
+            await CreateExchangeHelper.AddVariedGeometryObjects(elementDataModel, 4);
+            // Add parameters to new elements
+            await this.AddSampleParametersToNewElements(elementDataModel);
+
+            return elementDataModel;
+        }
+
+        private async Task AddSampleParametersToNewElements(ElementDataModel elementDataModel)
+        {
+            var newElements = elementDataModel.Elements.Reverse().Take(6).Reverse().ToList();
+
+            if (newElements.Count > 0) await CreateExchangeHelper.AddUniqueStringParameter(newElements[0]);
+        }
+
+        private void DeleteSampleElement(ElementDataModel elementDataModel)
+        {
+            var existingElements = elementDataModel.Elements.ToList();
+            if (existingElements.Count > 0)
+            {
+                elementDataModel.DeleteElement(existingElements[0].Id);
             }
         }
 
@@ -342,12 +362,14 @@ namespace SampleConnector
                 ExchangeId = exchangeItem.ExchangeID,
                 HubId = exchangeItem.HubId,
             };
+
             DataExchange exchange = await base.GetExchangeAsync(dataExchangeIdentifier);
             if (exchange != null)
             {
                 exchangeItem.FileVersion = exchange.FileVersionId;
                 exchangeItem.LastModified = exchange.Updated;
             }
+
             var localExchange = localStorage.FirstOrDefault(item => item.ExchangeID == exchange.ExchangeID);
             if (localExchange != null)
             {
@@ -367,22 +389,7 @@ namespace SampleConnector
         {
             localStorage.AddRange(dataExchanges);
         }
-        private void ShowParameter(Autodesk.DataExchange.DataModels.Parameter parameter)
-        {
-            if (parameter.ParameterDataType == ParameterDataType.ParameterSet)
-            {
-                Console.WriteLine((parameter as ParameterSet).Id);
-                Console.WriteLine((parameter as ParameterSet).Parameters.Count);
-                foreach (var param in (parameter as ParameterSet).Parameters)
-                {
-                    ShowParameter(param);
-                }
-            }
-            else
-            {
-                Console.WriteLine(parameter.Name);
-            }
-        }
+
 
         public override Task<IEnumerable<string>> UnloadExchangesAsync(List<ExchangeItem> exchanges)
         {
