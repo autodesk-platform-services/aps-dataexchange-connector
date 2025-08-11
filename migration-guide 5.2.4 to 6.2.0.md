@@ -296,26 +296,27 @@ var exchangeId = someExchangeData.ExchangeID;
 var exchangeId = elementDataModel.ExchangeID;
 ```
 
-### 2. **Mixing Old and New Patterns**
-**Problem:** Using both `ExchangeData` and `ElementDataModel` in the same workflow
+### 2. **Attempting to Use ExchangeData (Compilation Error)**
+**Problem:** Trying to use `ExchangeData` which is no longer accessible
 ```csharp
-// ❌ Mixed pattern - avoid this
+// ❌ This will cause COMPILATION ERROR in 6.2.0
 ExchangeData exchangeData = await Client.GetExchangeDataAsync(identifier);
 ElementDataModel model = ElementDataModel.Create(Client, exchangeData);
 ```
-**Solution:** Use `ElementDataModel` consistently
+**Solution:** Use `ElementDataModel` directly - it's the only option
 ```csharp
-// ✅ Consistent pattern
+// ✅ Only working pattern in 6.2.0
 ElementDataModel model = await Client.GetElementDataModelAsync(identifier);
 ```
 
 ### 3. **Deprecated Method Usage**
 **Problem:** Using deprecated methods that return `ExchangeData`
 ```csharp
-// ❌ May be deprecated
+// ❌ These methods DO NOT EXIST in 6.2.0 - compilation error
 var data = Client.GetExchangeDataSync(identifier);
+var asyncData = await Client.GetExchangeDataAsync(identifier);
 ```
-**Solution:** Use new async methods that return `ElementDataModel`
+**Solution:** Use only the available `ElementDataModel` methods
 ```csharp
 // ✅ Use new methods
 var data = await Client.GetElementDataModelAsync(identifier);
@@ -324,7 +325,7 @@ var data = await Client.GetElementDataModelAsync(identifier);
 ### 4. **Event Handler Updates**
 **Problem:** Event handlers expecting `ExchangeData` parameters
 ```csharp
-// ❌ Old event signature
+// ❌ This will cause compilation error - ExchangeData not accessible
 public void OnExchangeUpdated(ExchangeData data) { ... }
 ```
 **Solution:** Update to expect `ElementDataModel`
@@ -333,16 +334,38 @@ public void OnExchangeUpdated(ExchangeData data) { ... }
 public void OnExchangeUpdated(ElementDataModel model) { ... }
 ```
 
-### 5. **Null Reference Errors**
-**Problem:** Assuming `ExchangeData` properties are available
+### 5. **Accessing ExchangeData Properties Through ElementDataModel**
+**Problem:** In 5.2.4, you could access `ExchangeData` properties through the `ElementDataModel` wrapper
 ```csharp
-// ❌ May cause null reference
-var id = elementDataModel.ExchangeData.ExchangeID;
+// ❌ This pattern worked in 5.2.4 but causes compilation error in 6.2.0
+var elementModel = ElementDataModel.Create(Client, exchangeData);
+var id = elementModel.ExchangeData.ExchangeID;
+var rootAsset = elementModel.ExchangeData.RootAsset;
 ```
-**Solution:** Use direct `ElementDataModel` properties
+**Solution:** Access these properties from the appropriate source objects
 ```csharp
-// ✅ Direct access
-var id = elementDataModel.ExchangeID;
+// ✅ Get ExchangeID from ExchangeItem
+var id = exchangeItem.ExchangeID; 
+
+// ✅ Access RootAsset and other properties through ElementDataModel methods
+// (Check ElementDataModel API documentation for available methods)
+```
+
+### 6. **Creating DataExchangeIdentifier**
+**Problem:** Need to create `DataExchangeIdentifier` for API calls but don't know where to get the values
+```csharp
+// ❌ In 5.2.4, you might have tried to get this from ExchangeData
+var identifier = someExchangeData.ExchangeIdentifier; // This property doesn't exist
+```
+**Solution:** Create `DataExchangeIdentifier` manually from `ExchangeItem` properties
+```csharp
+// ✅ Standard pattern used throughout 6.2.0 codebase
+var identifier = new DataExchangeIdentifier
+{
+    ExchangeId = exchangeItem.ExchangeID,
+    CollectionId = exchangeItem.ContainerID,
+    HubId = exchangeItem.HubId,
+};
 ```
 
 ---
