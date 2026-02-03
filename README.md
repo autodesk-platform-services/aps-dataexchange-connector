@@ -3,7 +3,7 @@
 [![oAuth2](https://img.shields.io/badge/oAuth2-PKCE-green.svg)](http://developer.autodesk.com/)
 ![.NET](https://img.shields.io/badge/.NET-4.8%20%7C%208.0-blue.svg)
 ![Platform](https://img.shields.io/badge/Platform-Windows-lightgrey.svg)
-![SDK Version](https://img.shields.io/badge/DX%20SDK-6.2.0-blue.svg)
+![SDK Version](https://img.shields.io/badge/DX%20SDK-7.1.0-blue.svg)
 ![Level](https://img.shields.io/badge/Level-Intermediate-orange.svg)
 
 A comprehensive **WPF-based sample application** demonstrating how to integrate the Autodesk Data Exchange SDK's Connector UI components into a desktop application. This sample provides a complete reference implementation for building Windows applications that create and manage data exchanges.
@@ -161,10 +161,10 @@ Edit `src/App.Debug.config` (for Debug builds) or `src/App.Release.config` (for 
 | ------------------------ | ------------------------------- | -------- |
 | `AuthClientId`           | APS application Client ID       | ✅ Yes   |
 | `AuthCallback`           | OAuth2 redirect URI             | ✅ Yes   |
-| `ConnectorName`          | Display name for your connector | ❌ No    |
-| `ConnectorVersion`       | Version of your connector       | ❌ No    |
-| `HostApplicationName`    | Name of your host application   | ❌ No    |
-| `HostApplicationVersion` | Version of your host app        | ❌ No    |
+| `ConnectorName`          | Display name for your connector | ✅ Yes   |
+| `ConnectorVersion`       | Version of your connector       | ✅ Yes   |
+| `HostApplicationName`    | Name of your host application   | ✅ Yes   |
+| `HostApplicationVersion` | Version of your host app        | ✅ Yes   |
 | `LogLevel`               | Debug, Info, Warning, Error     | ❌ No    |
 
 ## Usage

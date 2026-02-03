@@ -1,4 +1,4 @@
-﻿using Autodesk.DataExchange.Core.Enums;
+using Autodesk.DataExchange.Core.Enums;
 using Autodesk.DataExchange.DataModels;
 using Autodesk.DataExchange.SchemaObjects.Units;
 using Autodesk.GeometryPrimitives.Data;
@@ -137,13 +137,13 @@ namespace SampleConnector
             switch (geometryType)
             {
                 case 0:
-                    return ElementDataModel.CreateFileGeometry(new GeometryProperties(BrepGeometryFilePath, CommonRenderStyle));
+                    return ElementDataModel.CreateFileGeometry(BrepGeometryFilePath, GeometryFormat.Step, CommonRenderStyle);
                 case 1:
-                    return ElementDataModel.CreateFileGeometry(new GeometryProperties(IfcGeometryFilePath, CommonRenderStyle));
+                    return ElementDataModel.CreateFileGeometry(IfcGeometryFilePath, GeometryFormat.Ifc, CommonRenderStyle);
                 case 2:
-                    return ElementDataModel.CreateFileGeometry(new GeometryProperties(MeshGeometryFilePath, CommonRenderStyle));
+                    return ElementDataModel.CreateFileGeometry(MeshGeometryFilePath, GeometryFormat.Obj, CommonRenderStyle);
                 case 3:
-                    return ElementDataModel.CreateMeshGeometry(new GeometryProperties(SampleMeshApiObject, $"MeshAPI-{index}"));
+                    return ElementDataModel.CreateMeshGeometry(SampleMeshApiObject, $"MeshAPI-{index}");
                 default:
                     throw new ArgumentOutOfRangeException(nameof(geometryType), "Invalid geometry type");
             }
@@ -182,7 +182,7 @@ namespace SampleConnector
             lineone.Range = range;
             setOfLines.Curves.Add(lineone);
 
-            newBRepElementGeometry.Add(ElementDataModel.CreatePrimitiveGeometry(new GeometryProperties(setOfLines, commonRenderStyle)));
+            newBRepElementGeometry.Add(ElementDataModel.CreatePrimitiveGeometry(setOfLines, commonRenderStyle));
             data.SetElementGeometry(newElement, newBRepElementGeometry);
 
             var newLineElement2 = data.AddElement(new ElementProperties("Line2", "SampleLine", "Generics", "Generic", "Generic Object"));
@@ -201,8 +201,8 @@ namespace SampleConnector
             linethree.Range = range;
             setthreeOfLines.Curves.Add(linethree);
 
-            newlineElementGeometry.Add(ElementDataModel.CreatePrimitiveGeometry(new GeometryProperties(settwoOfLines, commonRenderStyle)));
-            newlineElementGeometry.Add(ElementDataModel.CreatePrimitiveGeometry(new GeometryProperties(setthreeOfLines, commonRenderStyle)));
+            newlineElementGeometry.Add(ElementDataModel.CreatePrimitiveGeometry(settwoOfLines, commonRenderStyle));
+            newlineElementGeometry.Add(ElementDataModel.CreatePrimitiveGeometry(setthreeOfLines, commonRenderStyle));
             data.SetElementGeometry(newLineElement2, newlineElementGeometry);
 
         }
@@ -211,7 +211,7 @@ namespace SampleConnector
         {
             var newBRepGeometry = new List<ElementGeometry>();
             var filePath = $"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\\InputStepFile\\cone.stp";
-            newBRepGeometry.Add(ElementDataModel.CreateFileGeometry(new GeometryProperties(filePath, commonRenderStyle)));
+            newBRepGeometry.Add(ElementDataModel.CreateFileGeometry(filePath, GeometryFormat.Step, commonRenderStyle));
             data.SetElementGeometry(newBRep, newBRepGeometry);
         }
 
@@ -221,7 +221,7 @@ namespace SampleConnector
             var newPointElement = data.AddElement(new ElementProperties("Point1", "SamplePoint", "Generics", "Generic", "Point"));
             var newPointElementGeometry = new List<ElementGeometry>();
             DesignPoint point = new DesignPoint(10.0, 10.0, 10.0);
-            newPointElementGeometry.Add(ElementDataModel.CreatePrimitiveGeometry(new GeometryProperties(point, commonRenderStyle)));
+            newPointElementGeometry.Add(ElementDataModel.CreatePrimitiveGeometry(point, commonRenderStyle));
             data.SetElementGeometry(newPointElement, newPointElementGeometry);
 
         }
@@ -234,7 +234,7 @@ namespace SampleConnector
             AddCurveGeometries(geomContainer);
             AddSurfaceGeometries(geomContainer);
 
-            circleElementGeometry.Add(ElementDataModel.CreatePrimitiveGeometry(new GeometryProperties(geomContainer, commonRenderStyle)));
+            circleElementGeometry.Add(ElementDataModel.CreatePrimitiveGeometry(geomContainer, commonRenderStyle));
             data.SetElementGeometry(circleElement, circleElementGeometry);
         }
 
@@ -608,11 +608,11 @@ namespace SampleConnector
                 },
             };
 
-            var meshGeom = ElementDataModel.CreateMeshGeometry(new GeometryProperties(meshObjWithColor, "Mesh With Color"));
+            var meshGeom = ElementDataModel.CreateMeshGeometry(meshObjWithColor, "Mesh With Color");
             var meshElement = data.AddElement(new ElementProperties("Mesh1", "SampleMesh", "Mesh", "Mesh", "In memory mesh"));
             data.SetElementGeometry(meshElement, new List<ElementGeometry> { meshGeom });
 
-            var complexMeshGeom = ElementDataModel.CreateMeshGeometry(new GeometryProperties(complexMesh, "Complex Mesh With Color"));
+            var complexMeshGeom = ElementDataModel.CreateMeshGeometry(complexMesh, "Complex Mesh With Color");
             var complexMeshElement = data.AddElement(new ElementProperties("ComplexMesh", "ComplexSampleMesh", "Mesh", "Mesh", "Complex In memory mesh"));
             data.SetElementGeometry(complexMeshElement, new List<ElementGeometry> { complexMeshGeom });
         }
@@ -622,7 +622,7 @@ namespace SampleConnector
             //Add Element with BRep Geometry
             var newBRepGeometry = new List<ElementGeometry>();
             var filePath = $"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\\InputStepFile\\nist_ftc_09_asme1_rd.stp";
-            newBRepGeometry.Add(ElementDataModel.CreateFileGeometry(new GeometryProperties(filePath, commonRenderStyle)));
+            newBRepGeometry.Add(ElementDataModel.CreateFileGeometry(filePath, GeometryFormat.Step, commonRenderStyle));
             var newBRep = data.AddElement(new ElementProperties("0-new", "SampleBrep", "Generics", "Generic", "Non-Generic Object"));
             data.SetElementGeometry(newBRep, newBRepGeometry);
 
@@ -665,7 +665,7 @@ namespace SampleConnector
                 },
             };
 
-            var meshGeom = ElementDataModel.CreateMeshGeometry(new GeometryProperties(meshObjWithColor, "Mesh With Color"));
+            var meshGeom = ElementDataModel.CreateMeshGeometry(meshObjWithColor, "Mesh With Color");
             var meshElement = data.AddElement(new ElementProperties("Mesh3", "SampleMesh", "Mesh", "Mesh", "In memory mesh with Color"));
             data.SetElementGeometry(meshElement, new List<ElementGeometry> { meshGeom });
         }
@@ -692,7 +692,7 @@ namespace SampleConnector
                 },
             };
 
-            polyLineElementGeometry.Add(ElementDataModel.CreatePrimitiveGeometry(new GeometryProperties(geomContainer, commonRenderStyle)));
+            polyLineElementGeometry.Add(ElementDataModel.CreatePrimitiveGeometry(geomContainer, commonRenderStyle));
             dataModel.SetElementGeometry(polyLineElement, polyLineElementGeometry);
         }
     }

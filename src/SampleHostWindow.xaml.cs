@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
@@ -11,30 +11,31 @@ using Autodesk.DataExchange;
 using Autodesk.DataExchange.Core.Enums;
 using Autodesk.DataExchange.Core.Interface;
 using Autodesk.DataExchange.Core.Models;
+using Autodesk.DataExchange.Interface;
 using Autodesk.DataExchange.UI.Core;
 using Autodesk.DataExchange.UI.Core.Interfaces;
 using WindowStateEnum = Autodesk.DataExchange.UI.Core.Enums.WindowState;
 
 namespace SampleConnector
 {
-
     public partial class SampleHostWindow : Window
     {
-        private IExchange baseExchange;
-        private SDKOptions sdkOptions;
+        private CustomReadWriteModel customReadWriteModel;
+        private SDKOptionsDefaultSetup sdkOptions;
+        private IClient client;
 
         public SampleHostWindow()
         {
             this.InitializeComponent();
             this.RegisterSystemLanguage();
-            this.InitializeInteropBridge();
+            this.InitializeConnector();
         }
 
         public void Destroy()
         {
-            if (this.baseExchange is CustomReadWriteModel customReadWriteModel)
+            if (this.customReadWriteModel != null)
             {
-                var exchanges = customReadWriteModel.GetLocalExchanges();
+                var exchanges = this.customReadWriteModel.GetLocalExchanges();
                 if (exchanges != null)
                 {
                     this.sdkOptions?.Storage.Add("LocalExchanges", exchanges);
@@ -43,11 +44,11 @@ namespace SampleConnector
                 this.sdkOptions?.Storage.Save();
 
                 // Destroy interop bridge object and Connector UI
-                if (customReadWriteModel.Bridge != null)
+                if (this.customReadWriteModel.Bridge != null)
                 {
-                    customReadWriteModel.Bridge.SetWindowState(WindowStateEnum.Close);
-                    InteropBridgeFactory.DestroyAsync(customReadWriteModel.Bridge);
-                    customReadWriteModel.Bridge = null;
+                    this.customReadWriteModel.Bridge.SetWindowState(WindowStateEnum.Close);
+                    InteropBridgeFactory.DestroyAsync(this.customReadWriteModel.Bridge);
+                    this.customReadWriteModel.Bridge = null;
                 }
             }
         }
@@ -63,8 +64,9 @@ namespace SampleConnector
                     XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
         }
 
-        private void InitializeInteropBridge()
+        private void InitializeConnector()
         {
+            // Read configuration
             var authClientId = ConfigurationManager.AppSettings["AuthClientId"];
             var authClientSecret = ConfigurationManager.AppSettings["AuthClientSecret"];
             var authCallback = ConfigurationManager.AppSettings["AuthCallback"];
@@ -74,60 +76,79 @@ namespace SampleConnector
             var hostApplicationName = ConfigurationManager.AppSettings["HostApplicationName"];
             var hostApplicationVersion = ConfigurationManager.AppSettings["HostApplicationVersion"];
 
+            // Validate required configuration
+            if (string.IsNullOrEmpty(authClientId))
+            {
+                throw new ConfigurationErrorsException("AuthClientId is missing from App.config. Please ensure the config file is properly configured.");
+            }
+
+            if (string.IsNullOrEmpty(authCallback))
+            {
+                throw new ConfigurationErrorsException("AuthCallback is missing from App.config. Please ensure the config file is properly configured.");
+            }
+
+            if (!authCallback.EndsWith("/"))
+            {
+                throw new ConfigurationErrorsException("AuthCallback URL must end with a trailing slash '/'. Example: http://127.0.0.1:63212/");
+            }
+
+            if (string.IsNullOrEmpty(connectorName) || string.IsNullOrEmpty(connectorVersion) ||
+                string.IsNullOrEmpty(hostApplicationName) || string.IsNullOrEmpty(hostApplicationVersion))
+            {
+                throw new ConfigurationErrorsException("ConnectorName, ConnectorVersion, HostApplicationName, and HostApplicationVersion are required in App.config.");
+            }
+
+            // Step 1: Create SDK options (using PKCE auth flow - no client secret needed)
             this.sdkOptions = new SDKOptionsDefaultSetup()
             {
                 CallBack = authCallback,
                 ClientId = authClientId,
-                ClientSecret = authClientSecret,
                 ConnectorName = connectorName,
                 ConnectorVersion = connectorVersion,
                 HostApplicationName = hostApplicationName,
                 HostApplicationVersion = hostApplicationVersion,
             };
 
-            var client = new Autodesk.DataExchange.Client(this.sdkOptions);
-            var customReadWriteModel = new CustomReadWriteModel(client);
-            this.baseExchange = customReadWriteModel;
+            // Step 2: Create the Client (this triggers authentication)
+            this.client = new Client(this.sdkOptions);
 
-            var bridgeOptions = InteropBridgeOptions.FromClient(client);
-            bridgeOptions.Exchange = customReadWriteModel;
-            bridgeOptions.Invoker = new MainThreadInvoker(this.Dispatcher);
-            bridgeOptions.FeedbackUrl = "https://some.feedback.url";
-
-            // At this point, the SampleHostWindow is still under construction, so the
-            // WindowInteropHelper.Handle returns IntPtr.Zero. As a result, the Connector
-            // UI becomes a standalone top-level window, not owned by SampleHostWindow.
-            // This may cause it to appear behind the host window when focus is lost.
-            //
-            // In a real-world scenario, the host application's main window would be fully
-            // constructed before the interop bridge is initialized, ensuring a valid Handle.
-            // Therefore, this behavior is not an issue in production.
-            bridgeOptions.HostWindowHandle = new WindowInteropHelper(this).Handle;
-
+            // Configure logging
             if (this.GetLogLevel(logLevel) == LogLevel.Debug)
             {
                 this.SetDebugLogLevel(this.sdkOptions?.Logger);
-                this.EnableHttpLogsForDebugging(client);
             }
 
-            customReadWriteModel.Bridge = InteropBridgeFactory.Create(bridgeOptions);
+            // Step 3: Create the exchange model with the client
+            this.customReadWriteModel = new CustomReadWriteModel(this.client);
+
+            // Load locally cached exchanges
+            this.LoadLocalExchanges();
+
+            // Step 4: Create InteropBridgeOptions from the client
+            var bridgeOptions = InteropBridgeOptions.FromClient(this.client);
+            bridgeOptions.Exchange = this.customReadWriteModel;
+            bridgeOptions.Invoker = new MainThreadInvoker(this.Dispatcher);
+            bridgeOptions.FeedbackUrl = "https://some.feedback.url";
+            bridgeOptions.HostWindowHandle = new WindowInteropHelper(this).Handle;
+
+            // Step 5: Create the bridge and assign it to the model
+            var bridge = InteropBridgeFactory.Create(bridgeOptions);
+            this.customReadWriteModel.Bridge = bridge;
 
             // Subscribe to ClientStateChanged event for UI state notifications
-            customReadWriteModel.Bridge.ClientStateChanged += (sender, e) =>
+            bridge.ClientStateChanged += (sender, e) =>
             {
                 if (e.IsConnected)
                 {
                     // Set the document name only after the Connector UI is connected.
                     // If SetDocumentName is called too early, it will have no effect
                     // because the Connector UI does not yet exist at that point.
-                    customReadWriteModel.Bridge.SetDocumentName("Sample Document");
+                    this.customReadWriteModel.Bridge.SetDocumentName("Sample Document");
                 }
             };
 
-            this.LoadLocalExchanges(customReadWriteModel);
-
             // Initialize and launch the connector UI asynchronously
-            _ = this.InitializeAndLaunchConnectorUi(customReadWriteModel.Bridge);
+            _ = this.InitializeAndLaunchConnectorUi(bridge);
         }
 
         private async Task InitializeAndLaunchConnectorUi(IInteropBridge interopBridge)
@@ -155,22 +176,22 @@ namespace SampleConnector
             return canConvertToEnum ? parsedlogLevel : LogLevel.Error;
         }
 
-        private void SetDebugLogLevel(Autodesk.DataExchange.Core.Interface.ILogger logger)
+        private void SetDebugLogLevel(ILogger logger)
         {
             logger?.SetDebugLogLevel();
         }
 
-        private void EnableHttpLogsForDebugging(Client client)
+        private void EnableHttpLogsForDebugging()
         {
-            (client as Client)?.EnableHttpDebugLogging();
+            (this.client as Client)?.EnableHttpDebugLogging();
         }
 
-        private void LoadLocalExchanges(CustomReadWriteModel customReadWriteModel)
+        private void LoadLocalExchanges()
         {
             var exchanges = this.sdkOptions.Storage.Get<List<DataExchange>>("LocalExchanges");
             if (exchanges != null)
             {
-                customReadWriteModel.SetLocalExchanges(exchanges);
+                this.customReadWriteModel.SetLocalExchanges(exchanges);
             }
         }
     }
