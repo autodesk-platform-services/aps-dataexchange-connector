@@ -1,4 +1,4 @@
-﻿namespace SampleConnector
+namespace SampleConnector
 {
     using System;
     using System.Collections.Generic;
@@ -32,9 +32,6 @@
         }
 
         private List<DataExchange> localStorage = new List<DataExchange>();
-        private const string SyncingMessage = "Syncing Exchange Data...";
-        private const string GeneratingViewableMessage = "Generating ACC Viewable...";
-        private const string DownloadingMessage = "Downloading...";
         private const int ViewableGenerationDelayMs = 5000;
 
         public override async Task<List<DataExchange>> GetExchangesAsync(ExchangeSearchFilter exchangeSearchFilter)
@@ -68,7 +65,6 @@
             var fetchExchangeStep = progressManager.GetProgressStep(ProgressStepId.FetchExchange);
             fetchExchangeStep.SubSteps = 2;
 
-            this.Bridge?.SetProgressMessage(DownloadingMessage);
             this.Bridge?.SendNotification($"Downloading '{exchangeItem.Name}'", SeverityEnum.Info, 5000);
 
             var exchangeIdentifier = CreateDataExchangeIdentifier(exchangeItem);
@@ -80,7 +76,6 @@
                 // Logs Skipped Elements
                 this._sDKOptions?.Logger?.LogSkippedElement(SkippedElementType.Failed, "elementId", "Line", "PolyLine");
                 this._sDKOptions?.Logger?.LogSkippedElement(SkippedElementType.Unsupported, "elementId", "Line", "FeatureLine");
-                this._sDKOptions?.Logger?.LogSkippedElement(SkippedElementType.Miscellaneous, "elementId", "Line", "CurveSet");
                 this._sDKOptions?.Logger?.LogSkippedElement(SkippedElementType.Failed, "elementId");
                 this._sDKOptions?.Logger?.LogSkippedElement(SkippedElementType.Failed, "elementId", "Line", "CurveSet");
 
@@ -225,7 +220,6 @@
                 // Logs Skipped Elements
                 this._sDKOptions?.Logger?.LogSkippedElement(SkippedElementType.Failed, "elementId", "Line", "PolyLine");
                 this._sDKOptions?.Logger?.LogSkippedElement(SkippedElementType.Unsupported, "elementId", "Line", "FeatureLine");
-                this._sDKOptions?.Logger?.LogSkippedElement(SkippedElementType.Miscellaneous, "elementId", "Line", "CurveSet");
                 this._sDKOptions?.Logger?.LogSkippedElement(SkippedElementType.Failed, "elementId");
                 this._sDKOptions?.Logger?.LogSkippedElement(SkippedElementType.Failed, "elementId", "Line", "CurveSet");
 
@@ -233,7 +227,6 @@
 
                 ElementDataModel elementDataModel = await this.PrepareElementDataModel(exchangeItem);
 
-                this.Bridge?.SetProgressMessage(SyncingMessage);
                 await this.Client.SyncExchangeDataAsync(dataExchangeIdentifier, elementDataModel);
 
                 await this.GenerateViewableAsync(exchangeItem);
@@ -275,8 +268,6 @@
         [Obsolete]
         private async Task GenerateViewableAsync(ExchangeItem exchangeItem)
         {
-            this.Bridge?.SetProgressMessage(GeneratingViewableMessage);
-
             await Task.Run(async () =>
             {
                 try
