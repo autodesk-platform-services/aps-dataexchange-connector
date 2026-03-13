@@ -55,8 +55,8 @@
   </PropertyGroup>
   <!-- PackageReference - NuGet will automatically resolve all transitive dependencies -->
   <ItemGroup>
-    <PackageReference Include="Autodesk.DataExchange" Version="7.2.0-beta" />
-    <PackageReference Include="Autodesk.DataExchange.UI" Version="7.2.0-beta" />
+    <PackageReference Include="Autodesk.DataExchange" Version="7.2.1-beta" />
+    <PackageReference Include="Autodesk.DataExchange.UI" Version="7.2.1-beta" />
     <PackageReference Include="MSTest.TestAdapter" Version="2.2.10" />
     <PackageReference Include="MSTest.TestFramework" Version="2.2.10" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">

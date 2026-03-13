@@ -58,8 +58,8 @@
   </PropertyGroup>
   <!-- PackageReference - NuGet will automatically resolve all transitive dependencies -->
   <ItemGroup>
-    <PackageReference Include="Autodesk.DataExchange" Version="7.2.0-beta" />
-    <PackageReference Include="Autodesk.DataExchange.UI" Version="7.2.0-beta" />
+    <PackageReference Include="Autodesk.DataExchange" Version="7.2.1-beta" />
+    <PackageReference Include="Autodesk.DataExchange.UI" Version="7.2.1-beta" />
     <PackageReference Include="Serilog" Version="2.10.0" />
     <PackageReference Include="Serilog.Settings.AppSettings" Version="2.2.2" />
     <PackageReference Include="Serilog.Sinks.File" Version="4.1.0" />
