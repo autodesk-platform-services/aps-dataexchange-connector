@@ -137,35 +137,43 @@ Follow the [official SDK installation guide](https://aps.autodesk.com/en/docs/dx
 
 ## Configuration
 
-### 1. Application Configuration
+### 1. APS Application Type
 
-Edit `src/App.Debug.config` (for Debug builds) or `src/App.Release.config` (for Release builds):
+Before editing any config files, register an application on the [APS portal](https://aps.autodesk.com/myapps/) **as "Desktop, Mobile, Single-Page App"** (i.e. a public / PKCE client).
+
+A confidential / "Web App" registration will not work with this sample because the SDK uses a PKCE flow that sends `client_id` in the request body. APS rejects body-only `client_id` for confidential clients with `HTTP 401 invalid_credentials`, which surfaces inside the SDK as `UserId claim not found in JWT token` during `new Client(...)`.
+
+### 2. Application Configuration
+
+Edit `src/App.config` and set `AuthClientId` to your APS app's Client ID. The remaining settings already have working sample defaults:
 
 ```xml
 <configuration>
     <appSettings>
         <add key="AuthClientId" value="YOUR_CLIENT_ID" />
         <add key="AuthCallback" value="http://127.0.0.1:63212/" />
-        <add key="ConnectorName" value="Your Connector Name" />
+        <add key="ConnectorName" value="SampleConnector" />
         <add key="ConnectorVersion" value="1.0.0" />
-        <add key="HostApplicationName" value="Your Host App" />
+        <add key="HostApplicationName" value="SampleHost" />
         <add key="HostApplicationVersion" value="1.0.0" />
         <add key="LogLevel" value="Info" />
     </appSettings>
 </configuration>
 ```
 
-### 2. Configuration Parameters
+> Note: `src/App.Debug.config` and `src/App.Release.config` are XDT transforms that are applied on top of `App.config` at build time. They are intentionally limited to settings that vary per build configuration (e.g. `LogLevel`). Do not put credentials there - earlier versions of these files overwrote credential keys to empty strings on every build.
 
-| Parameter                | Description                     | Required |
-| ------------------------ | ------------------------------- | -------- |
-| `AuthClientId`           | APS application Client ID       | ✅ Yes   |
-| `AuthCallback`           | OAuth2 redirect URI             | ✅ Yes   |
-| `ConnectorName`          | Display name for your connector | ✅ Yes   |
-| `ConnectorVersion`       | Version of your connector       | ✅ Yes   |
-| `HostApplicationName`    | Name of your host application   | ✅ Yes   |
-| `HostApplicationVersion` | Version of your host app        | ✅ Yes   |
-| `LogLevel`               | Debug, Info, Warning, Error     | ❌ No    |
+### 3. Configuration Parameters
+
+| Parameter                | Description                                                  | Required |
+| ------------------------ | ------------------------------------------------------------ | -------- |
+| `AuthClientId`           | APS application Client ID (must be a PKCE / Desktop app)     | Yes      |
+| `AuthCallback`           | OAuth2 redirect URI (default `http://127.0.0.1:63212/`)      | Yes      |
+| `ConnectorName`          | Display name for your connector                              | Yes      |
+| `ConnectorVersion`       | Version of your connector                                    | Yes      |
+| `HostApplicationName`    | Name of your host application                                | Yes      |
+| `HostApplicationVersion` | Version of your host app                                     | Yes      |
+| `LogLevel`               | `Debug`, `Info`, `Warning`, or `Error`                       | No       |
 
 ## Usage
 

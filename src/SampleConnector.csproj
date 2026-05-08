@@ -161,8 +161,18 @@
     </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <UsingTask TaskName="TransformXml" AssemblyFile="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Web\Microsoft.Web.Publishing.Tasks.dll" />
-  <Target Name="App_config_AfterCompile" AfterTargets="AfterCompile" Condition="Exists('App.$(Configuration).config')">
+  <!--
+    Guard the TransformXml task and the two App.config transform targets so
+    the build does not fail on machines without the Visual Studio "ASP.NET
+    and web development" workload, where Microsoft.Web.Publishing.Tasks.dll
+    is not present. Skipping the transform is safe: App.config is then used
+    as-is, which is the desired behaviour for this sample.
+  -->
+  <PropertyGroup>
+    <_WebPublishingTasksDll>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Web\Microsoft.Web.Publishing.Tasks.dll</_WebPublishingTasksDll>
+  </PropertyGroup>
+  <UsingTask TaskName="TransformXml" AssemblyFile="$(_WebPublishingTasksDll)" Condition="Exists('$(_WebPublishingTasksDll)')" />
+  <Target Name="App_config_AfterCompile" AfterTargets="AfterCompile" Condition="Exists('App.$(Configuration).config') And Exists('$(_WebPublishingTasksDll)')">
     <TransformXml Source="App.config" Destination="$(IntermediateOutputPath)$(TargetFileName).config" Transform="App.$(Configuration).config" />
     <ItemGroup>
       <AppConfigWithTargetPath Remove="App.config" />
@@ -171,7 +181,7 @@
       </AppConfigWithTargetPath>
     </ItemGroup>
   </Target>
-  <Target Name="App_config_AfterPublish" AfterTargets="AfterPublish" Condition="Exists('App.$(Configuration).config')">
+  <Target Name="App_config_AfterPublish" AfterTargets="AfterPublish" Condition="Exists('App.$(Configuration).config') And Exists('$(_WebPublishingTasksDll)')">
     <PropertyGroup>
       <DeployedConfig>$(_DeploymentApplicationDir)$(TargetName)$(TargetExt).config$(_DeploymentFileMappingExtension)</DeployedConfig>
     </PropertyGroup>
