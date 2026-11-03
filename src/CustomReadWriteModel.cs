@@ -170,6 +170,16 @@ namespace SampleConnector
                         this._sDKOptions?.Logger?.Information($"STEP downloaded to: {stepResult.Value}");
                     }
 
+                    var satResult = this.Client.DownloadCompleteExchangeAsSAT(exchangeIdentifier, downloadPath, cancellationToken);
+                    if (satResult.IsFailed)
+                    {
+                        this._sDKOptions?.Logger?.Error($"SAT download failed: {string.Join(", ", satResult.Errors)}");
+                    }
+                    else
+                    {
+                        this._sDKOptions?.Logger?.Information($"SAT downloaded to: {satResult.Value}");
+                    }
+
                     var objResult = this.Client.DownloadCompleteExchangeAsOBJ(exchangeIdentifier, downloadPath, cancellationToken);
 
                     if (objResult.IsFailed)
