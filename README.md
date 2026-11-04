@@ -1,6 +1,3 @@
-<!-- archived-notice -->
-> **This repository is archived.** Archived repositories are not maintained or supported.
-
 # Autodesk Data Exchange Connector UI Sample
 
 [![oAuth2](https://img.shields.io/badge/oAuth2-PKCE-green.svg)](http://developer.autodesk.com/)
