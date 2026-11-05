@@ -3,7 +3,7 @@
 [![oAuth2](https://img.shields.io/badge/oAuth2-PKCE-green.svg)](http://developer.autodesk.com/)
 ![.NET](https://img.shields.io/badge/.NET%20Framework-4.8-blue.svg)
 ![Platform](https://img.shields.io/badge/Platform-Windows-lightgrey.svg)
-![SDK Version](https://img.shields.io/badge/DX%20SDK-8.0.0-blue.svg)
+![SDK Version](https://img.shields.io/badge/DX%20SDK-8.1.0-blue.svg)
 ![Level](https://img.shields.io/badge/Level-Intermediate-orange.svg)
 
 A comprehensive **WPF-based sample application** demonstrating how to integrate the Autodesk Data Exchange SDK's Connector UI components into a desktop application. This sample provides a complete reference implementation for building Windows applications that create and manage data exchanges.
@@ -31,7 +31,7 @@ This sample application demonstrates the integration of the **Autodesk Data Exch
 -   Embed the Data Exchange Connector UI within your application
 -   Implement PKCE OAuth2 authentication with Autodesk Platform Services
 -   Create and manage data exchanges programmatically
--   Handle multiple 3D file formats (STEP, IFC, OBJ, USD, Mesh API)
+-   Handle multiple 3D file formats (STEP, IFC, OBJ, SAT, USD, Mesh API)
 -   Provide real-time progress feedback and notifications
 -   Implement custom read/write models for exchange operations
 
@@ -213,7 +213,7 @@ Edit `src/App.Debug.config` (for Debug builds) or `src/App.Release.config` (for 
 
 -   **View Exchanges**: Browse existing exchanges from your Forma projects
 -   **Update Exchanges**: Add new revisions to existing exchanges
--   **Download**: Retrieve exchange data in various formats
+-   **Download**: Retrieve exchange data as STEP, SAT, OBJ, and IFC (IFC4 and IFC2x3)
 -   **Preview**: View 3D models directly in the UI
 
 ## Key Components

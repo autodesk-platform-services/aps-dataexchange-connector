@@ -180,7 +180,6 @@ namespace SampleConnector
             var bridgeOptions = InteropBridgeOptions.FromClient(this.client);
             bridgeOptions.Exchange = this.customReadWriteModel;
             bridgeOptions.Invoker = new MainThreadInvoker(this.Dispatcher);
-            bridgeOptions.FeedbackUrl = "https://some.feedback.url";
             bridgeOptions.HostWindowHandle = hostWindowHandle;
 
             var bridge = InteropBridgeFactory.Create(bridgeOptions);
