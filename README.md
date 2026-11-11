@@ -213,7 +213,7 @@ Edit `src/App.Debug.config` (for Debug builds) or `src/App.Release.config` (for 
 
 -   **View Exchanges**: Browse existing exchanges from your Forma projects
 -   **Update Exchanges**: Add new revisions to existing exchanges
--   **Download**: Retrieve exchange data as STEP, SAT, OBJ, and IFC (IFC4 and IFC2x3)
+-   **Download**: Retrieve exchange data as STEP, SAT, OBJ, and IFC
 -   **Preview**: View 3D models directly in the UI
 
 ## Key Components
