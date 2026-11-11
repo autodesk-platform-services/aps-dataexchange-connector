@@ -191,7 +191,6 @@ namespace SampleConnector
                         this._sDKOptions?.Logger?.Information($"OBJ downloaded to: {objResult.Value}");
                     }
 
-                    // IFC download uses the default IFC4 schema; the schema is not selectable in the public 8.1.0 API.
                     var ifc4Result = this.Client.DownloadCompleteExchangeAsIFC(
                         exchangeIdentifier,
                         Path.Combine(downloadPath, "ifc4"),
