@@ -19,8 +19,7 @@ This section documents the migration from SDK 8.0.0 to **Autodesk Data Exchange 
 
 - **SDK Version**: Upgraded to `Autodesk.DataExchange 8.1.0`
 - **UI SDK Version**: Upgraded to `Autodesk.DataExchange.UI 8.1.0`
-- **Breaking Changes**: Yes — `IClient.DownloadCompleteExchangeAsIFC` takes an `IfcSchema`
-  argument ahead of the cancellation token, and two `InteropBridgeOptions` URL properties are now
+- **Breaking Changes**: None that affect source code — two `InteropBridgeOptions` URL properties are now
   `[Obsolete]`. Everything else in this release is additive.
 - **Build result**: 0 errors (`msbuild SampleConnector.sln -p:Configuration=Debug -p:Platform=x64`)
 
@@ -28,32 +27,12 @@ This section documents the migration from SDK 8.0.0 to **Autodesk Data Exchange 
 
 | Package | Previous Version | New Version | Impact |
 |---------|------------------|-------------|---------|
-| `Autodesk.DataExchange` | `8.0.0` | `8.1.0` | **Minor** - one signature change, otherwise additive |
+| `Autodesk.DataExchange` | `8.0.0` | `8.1.0` | **Minor** - additive |
 | `Autodesk.DataExchange.UI` | `8.0.0` | `8.1.0` | **Minor** - two deprecations, otherwise additive |
 
 ### ⚠️ Breaking Changes
 
-#### 1. `DownloadCompleteExchangeAsIFC` takes an `IfcSchema`
-
-The new `IfcSchema` parameter is inserted *before* the cancellation token, so any call that passed
-the token positionally as the third argument now fails to compile. The parameter defaults to
-`IfcSchema.Ifc4`, so named or two-argument calls are unaffected.
-
-| 8.0.0 | 8.1.0 |
-|-------|-------|
-| `DownloadCompleteExchangeAsIFC(DataExchangeIdentifier, string ifcFilePath = null, CancellationToken = default)` | `DownloadCompleteExchangeAsIFC(DataExchangeIdentifier, string ifcFilePath = null, IfcSchema ifcSchema = IfcSchema.Ifc4, CancellationToken = default)` |
-
-Pass `IfcSchema.Ifc2x3` when the consuming application cannot read IFC4:
-
-```csharp
-var ifc2x3Result = this.Client.DownloadCompleteExchangeAsIFC(
-    exchangeIdentifier,
-    Path.Combine(downloadPath, "ifc2x3"),
-    IfcSchema.Ifc2x3,
-    cancellationToken);
-```
-
-#### 2. `InteropBridgeOptions` support URLs are deprecated
+#### 1. `InteropBridgeOptions` support URLs are deprecated
 
 `ContactSupportUrl` and `FeedbackUrl` are now marked `[Obsolete]`. They still work, but new code
 should stop setting them.

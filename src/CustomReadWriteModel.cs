@@ -191,11 +191,9 @@ namespace SampleConnector
                         this._sDKOptions?.Logger?.Information($"OBJ downloaded to: {objResult.Value}");
                     }
 
-                    // IFC4 is the default schema, so the IfcSchema argument can be omitted for it.
                     var ifc4Result = this.Client.DownloadCompleteExchangeAsIFC(
                         exchangeIdentifier,
                         Path.Combine(downloadPath, "ifc4"),
-                        IfcSchema.Ifc4,
                         cancellationToken);
 
                     if (ifc4Result.IsFailed)
@@ -205,22 +203,6 @@ namespace SampleConnector
                     else
                     {
                         this._sDKOptions?.Logger?.Information($"IFC4 downloaded to: {ifc4Result.Value}");
-                    }
-
-                    // Pass IfcSchema.Ifc2x3 when the consuming application needs the older schema.
-                    var ifc2x3Result = this.Client.DownloadCompleteExchangeAsIFC(
-                        exchangeIdentifier,
-                        Path.Combine(downloadPath, "ifc2x3"),
-                        IfcSchema.Ifc2x3,
-                        cancellationToken);
-
-                    if (ifc2x3Result.IsFailed)
-                    {
-                        this._sDKOptions?.Logger?.Error($"IFC2x3 download failed: {string.Join(", ", ifc2x3Result.Errors)}");
-                    }
-                    else
-                    {
-                        this._sDKOptions?.Logger?.Information($"IFC2x3 downloaded to: {ifc2x3Result.Value}");
                     }
                 },
                 cancellationToken).ConfigureAwait(false);
