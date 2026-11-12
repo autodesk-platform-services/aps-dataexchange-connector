@@ -19,15 +19,15 @@ This section documents the migration from SDK 8.0.0 to **Autodesk Data Exchange 
 
 - **SDK Version**: Upgraded to `Autodesk.DataExchange 8.1.0`
 - **UI SDK Version**: Upgraded to `Autodesk.DataExchange.UI 8.1.0`
-- **Breaking Changes**: None that affect source code — two `InteropBridgeOptions` URL properties are now
-  `[Obsolete]`. Everything else in this release is additive.
+- **Breaking Changes**: None affecting this sample. Two `InteropBridgeOptions` URL properties are now
+  `[Obsolete]`, and some low-level Mesh API entry points were removed; everything else is additive.
 - **Build result**: 0 errors (`msbuild SampleConnector.sln -p:Configuration=Debug -p:Platform=x64`)
 
 ### 🚀 Key Dependency Updates
 
 | Package | Previous Version | New Version | Impact |
 |---------|------------------|-------------|---------|
-| `Autodesk.DataExchange` | `8.0.0` | `8.1.0` | **Minor** - additive |
+| `Autodesk.DataExchange` | `8.0.0` | `8.1.0` | **Minor** - additive, plus low-level Mesh API removals |
 | `Autodesk.DataExchange.UI` | `8.0.0` | `8.1.0` | **Minor** - two deprecations, otherwise additive |
 
 ### ⚠️ Breaking Changes
@@ -37,7 +37,7 @@ This section documents the migration from SDK 8.0.0 to **Autodesk Data Exchange 
 `ContactSupportUrl` and `FeedbackUrl` are now marked `[Obsolete]`. They still work, but new code
 should stop setting them.
 
-#### 3. Low-level Mesh API surface
+#### 2. Low-level Mesh API surface
 
 `MeshIO.ReadFromDirectArrays`, `MeshIO.WriteToDirectArrays`, and the public
 `MeshBinarySerializer`/`MeshBinaryDeserializer` entry points were removed, and

@@ -191,18 +191,14 @@ namespace SampleConnector
                         this._sDKOptions?.Logger?.Information($"OBJ downloaded to: {objResult.Value}");
                     }
 
-                    var ifc4Result = this.Client.DownloadCompleteExchangeAsIFC(
-                        exchangeIdentifier,
-                        Path.Combine(downloadPath, "ifc4"),
-                        cancellationToken);
-
-                    if (ifc4Result.IsFailed)
+                    var ifcResult = this.Client.DownloadCompleteExchangeAsIFC(exchangeIdentifier, downloadPath, cancellationToken);
+                    if (ifcResult.IsFailed)
                     {
-                        this._sDKOptions?.Logger?.Error($"IFC4 download failed: {string.Join(", ", ifc4Result.Errors)}");
+                        this._sDKOptions?.Logger?.Error($"IFC download failed: {string.Join(", ", ifcResult.Errors)}");
                     }
                     else
                     {
-                        this._sDKOptions?.Logger?.Information($"IFC4 downloaded to: {ifc4Result.Value}");
+                        this._sDKOptions?.Logger?.Information($"IFC downloaded to: {ifcResult.Value}");
                     }
                 },
                 cancellationToken).ConfigureAwait(false);
