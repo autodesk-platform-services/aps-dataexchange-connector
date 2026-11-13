@@ -3,10 +3,71 @@
 This guide documents SDK upgrades for the **Sample UI Connector**. The most recent
 migration is listed first; earlier migrations are preserved below for reference.
 
-- [🔄 Migration Guide: SDK 8.0.0 Upgrade](#-migration-guide-sdk-800-upgrade) — **latest**
+- [🔄 Migration Guide: SDK 8.1.0 Upgrade](#-migration-guide-sdk-810-upgrade) — **latest**
+- [🔄 Migration Guide: SDK 8.0.0 Upgrade](#-migration-guide-sdk-800-upgrade)
 - [🔄 Migration Guide: SDK 7.6.0-beta Upgrade](#-migration-guide-sdk-760-beta-upgrade)
 - [🔄 Migration Guide: SDK 7.5.0 Upgrade](#-migration-guide-sdk-750-upgrade)
 - [🔄 Migration Guide: SDK 7.2.1-beta Upgrade](#-migration-guide-sdk-721-beta-upgrade)
+
+---
+
+## 🔄 Migration Guide: SDK 8.1.0 Upgrade
+
+This section documents the migration from SDK 8.0.0 to **Autodesk Data Exchange SDK 8.1.0**.
+
+### 📋 Overview of Changes
+
+- **SDK Version**: Upgraded to `Autodesk.DataExchange 8.1.0`
+- **UI SDK Version**: Upgraded to `Autodesk.DataExchange.UI 8.1.0`
+- **Breaking Changes**: None affecting this sample. Two `InteropBridgeOptions` URL properties are now
+  `[Obsolete]`, and some low-level Mesh API entry points were removed; everything else is additive.
+- **Build result**: 0 errors (`msbuild SampleConnector.sln -p:Configuration=Debug -p:Platform=x64`)
+
+### 🚀 Key Dependency Updates
+
+| Package | Previous Version | New Version | Impact |
+|---------|------------------|-------------|---------|
+| `Autodesk.DataExchange` | `8.0.0` | `8.1.0` | **Minor** - additive, plus low-level Mesh API removals |
+| `Autodesk.DataExchange.UI` | `8.0.0` | `8.1.0` | **Minor** - two deprecations, otherwise additive |
+
+### ⚠️ Breaking Changes
+
+#### 1. `InteropBridgeOptions` support URLs are deprecated
+
+`ContactSupportUrl` and `FeedbackUrl` are now marked `[Obsolete]`. They still work, but new code
+should stop setting them.
+
+#### 2. Low-level Mesh API surface
+
+`MeshIO.ReadFromDirectArrays`, `MeshIO.WriteToDirectArrays`, and the public
+`MeshBinarySerializer`/`MeshBinaryDeserializer` entry points were removed, and
+`MeshIO.WriteTo(List<...>)` gained a trailing optional `int maxDegreeOfParallelism = -1`. Connectors
+that use `ElementDataModel.CreateMeshGeometry` — including this sample — are unaffected.
+
+### ✨ New Capabilities
+
+#### SAT download
+
+`IClient.DownloadCompleteExchangeAsSAT` joins the existing STEP, OBJ, IFC, and USD download methods,
+backed by the new `GeometryFormat.Sat` and `BrepOutputFormat.SAT` values. The sample now downloads
+SAT alongside the other formats in `CustomReadWriteModel.DownloadExchangeGeometryAsync`:
+
+```csharp
+var satResult = this.Client.DownloadCompleteExchangeAsSAT(exchangeIdentifier, downloadPath, cancellationToken);
+```
+
+#### Cancellation and progress
+
+- `UserCancelledException` and `CancellationClassifier` (`IsUserCancellation`, `IsTimeout`) let a
+  connector tell a deliberate cancellation apart from a timeout.
+- `IInteropBridge.UpdateProgressSubText(string, DateTime?)` adds secondary progress text with an
+  optional last-synced timestamp.
+- `IInteropBridge.UpdateFeatureCapabilities(FeatureCapabilities)` toggles UI capabilities after the
+  bridge has been created; previously these could only be set through `InteropBridgeOptions`.
+
+#### Other additions
+
+`DeletedFolders.AccessDenied` reports folders that could not be checked because of permissions.
 
 ---
 

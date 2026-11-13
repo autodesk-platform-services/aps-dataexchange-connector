@@ -3,7 +3,7 @@
 [![oAuth2](https://img.shields.io/badge/oAuth2-PKCE-green.svg)](http://developer.autodesk.com/)
 ![.NET](https://img.shields.io/badge/.NET%20Framework-4.8-blue.svg)
 ![Platform](https://img.shields.io/badge/Platform-Windows-lightgrey.svg)
-![SDK Version](https://img.shields.io/badge/DX%20SDK-8.0.0-blue.svg)
+![SDK Version](https://img.shields.io/badge/DX%20SDK-8.1.0-blue.svg)
 ![Level](https://img.shields.io/badge/Level-Intermediate-orange.svg)
 
 A comprehensive **WPF-based sample application** demonstrating how to integrate the Autodesk Data Exchange SDK's Connector UI components into a desktop application. This sample provides a complete reference implementation for building Windows applications that create and manage data exchanges.
@@ -18,7 +18,7 @@ A comprehensive **WPF-based sample application** demonstrating how to integrate 
 -   [Configuration](#configuration)
 -   [Usage](#usage)
 -   [Key Components](#key-components)
--   [Testing](#testing)
+-   [Manual Testing Scenarios](#manual-testing-scenarios)
 -   [API Reference](#api-reference)
 -   [Further Reading](#further-reading)
 -   [License](#license)
@@ -31,7 +31,7 @@ This sample application demonstrates the integration of the **Autodesk Data Exch
 -   Embed the Data Exchange Connector UI within your application
 -   Implement PKCE OAuth2 authentication with Autodesk Platform Services
 -   Create and manage data exchanges programmatically
--   Handle multiple 3D file formats (STEP, IFC, OBJ, USD, Mesh API)
+-   Handle multiple 3D file formats (STEP, IFC, OBJ, SAT, USD, Mesh API)
 -   Provide real-time progress feedback and notifications
 -   Implement custom read/write models for exchange operations
 
@@ -96,7 +96,7 @@ Familiar search and selection interface that mirrors the user experience from Au
 
 -   **Visual Studio 2022** or later
 -   **.NET Framework 4.8** — this sample targets .NET Framework 4.8. The SDK itself also
-    supports .NET 8 and .NET 10; see [Installing the SDK](https://aps.autodesk.com/en/docs/dx-sdk/v8.0.0/developers_guide/getting_started/installing_the_sdk/)
+    supports .NET 8 and .NET 10; see [Installing the SDK](https://aps.autodesk.com/en/docs/dx-sdk/v8.1.0/developers_guide/getting_started/installing_the_sdk/)
 -   **Windows 10** or later, x64
 
 ### Autodesk Platform Services
@@ -160,7 +160,7 @@ dotnet add package Autodesk.DataExchange.UI
 
 These are the only two Data Exchange packages available to third-party connectors, and
 `Autodesk.DataExchange.UI` is optional if you are not using the Connector UI. See
-[Installing the SDK](https://aps.autodesk.com/en/docs/dx-sdk/v8.0.0/developers_guide/getting_started/installing_the_sdk/).
+[Installing the SDK](https://aps.autodesk.com/en/docs/dx-sdk/v8.1.0/developers_guide/getting_started/installing_the_sdk/).
 
 ## Configuration
 
@@ -213,7 +213,7 @@ Edit `src/App.Debug.config` (for Debug builds) or `src/App.Release.config` (for 
 
 -   **View Exchanges**: Browse existing exchanges from your Forma projects
 -   **Update Exchanges**: Add new revisions to existing exchanges
--   **Download**: Retrieve exchange data in various formats
+-   **Download**: Retrieve exchange data as STEP, SAT, OBJ, and IFC
 -   **Preview**: View 3D models directly in the UI
 
 ## Key Components
@@ -267,12 +267,12 @@ Edit `src/App.Debug.config` (for Debug builds) or `src/App.Release.config` (for 
 
 ### Official Documentation
 
--   [Autodesk Data Exchange SDK Documentation](https://aps.autodesk.com/en/docs/dx-sdk/v8.0.0/developers_guide/overview/)
--   [Installing the SDK](https://aps.autodesk.com/en/docs/dx-sdk/v8.0.0/developers_guide/getting_started/installing_the_sdk/)
--   [8.0.0 Migration Guide](https://aps.autodesk.com/en/docs/dx-sdk/v8.0.0/migration/migration-guide/)
--   [8.0.0 Changelog](https://aps.autodesk.com/en/docs/dx-sdk/v8.0.0/changelog/v1changelog-800/)
+-   [Autodesk Data Exchange SDK Documentation](https://aps.autodesk.com/en/docs/dx-sdk/v8.1.0/developers_guide/overview/)
+-   [Installing the SDK](https://aps.autodesk.com/en/docs/dx-sdk/v8.1.0/developers_guide/getting_started/installing_the_sdk/)
+-   [8.1.0 Migration Guide](https://aps.autodesk.com/en/docs/dx-sdk/v8.1.0/migration/migration-guide/)
+-   [8.1.0 Changelog](https://aps.autodesk.com/en/docs/dx-sdk/v8.1.0/changelog/v1changelog-810/)
 -   [Autodesk Platform Services Developer Portal](https://aps.autodesk.com/)
--   [Data Exchange API Reference](https://aps.autodesk.com/en/docs/dx-sdk/v8.0.0/sdk-reference/autodesk-dataexchange/)
+-   [Data Exchange API Reference](https://aps.autodesk.com/en/docs/dx-sdk/v8.1.0/sdk-reference/autodesk-dataexchange/)
 
 ### Related Samples
 

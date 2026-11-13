@@ -170,6 +170,16 @@ namespace SampleConnector
                         this._sDKOptions?.Logger?.Information($"STEP downloaded to: {stepResult.Value}");
                     }
 
+                    var satResult = this.Client.DownloadCompleteExchangeAsSAT(exchangeIdentifier, downloadPath, cancellationToken);
+                    if (satResult.IsFailed)
+                    {
+                        this._sDKOptions?.Logger?.Error($"SAT download failed: {string.Join(", ", satResult.Errors)}");
+                    }
+                    else
+                    {
+                        this._sDKOptions?.Logger?.Information($"SAT downloaded to: {satResult.Value}");
+                    }
+
                     var objResult = this.Client.DownloadCompleteExchangeAsOBJ(exchangeIdentifier, downloadPath, cancellationToken);
 
                     if (objResult.IsFailed)
@@ -179,6 +189,16 @@ namespace SampleConnector
                     else
                     {
                         this._sDKOptions?.Logger?.Information($"OBJ downloaded to: {objResult.Value}");
+                    }
+
+                    var ifcResult = this.Client.DownloadCompleteExchangeAsIFC(exchangeIdentifier, downloadPath, cancellationToken);
+                    if (ifcResult.IsFailed)
+                    {
+                        this._sDKOptions?.Logger?.Error($"IFC download failed: {string.Join(", ", ifcResult.Errors)}");
+                    }
+                    else
+                    {
+                        this._sDKOptions?.Logger?.Information($"IFC downloaded to: {ifcResult.Value}");
                     }
                 },
                 cancellationToken).ConfigureAwait(false);
